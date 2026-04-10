@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — Jeff Hanna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0e0c0a;
+      --bg2:       #131109;
+      --bg3:       #18160f;
+      --border:    #2d2820;
+      --text:      #ccc5b5;
+      --text-dim:  #7a7060;
+      --text-faint:#3d3830;
+      --gold:      #c4993a;
+      --gold-dim:  #7d5f28;
+      --gold-glow: rgba(196,153,58,0.10);
+      --white:     #ede8dc;
+      --mono: 'DM Mono', monospace;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.9rem 1.25rem;
+      background: rgba(14,12,10,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+    .nav-logo:hover { color: var(--white); }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    @media (min-width: 600px) {
+      nav { padding: 1rem 2.5rem; }
+      .nav-links { gap: 1rem 2rem; }
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    @media (min-width: 600px) {
+      .page-wrap { padding: 4.5rem 2rem 7rem; }
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .page-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+    }
+    .page-title em {
+      font-style: italic;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .page-sub {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--bg);
+      background: var(--gold);
+      border: none;
+      padding: 0.55rem 1.1rem;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      border-radius: 1px;
+    }
+    .download-btn:hover { background: var(--white); }
+
+    /* ── DIVIDER ── */
+    .ruled-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0 1.5rem;
+    }
+    @media (min-width: 600px) {
+      .ruled-divider { margin: 3rem 0 2rem; }
+    }
+    .ruled-divider::before, .ruled-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .ruled-divider span {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--gold-dim);
+      letter-spacing: 0.12em;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── SUMMARY ── */
+    .summary-text {
+      font-size: 1rem;
+      line-height: 1.78;
+      color: var(--text);
+      max-width: 700px;
+    }
+    .summary-text strong { color: var(--white); font-weight: 500; }
+
+    /* ── COMPETENCY GRID ── */
+    .competency-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .comp-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 1px;
+      letter-spacing: 0.02em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .comp-tag:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+    /* ── EXPERIENCE ── */
+    .job {
+      margin-bottom: 2.2rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .job:hover { border-left-color: var(--gold-dim); }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .job-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .job-dates {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      padding-top: 0.18rem;
+    }
+
+    .job-company {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.03em;
+      margin-bottom: 0.3rem;
+    }
+
+    .job-split {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      margin-bottom: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+
+    .job-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .job-bullets li {
+      font-size: 0.88rem;
+      line-height: 1.68;
+      color: var(--text);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .job-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      top: 0.08em;
+    }
+    .job-bullets li strong { color: var(--white); font-weight: 500; }
+
+    /* ── EDUCATION ── */
+    .edu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .edu-item { padding-left: 1.2rem; border-left: 2px solid var(--border); transition: border-color 0.2s; }
+    .edu-item:hover { border-left-color: var(--gold-dim); }
+
+    .edu-degree {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.1rem;
+    }
+    .edu-school {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.03em;
+      margin-bottom: 0.35rem;
+    }
+    .edu-courses {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .edu-tag {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      color: var(--text-dim);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+    }
+
+    /* ── CERTS ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 2rem;
+    }
+    @media (max-width: 600px) { .cert-grid { grid-template-columns: 1fr; } }
+
+    .cert-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .cert-item::before {
+      content: '—';
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--gold-dim);
+      flex-shrink: 0;
+    }
+    .cert-name {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+    }
+
+    /* ── ORGS ── */
+    .org-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .org-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 1px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    @media (min-width: 600px) {
+      footer { padding: 1.75rem 2.5rem; }
+    }
+    footer span {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--gold); }
+
+    /* ── FADE IN ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.55s ease forwards;
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.05s; }
+    .fade-up:nth-child(2) { animation-delay: 0.14s; }
+    .fade-up:nth-child(3) { animation-delay: 0.22s; }
+    .fade-up:nth-child(4) { animation-delay: 0.30s; }
+    .fade-up:nth-child(5) { animation-delay: 0.38s; }
+    .fade-up:nth-child(6) { animation-delay: 0.44s; }
+    .fade-up:nth-child(7) { animation-delay: 0.50s; }
+    .fade-up:nth-child(8) { animation-delay: 0.55s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resume.html" class="active">Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- PAGE HEADER -->
+    <div class="fade-up">
+      <div class="page-eyebrow">resume</div>
+      <h1 class="page-title">Jeff <em>Hanna</em></h1>
+      <p class="page-sub">Senior Security Engineer · Threat Intelligence · Detection &amp; Automation Engineering · Seattle, WA</p>
+      <a href="#" class="download-btn">↓ Download PDF</a>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="ruled-divider fade-up"><span>// summary</span></div>
+    <div class="fade-up">
+      <p class="summary-text">
+        Senior Security Engineer at <strong>GoDaddy</strong>, where three years of hands-on engineering work spans LLM-orchestrated threat intelligence pipelines, credential remediation automation, DNS-scale packet analysis, SOC-style triage systems, and SIEM/EDR integrations — the majority built from the ground up. Driven by curiosity and the persistence to find solutions where none exist: if the tool doesn't do what's needed, build it. Prior foundation in intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including standing up USCYBERCOM's first OSINT program.
+      </p>
+    </div>
+
+    <!-- COMPETENCIES -->
+    <div class="ruled-divider fade-up"><span>// core competencies</span></div>
+    <div class="fade-up">
+      <div class="competency-grid">
+        <span class="comp-tag">Security Program Engineering</span>
+        <span class="comp-tag">Cyber Threat Intelligence (CTI)</span>
+        <span class="comp-tag">Detection Engineering</span>
+        <span class="comp-tag">LLM Orchestration</span>
+        <span class="comp-tag">Agentic Systems</span>
+        <span class="comp-tag">AI-Augmented Workflows</span>
+        <span class="comp-tag">Automation Engineering</span>
+        <span class="comp-tag">Python</span>
+        <span class="comp-tag">SOAR / API Integration</span>
+        <span class="comp-tag">Splunk / Elastic (SIEM)</span>
+        <span class="comp-tag">SentinelOne / Defender (EDR)</span>
+        <span class="comp-tag">AWS — CDK · IAM · S3 · EC2 · Athena · ECS</span>
+        <span class="comp-tag">Docker</span>
+        <span class="comp-tag">YARA / Sigma / Snort</span>
+        <span class="comp-tag">MITRE ATT&amp;CK</span>
+        <span class="comp-tag">Threat Hunting</span>
+        <span class="comp-tag">Incident Response</span>
+        <span class="comp-tag">OSINT</span>
+        <span class="comp-tag">Packet &amp; Log Analysis</span>
+        <span class="comp-tag">Malware Triage</span>
+        <span class="comp-tag">Vulnerability Research</span>
+        <span class="comp-tag">Metrics &amp; Dashboarding</span>
+        <span class="comp-tag">Technical Mentorship</span>
+        <span class="comp-tag">Program Development</span>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="ruled-divider fade-up"><span>// experience</span></div>
+    <div class="fade-up">
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Senior Security Engineer</div>
+          <div class="job-dates">03/2022 — Present</div>
+        </div>
+        <div class="job-company">GoDaddy</div>
+        <div class="job-split">Security Program Engineering 70% · Threat Intelligence 15% · Incident Response 10% · Threat Hunting 5%</div>
+        <ul class="job-bullets">
+          <li>Designed and own the <strong>customer credential remediation program</strong> — architected solution end-to-end, coordinated AWS infrastructure with partner engineering, integrated Recorded Future data via SSO validation, and extended to cPanel. Processed 793 inputs in 2025, rotated 16 true exposures, eliminated 302 false positive rotations, and reduced analyst time from <strong>40+ hours/month to near zero</strong>.</li>
+          <li>Built and maintain <strong>TIP → SIEM/EDR integration</strong> (ThreatStream → Splunk + SentinelOne): designed schema, configured IoC correlation and confidence scoring, established service accounts, and performs continuous source quality tuning. Delivered 1,500+ notable events to SOC; contributed to blocking millions of malicious connections (nearly half of all Force Field blocks in 2025); produced 24 true positive incidents requiring remediation.</li>
+          <li>Developed a <strong>Trust &amp; Safety intelligence workflow</strong> that replaced an existing SaaS subscription — cutting infringement notice resolution time by <strong>57%</strong> and generating <strong>$350K in annualized savings</strong> beginning 2026.</li>
+          <li>Built a novel <strong>ThreatStream-based alert triage system</strong> using threat bulletins and custom tagging to create SOC-style workflows — an approach ThreatStream's own customer success team had never seen. Processed 3,315 alerts over 8 months; escalated 109 actionable items. Later engineered automated pre-filtering that cut daily queue volume <strong>73%</strong> (52/day → 14/day).</li>
+          <li>Conducted a multi-quarter <strong>DNS intelligence research initiative</strong> analyzing ~1B packets across ~170GB of PCAPs. Built containerized Python pipeline on AWS (CDK, IAM, S3, EC2, Athena), iterating to r7i.8xlarge for multi-threaded scale. Produced risk-labeled datasets across 31M domains; delivered strategic roadmap adopted for a 2026 DNS security program.</li>
+          <li>Filled <strong>acting senior manager</strong> for one quarter — led midyear reviews, ran leadership/planning syncs, and maintained personal engineering workload (~25–30 hours of meetings/week). Selected over more senior team members.</li>
+          <li>Briefed enterprise threat assessments to <strong>CISO and 100+ InfoSec personnel</strong> at semi-annual all-hands; product used by senior leadership for security strategy decisions organization-wide.</li>
+          <li>Conducted 50+ threat hunts; escalated 15+ confirmed threats to IR; proactively initiated 7 incidents through intelligence discovery (exposed GitHub repos, credential leaks, active exposures). Supported 30+ incidents with intelligence context, root cause analysis, and containment research.</li>
+          <li>Evaluated Anomali Copilot over a 3-month PoC; rigorous feedback led Anomali to offer the SKU at no cost (<strong>$20K/year savings</strong>) and elevated GoDaddy to Anomali VIP status.</li>
+          <li>Mentored principal-level engineers on AWS CDK, IAM policy configuration, and cloud-native development — unblocking multiple projects and saving days-to-weeks of trial and error.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Intelligence &amp; Cyber Programs Manager</div>
+          <div class="job-dates">03/2015 — 10/2022</div>
+        </div>
+        <div class="job-company">Washington Army National Guard</div>
+        <div class="job-split">Program Development 70% · Training &amp; Education 10% · Executive Briefing 10% · Technical Production 10%</div>
+        <ul class="job-bullets">
+          <li>Developed core CTI and information security program foundations across multiple partner organizations: PIRs, RFI systems, collection and dissemination frameworks, and data management structures.</li>
+          <li>Led and mentored up to <strong>50 full- and part-time personnel</strong> across six teams, each coordinating with external stakeholders in federated intelligence programs.</li>
+          <li>Rebuilt the security awareness and education program for WAARNG; partnered with DCO to build redundant defensive cyber capabilities and establish policy and training pipelines.</li>
+          <li>Conducted threat research providing senior leaders analysis on most likely and most dangerous courses of action across cyber, physical, personnel, and information security domains.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Intelligence Directorate Branch Supervisor</div>
+          <div class="job-dates">12/2017 — 10/2021</div>
+        </div>
+        <div class="job-company">U.S. Cyber Command</div>
+        <div class="job-split">Program Development 40% · Personnel Management 25% · Technical Analysis 25% · Training Development 10%</div>
+        <ul class="job-bullets">
+          <li>Developed <strong>USCYBERCOM's first OSINT program</strong> — researched national policy, established processes, tooling, governance, and data quality standards. Managed publication of <strong>500+ technical OSINT products</strong> used by the USCYBERCOM Commander, NSA Director, and the President of the United States.</li>
+          <li>Built and managed a team of <strong>5 cyber intelligence analysts</strong>; coordinated APT research using MITRE ATT&amp;CK, Diamond Model, and Kill Chain frameworks; built threat hunt packages supporting Hunt Forward Operations (HFOs).</li>
+          <li>Partnered with commercial and government entities to develop automated OSINT acquisition and enrichment; built large-scale data processing workflows organizing <strong>500K+ data points</strong> into executive-ready products.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Special Security Representative, GS-0086-09</div>
+          <div class="job-dates">07/2016 — 10/2017</div>
+        </div>
+        <div class="job-company">Washington Military Department</div>
+        <ul class="job-bullets">
+          <li>Managed physical and personnel security for a sensitive DIA facility; developed threat registry, maintained ICD 705 compliance, and built data structures delegating security readiness across <strong>10,000+ personnel</strong>.</li>
+        </ul>
+      </div>
+
+    </div><!-- /.fade-up experience -->
+
+    <!-- EDUCATION -->
+    <div class="ruled-divider fade-up"><span>// education &amp; development</span></div>
+    <div class="fade-up">
+      <div class="edu-grid">
+
+        <div class="edu-item">
+          <div class="edu-degree">Master of Cybersecurity &amp; Leadership</div>
+          <div class="edu-school">University of Washington · GPA 3.85</div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-degree">Cybersecurity Engineer Graduate Certificate</div>
+          <div class="edu-school">SANS Technology Institute · 2024</div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-degree">Cloud Security Graduate Certificate</div>
+          <div class="edu-school">SANS Technology Institute · Est. 2026</div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-degree">SANS Training</div>
+          <div class="edu-school">Selected coursework</div>
+          <div class="edu-courses" style="margin-top:0.4rem;">
+            <span class="edu-tag">SEC595 · AI/ML for Cybersecurity (Est. 2026)</span>
+            <span class="edu-tag">SEC510 · Cloud Security Engineering (2025)</span>
+            <span class="edu-tag">SEC488 · Cloud Security Essentials (2024)</span>
+            <span class="edu-tag">SEC503 · Network Monitoring &amp; Threat Detection (2024)</span>
+            <span class="edu-tag">SEC504 · Hacker Tools &amp; Incident Handling (2024)</span>
+            <span class="edu-tag">SEC401 · Security Essentials (2023)</span>
+            <span class="edu-tag">FOR578 · Cyber Threat Intelligence (2022)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="ruled-divider fade-up"><span>// certifications</span></div>
+    <div class="fade-up">
+      <div class="cert-grid">
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">CISSP</div>
+            <div class="cert-issuer">ISC2 · Certified Information Systems Security Professional</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GSEC</div>
+            <div class="cert-issuer">GIAC · Security Essentials</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GCIH</div>
+            <div class="cert-issuer">GIAC · Incident Handler</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GCIA</div>
+            <div class="cert-issuer">GIAC · Intrusion Analyst</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GCTI</div>
+            <div class="cert-issuer">GIAC · Cyber Threat Intelligence</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GCSA</div>
+            <div class="cert-issuer">GIAC · Cloud Security Automation</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GPCS</div>
+            <div class="cert-issuer">GIAC · Public Cloud Security</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GCLD</div>
+            <div class="cert-issuer">GIAC · Cloud Security Essentials</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">CMMC CCP</div>
+            <div class="cert-issuer">Cybersecurity Maturity Model Certification · Certified Professional</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGS -->
+    <div class="ruled-divider fade-up"><span>// professional organizations</span></div>
+    <div class="fade-up">
+      <div class="org-list">
+        <span class="org-tag">Project Management Institute (PMI)</span>
+        <span class="org-tag">Women in Cybersecurity (WiCyS)</span>
+        <span class="org-tag">CompTIA</span>
+        <span class="org-tag">National Diversity Council</span>
+        <span class="org-tag">National Guard Association of Washington (NGAW)</span>
+      </div>
+    </div>
+
+  </div><!-- /.page-wrap -->
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+
+</body>
+</html>

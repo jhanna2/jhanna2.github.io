@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeff Hanna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0e0c0a;
+      --bg2:       #131109;
+      --bg3:       #18160f;
+      --border:    #2d2820;
+      --text:      #ccc5b5;
+      --text-dim:  #7a7060;
+      --text-faint:#3d3830;
+      --gold:      #c4993a;
+      --gold-dim:  #7d5f28;
+      --gold-glow: rgba(196,153,58,0.10);
+      --white:     #ede8dc;
+      --mono: 'DM Mono', monospace;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.9rem 1.25rem;
+      background: rgba(14,12,10,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+    .nav-logo:hover { color: var(--white); }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    @media (min-width: 600px) {
+      nav { padding: 1rem 2.5rem; }
+      .nav-links { gap: 1rem 2rem; }
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    @media (min-width: 600px) {
+      main { padding: 4rem 2rem 6rem; }
+    }
+
+    /* ── HERO ── */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-portrait-wrap { order: -1; max-width: 220px; }
+    }
+
+    .hero-portrait-wrap {
+      position: sticky;
+      top: 5rem;
+    }
+    @media (max-width: 680px) {
+      .hero-portrait-wrap { position: static; }
+    }
+    .hero-portrait {
+      width: 100%;
+      aspect-ratio: 1 / 1.08;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: sepia(12%) contrast(1.04) brightness(0.94);
+      border: 1px solid var(--border);
+      box-shadow:
+        0 0 0 4px var(--bg),
+        0 0 0 5px var(--border),
+        8px 14px 44px rgba(0,0,0,0.6);
+      transition: filter 0.4s;
+    }
+    .hero-portrait:hover {
+      filter: sepia(5%) contrast(1.05) brightness(0.98);
+    }
+    .portrait-caption {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+      margin-top: 0.75rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gold-dim);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 4.4rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 2rem;
+    }
+    h1 em {
+      font-style: italic;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .hero-body {
+      font-size: 1.05rem;
+      line-height: 1.78;
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 1.1rem;
+    }
+    .hero-body strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .hero-body:last-of-type { margin-bottom: 0; }
+
+    /* ── DIVIDER ── */
+    .ruled-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0;
+    }
+    @media (min-width: 600px) {
+      .ruled-divider { margin: 3.5rem 0; }
+    }
+    .ruled-divider::before, .ruled-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .ruled-divider span {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+    }
+
+    /* ── TWO-COL DISCIPLINES ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; gap: 1.8rem; } }
+
+    .col-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--gold-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.9rem;
+    }
+
+    .plain-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .plain-list li {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--text);
+      padding-left: 0.9rem;
+      position: relative;
+    }
+    .plain-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+      font-size: 0.7rem;
+    }
+
+    /* ── CTA ROW ── */
+    .cta-row {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .cta-link {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s, color 0.2s;
+    }
+    .cta-link:hover { color: var(--white); gap: 0.7rem; }
+
+    /* ── FEATURED SECTION ── */
+    .featured-header {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 2.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1.4rem 1.25rem 1.2rem;
+      margin-bottom: 1.2rem;
+      background: var(--bg2);
+      position: relative;
+      transition: border-color 0.25s, background 0.25s;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .project-card:hover {
+      border-color: var(--gold-dim);
+      background: var(--bg3);
+    }
+    .project-card:hover::before { opacity: 1; }
+    @media (min-width: 600px) {
+      .project-card { padding: 2rem 2rem 1.6rem; }
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .project-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--gold-dim);
+      border: 1px solid var(--gold-dim);
+      padding: 0.15rem 0.5rem;
+      border-radius: 1px;
+    }
+    .project-badge.personal { color: var(--text-dim); border-color: var(--text-faint); }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      line-height: 1.72;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      max-width: 700px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.2rem;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 1px;
+      letter-spacing: 0.03em;
+    }
+
+    .project-links { display: flex; gap: 1.5rem; }
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .proj-link:hover { color: var(--white); }
+    .proj-link.external { color: var(--text-dim); }
+    .proj-link.external:hover { color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    @media (min-width: 600px) {
+      footer { padding: 1.75rem 2.5rem; }
+    }
+    footer span {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+    footer a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--gold); }
+
+    /* ── FADE IN ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.05s; }
+    .fade-up:nth-child(2) { animation-delay: 0.15s; }
+    .fade-up:nth-child(3) { animation-delay: 0.25s; }
+    .fade-up:nth-child(4) { animation-delay: 0.35s; }
+    .fade-up:nth-child(5) { animation-delay: 0.42s; }
+    .fade-up:nth-child(6) { animation-delay: 0.50s; }
+
+    /* ── GOLD CURSOR GLOW ON CARDS ── */
+    .project-card { cursor: default; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="resume.html">Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="hero-grid fade-up">
+      <div>
+        <div class="eyebrow">security engineer &amp; threat intelligence researcher</div>
+        <h1>Jeff<br><em>Hanna.</em></h1>
+        <p class="hero-body">
+          Senior Security Engineer at <strong>GoDaddy</strong>, where I've spent the last three years building the programs, pipelines, and automation that didn't exist before I got there.
+        </p>
+        <p class="hero-body">
+          The work ranges from LLM-orchestrated threat intelligence systems and credential remediation pipelines to DNS-scale packet analysis and SOC-style triage workflows — most of it built from scratch, in a domain where the tools rarely do exactly what you need. Before GoDaddy: intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including USCYBERCOM's first OSINT program.
+        </p>
+        <p class="hero-body">
+          The through-line is the same everywhere: find the gap, build the solution, make it <strong>robust enough to outlast you</strong>.
+        </p>
+      </div>
+      <div class="hero-portrait-wrap">
+        <img class="hero-portrait" src="portrait.png" alt="Jeff Hanna" />
+        <div class="portrait-caption">always something on the bench</div>
+      </div>
+    </div>
+
+    <div class="ruled-divider fade-up"><span>disciplines &amp; tools</span></div>
+
+    <div class="two-col fade-up">
+      <div>
+        <div class="col-label">// core disciplines</div>
+        <ul class="plain-list">
+          <li>Security Program Engineering</li>
+          <li>Threat Intelligence (CTI)</li>
+          <li>Detection Engineering</li>
+          <li>LLM Orchestration &amp; Agentic Systems</li>
+          <li>Automation &amp; Integration Engineering</li>
+          <li>Threat Hunting</li>
+          <li>Incident Response</li>
+          <li>Cloud Security (AWS)</li>
+          <li>OSINT</li>
+          <li>Packet &amp; Log Analysis</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-label">// tools / ecosystems</div>
+        <ul class="plain-list">
+          <li>Python</li>
+          <li>Splunk / Elastic</li>
+          <li>SentinelOne / Defender (EDR)</li>
+          <li>SOAR / API Integration</li>
+          <li>AWS — CDK, IAM, S3, EC2, Athena, ECS</li>
+          <li>Docker</li>
+          <li>YARA / Sigma / Snort</li>
+          <li>Anomali ThreatStream</li>
+          <li>Recorded Future</li>
+          <li>MITRE ATT&amp;CK</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-row fade-up">
+      <a href="resume.html" class="cta-link">View resume →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+
+</body>
+</html>
