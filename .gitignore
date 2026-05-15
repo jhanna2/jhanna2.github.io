@@ -1,0 +1,13 @@
+# Local project notes (not published)
+references/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

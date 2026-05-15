@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kubernetes Security Homelab — Jeff Hanna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #7a7060;
+    --text-faint:#3d3830;
+    --gold:      #c4993a;
+    --gold-dim:  #7d5f28;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); border: 1px solid var(--gold-dim, #7d5f28); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .proj-summary { font-size: 1rem; line-height: 1.78; color: var(--text); margin-bottom: 1.5rem; max-width: 680px; }
+  .proj-summary strong { color: var(--white); font-weight: 500; }
+  .source-link { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.03em; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s, color 0.2s; margin-bottom: 2.5rem; }
+  .source-link:hover { color: var(--white); gap: 0.7rem; }
+  .prose h2 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 2.5rem 0 0.8rem; }
+  .prose p { font-size: 0.93rem; line-height: 1.78; color: var(--text); margin-bottom: 1rem; }
+  .prose p strong { color: var(--white); font-weight: 500; }
+  .prose ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+  .prose ul li { font-size: 0.93rem; line-height: 1.68; color: var(--text); padding-left: 1.1rem; position: relative; }
+  .prose ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dim, #7d5f28); font-family: var(--mono); font-size: 0.75rem; top: 0.1em; }
+  .prose pre { background: var(--bg2); border: 1px solid var(--border); padding: 1.2rem 1.4rem; overflow-x: auto; margin-bottom: 1.2rem; border-left: 3px solid var(--gold-dim, #7d5f28); }
+  .prose code { font-family: var(--mono); font-size: 0.8rem; color: var(--text); line-height: 1.6; }
+  .prose p code { background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; font-size: 0.78rem; color: var(--gold); }
+  .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.2rem; font-size: 0.85rem; }
+  .prose th { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--gold-dim, #7d5f28); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+  .prose td { font-size: 0.85rem; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.55rem 0.6rem; vertical-align: top; }
+  .prose tr:last-child td { border-bottom: none; }
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+  
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../index.html" class="active">Projects</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <div class="fade-up">
+      <div class="proj-eyebrow">Public</div>
+      <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
+      <h1>Kubernetes Security Homelab</h1>
+      <p class="proj-summary">A security-first k3s cluster built from scratch on bare-metal Proxmox — starting deliberately broken, hardened systematically, with every decision documented. Built to close a hands-on Kubernetes security gap and produce a public artifact demonstrating how I approach security engineering when there's no ticket, no deadline, and no one telling me what to build.</p>
+      <a href="https://github.com/jhanna2/k8s-security-homelab" class="source-link" target="_blank" rel="noopener">View Source ↗</a>
+    </div>
+    <div class="prose fade-up">
+      
+<h2>The Problem</h2>
+<p>Kubernetes security experience is easy to claim and hard to verify. Coursework covers the concepts. Cloud-managed clusters abstract the controls. What's missing is evidence of someone who actually configured RBAC from scratch, wrote admission policies, built detection rules, and documented why each decision was made — not just what was done.</p>
+<h2>Approach</h2>
+<p>The project runs in three phases, visible in git history via annotated tags.</p>
+<ul>
+  <li><strong>Phase 1 — Deliberate misconfigurations.</strong> The cluster is deployed in an intentionally broken state: containers running as root, privileged flags set, wildcard RBAC bindings, secrets in plaintext environment variables, no network policies, hostPath mounts. Every misconfiguration is documented with its exploit path, blast radius, and MITRE ATT&CK mapping. The tag <code>v0.1-insecure</code> captures this state permanently.</li>
+  <li><strong>Phase 2 — Systematic hardening.</strong> Every Phase 1 issue is fixed in a separate commit with a message explaining the security rationale. Controls implemented: RBAC, pod security standards, pod hardening, network policies, resource limits, secrets management via Vault injection, and Kyverno admission policies.</li>
+  <li><strong>Phase 3 — Runtime detection.</strong> Falco deployed with custom rules targeting realistic attack scenarios. All alerts flow to OpenSearch. Simulation scripts validate each rule fires and the alert completes the round-trip to the dashboard.</li>
+</ul>
+<h2>Architecture</h2>
+<pre><code>Type-1 hypervisor + LXCs (illustrative — not a live network map)
+├── cp-node / LXC          control plane
+├── worker-a / LXC         data + OpenSearch, CTI workloads
+├── worker-b / LXC         dashboards, app workloads
+├── gpu-adjunct / LXC      privileged inference host (when used)
+└── falco-host / LXC       kernel-level telemetry (privileged)
+
+k3s namespaces (all default-deny)
+├── security-project  ← falco-ingestor, cti-agent
+├── opensearch        ← SIEM + CMDB
+├── llm-gateway       ← LiteLLM, sanitizer, TOON, OOB inspector
+├── ai-inference      ← Ollama (KEDA scale-to-zero)
+└── homework          ← OpenWebUI, restricted access</code></pre>
+<h2>Key Design Decisions</h2>
+<ul>
+  <li><strong>Start broken on purpose.</strong> Hardening a cluster you built correctly from the start proves you can follow a checklist. Starting from a documented attack surface and fixing it systematically proves you understand the threat model. The insecure tag in git is the evidence — not a claim.</li>
+  <li><strong>One commit per control.</strong> The git log is the audit trail. Every RBAC change, every network policy, every Kyverno policy has its own commit with a message explaining the security rationale.</li>
+  <li><strong>Raw YAML for own workloads, Helm for third-party tooling.</strong> Helm earns its place for Falco, OpenSearch, and Kyverno. For workloads you own, explicit manifests are the right choice.</li>
+  <li><strong>LXC vs VMs for GPU-adjacent workloads.</strong> When full VM device passthrough is impractical, privileged LXCs with explicit device mapping can be a deliberate tradeoff at homelab scale — bounded by threat modeling and acceptance testing, not convenience alone.</li>
+  <li><strong>Document every course correction.</strong> Honest pivots documented in writing are more credible than a history that only shows things that went right.</li>
+</ul>
+<h2>Hardening Controls</h2>
+<table>
+  <tr><th>Control</th><th>Implementation</th><th>What It Closes</th></tr>
+  <tr><td>RBAC</td><td>Dedicated SA per workload, explicit verb lists, no wildcards</td><td>Lateral movement via over-provisioned tokens</td></tr>
+  <tr><td>Pod Security Standards</td><td><code>enforce: restricted</code> on all namespaces</td><td>Pod-level misconfigs at admission</td></tr>
+  <tr><td>Network Policies</td><td>Default deny all, explicit allows per service</td><td>Unrestricted pod-to-pod lateral movement</td></tr>
+  <tr><td>Kyverno</td><td>7 policies: block privileged, block :latest, require limits, restrict hostPath, restrict capabilities</td><td>Admission-time policy enforcement</td></tr>
+  <tr><td>Secrets</td><td>Vault K8s auth, External Secrets Operator injection</td><td>Plaintext credentials in manifests</td></tr>
+  <tr><td>Image pinning</td><td>Digest references, not tags</td><td>Unpinned, unreproducible builds</td></tr>
+  <tr><td>Resource limits</td><td>Requests and limits on every container</td><td>Resource exhaustion, noisy neighbor</td></tr>
+</table>
+<h2>Direction</h2>
+<p>The hardened cluster is the foundation for the rest of the homelab stack — Falco detection engineering, a CTI agent pipeline, and an LLM safety platform built on top. Each layer is a separate project with its own documentation and git history, all rooted in this cluster.</p>
+
+      <a href="../" class="back-link">← All Projects</a>
+    </div>
+  </div>
+  
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>

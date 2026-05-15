@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jeff Hanna</title>
+  <title>Home — Jeff Hanna</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -287,12 +287,17 @@
     .cta-link:hover { color: var(--white); gap: 0.7rem; }
 
     /* ── FEATURED SECTION ── */
+    .featured-section {
+      margin-top: 3.25rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
     .featured-header {
       font-family: var(--serif);
       font-size: 1.7rem;
       font-weight: 600;
       color: var(--white);
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       letter-spacing: -0.01em;
     }
 
@@ -350,7 +355,7 @@
       font-weight: 600;
       color: var(--white);
       letter-spacing: -0.01em;
-      margin-bottom: 0.75rem;
+      margin: 0 0 0.75rem;
     }
 
     .project-desc {
@@ -449,6 +454,7 @@
     <a href="index.html" class="nav-logo">&gt;_ jeffhanna</a>
     <div class="nav-links">
       <a href="index.html" class="active">Home</a>
+      <a href="projects/">Projects</a>
       <a href="resume.html">Resume</a>
       <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
       <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
@@ -460,7 +466,7 @@
     <div class="hero-grid fade-up">
       <div>
         <div class="eyebrow">security engineer &amp; threat intelligence researcher</div>
-        <h1>Jeff<br><em>Hanna.</em></h1>
+        <h1>Jeff <em>Hanna</em></h1>
         <p class="hero-body">
           Senior Security Engineer at <strong>GoDaddy</strong>, where I've spent the last three years building the programs, pipelines, and automation that didn't exist before I got there.
         </p>
@@ -469,6 +475,9 @@
         </p>
         <p class="hero-body">
           The through-line is the same everywhere: find the gap, build the solution, make it <strong>robust enough to outlast you</strong>.
+        </p>
+        <p class="hero-body">
+          The homelab projects below skew the same way: <strong>detection you can prove in-cluster</strong>, <strong>intel pipelines you can trace end-to-end</strong>, and <strong>LLM guardrails that default closed</strong> — not slide-deck security.
         </p>
       </div>
       <div class="hero-portrait-wrap">
@@ -513,8 +522,79 @@
     </div>
 
     <div class="cta-row fade-up">
+      <a href="projects/" class="cta-link">View all projects →</a>
       <a href="resume.html" class="cta-link">View resume →</a>
     </div>
+
+    <section class="featured-section fade-up" aria-labelledby="featured-heading">
+      <h2 id="featured-heading" class="featured-header">Featured Work</h2>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">Kubernetes Security Homelab</h3>
+        <p class="project-desc">A security-first k3s cluster built from scratch on bare-metal Proxmox, starting from a deliberately misconfigured baseline and hardened systematically. Documents the full attack surface before fixing it — RBAC, network policies, pod security standards, and Kyverno admission control.</p>
+        <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="projects/k8s-homelab/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">Falco Detection Engineering</h3>
+        <p class="project-desc">Custom Falco runtime detection rules for a live Kubernetes cluster targeting realistic attack scenarios: shell spawns, credential harvesting, C2 beaconing, privilege escalation, service account token theft, and multi-step recon-to-exfil sequences. Every rule is ATT&CK-mapped and validated with a simulation script that proves the alert reaches OpenSearch.</p>
+        <div class="tag-row"><span class="tag">Falco</span><span class="tag">Detection Engineering</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Go</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="projects/falco-detection/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">CTI Agent</h3>
+        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM.</p>
+        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="projects/cti-agent/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">LLM Safety Platform</h3>
+        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Go</span><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="projects/llm-safety/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">Content Sanitizer &amp; TOON Normalizer</h3>
+        <p class="project-desc">A Python library for cleaning and compacting external content before it reaches an LLM. The sanitizer removes HTML attack surface, invisible text, Unicode tricks, and embedded prompt injection. The TOON normalizer compacts the result to semantic core — around 95% token reduction on typical web content while preserving structured data like IOCs.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Security</span><span class="tag">LLM</span><span class="tag">Prompt Injection</span><span class="tag">Token Optimization</span><span class="tag">NLP</span></div>
+        <div class="project-links">
+          <a href="projects/toon-sanitizer/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">OpenSearch SIEM</h3>
+        <p class="project-desc">A self-hosted OpenSearch deployment serving as the central data platform for a homelab security stack. Ingests Falco runtime alerts, Kubernetes audit logs, CTI pipeline output, and LLM interaction flags. Maintains a live cluster asset CMDB. Ephemeral LLM conversation store with 24-hour ISM auto-purge.</p>
+        <div class="tag-row"><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Go</span><span class="tag">Detection Engineering</span></div>
+        <div class="project-links">
+          <a href="projects/opensearch-siem/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+    </section>
 
   </main>
 

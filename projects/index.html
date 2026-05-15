@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Jeff Hanna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #7a7060;
+    --text-faint:#3d3830;
+    --gold:      #c4993a;
+    --gold-dim:  #7d5f28;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+    .page-wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+    .page-eyebrow { font-family: var(--mono); font-size: 0.75rem; color: var(--gold-dim, #7d5f28); letter-spacing: 0.08em; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+    .page-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--gold-dim, #7d5f28); }
+    .page-title { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; color: var(--white); line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 0.6rem; }
+    .page-title em { font-style: italic; font-weight: 600; color: var(--gold); }
+    .page-sub { font-size: 1rem; line-height: 1.72; color: var(--text); max-width: 640px; margin-bottom: 0; }
+    .project-card { border: 1px solid var(--border); padding: 1.4rem 1.25rem 1.2rem; margin-bottom: 1rem; background: var(--bg2); position: relative; transition: border-color 0.25s, background 0.25s; overflow: hidden; }
+    @media (min-width: 600px) { .project-card { padding: 2rem 2rem 1.6rem; } }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0; transition: opacity 0.25s; }
+    .project-card:hover { border-color: var(--gold-dim, #7d5f28); background: var(--bg3); }
+    .project-card:hover::before { opacity: 1; }
+    .project-meta { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
+    .project-badge { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); border: 1px solid var(--gold-dim, #7d5f28); padding: 0.15rem 0.5rem; }
+    .project-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin-bottom: 0.75rem; }
+    .project-desc { font-size: 0.9rem; line-height: 1.72; color: var(--text); margin-bottom: 1.1rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
+    .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+    .project-links { display: flex; gap: 1.5rem; }
+    .proj-link { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+    .proj-link:hover { color: var(--white); }
+    .proj-link.ext { color: var(--text-dim); }
+    .proj-link.ext:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  
+  <nav>
+    <a href="../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Projects</a>
+      <a href="../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <div class="fade-up">
+      <div class="page-eyebrow">projects</div>
+      <h1 class="page-title">Projects</h1>
+      <p class="page-sub">Detection engineering, CTI pipelines, LLM safety, and a self-hosted SIEM — documented from a security-first Kubernetes homelab.</p>
+    </div>
+    <div class="ruled-divider fade-up"><span>// public repos</span></div>
+    <div class="fade-up">
+      
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">Kubernetes Security Homelab</div>
+        <p class="project-desc">A security-first k3s cluster built from scratch on bare-metal Proxmox, starting from a deliberately misconfigured baseline and hardened systematically. Documents the full attack surface before fixing it — RBAC, network policies, pod security standards, and Kyverno admission control. Every decision has a documented rationale. Every misconfiguration has a named exploit path and MITRE ATT&CK mapping.</p>
+        <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="k8s-homelab/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">Falco Detection Engineering</div>
+        <p class="project-desc">Custom Falco runtime detection rules for a live Kubernetes cluster targeting realistic attack scenarios: shell spawns, credential harvesting, C2 beaconing, privilege escalation, service account token theft, and multi-step recon-to-exfil sequences. Every rule is ATT&CK-mapped and validated with a simulation script that proves the alert reaches OpenSearch.</p>
+        <div class="tag-row"><span class="tag">Falco</span><span class="tag">Detection Engineering</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Go</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="falco-detection/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">CTI Agent</div>
+        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM. GPU-backed inference via Ollama with KEDA scale-to-zero when idle.</p>
+        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="cti-agent/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">LLM Safety Platform</div>
+        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses. Privacy-first: unflagged conversations auto-purge after 24 hours.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Go</span><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="llm-safety/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">Content Sanitizer & TOON Normalizer</div>
+        <p class="project-desc">A Python library for cleaning and compacting external content before it reaches an LLM. The sanitizer removes HTML attack surface, invisible text, Unicode tricks, and embedded prompt injection. The TOON normalizer compacts the result to semantic core — around 95% token reduction on typical web content while preserving structured data like IOCs. Built from real experimentation with HTML injection and image steganography.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Security</span><span class="tag">LLM</span><span class="tag">Prompt Injection</span><span class="tag">Token Optimization</span><span class="tag">NLP</span></div>
+        <div class="project-links">
+          <a href="toon-sanitizer/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">OpenSearch SIEM</div>
+        <p class="project-desc">A self-hosted OpenSearch deployment serving as the central data platform for a homelab security stack. Ingests Falco runtime alerts, Kubernetes audit logs, CTI pipeline output, and LLM interaction flags. Maintains a live cluster asset CMDB. Ephemeral LLM conversation store with 24-hour ISM auto-purge. Custom dashboards for alert triage and CTI summaries.</p>
+        <div class="tag-row"><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Go</span><span class="tag">Detection Engineering</span></div>
+        <div class="project-links">
+          <a href="opensearch-siem/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>
