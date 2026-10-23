@@ -92,3 +92,16 @@ When you have a PDF version ready:
 ## Adding projects later
 
 When you're ready to add a projects page, just drop a `projects.html` into the repo and add the nav link back. Everything is already styled and consistent — it'll slot right in.
+
+---
+
+## Adding a long-form article
+
+Articles live under `writing/<slug>/` and are generated from Markdown. Don't hand-edit the HTML; change the source and rebuild:
+
+```bash
+python3 tools/build_article.py path/to/writeup.md <slug> \
+  --tags "Tag A,Tag B" --description "One-sentence summary for search results"
+```
+
+The first `# ` heading becomes the title and the paragraph under it becomes the status line (e.g. "Draft. Jeff Hanna."). Layout and styles are in `tools/article_template.html`. Then add a card for it to `writing/index.html`.

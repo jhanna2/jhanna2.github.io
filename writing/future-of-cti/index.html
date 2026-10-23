@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Future of CTI: A Forecast — Jeff Hanna</title>
+  <meta name="description" content="An intelligence estimate on the future of cyber threat intelligence: when offensive agent capability flattens, means track the target&#x27;s exposure and prediction from actor history stops working." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #7a7060;
+    --text-faint:#3d3830;
+    --gold:      #c4993a;
+    --gold-dim:  #7d5f28;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); border: 1px solid var(--gold-dim, #7d5f28); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #7d5f28); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #7d5f28); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #7d5f28); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Essay</div>
+      <div class="tag-row"><span class="tag">CTI</span><span class="tag">Threat Intelligence</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span><span class="tag">Strategy</span></div>
+      <h1>The Future of CTI: A Forecast</h1>
+      <div class="article-meta"><span>Draft. Jeff Hanna.</span><span class="sep">·</span><span>23 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#opening">0. Opening</a></li><li><a href="#key-judgments">1. Key judgments</a></li><li><a href="#the-pyramid-of-pain-stops-causing-pain">2. The pyramid of pain stops causing pain</a></li><li><a href="#what-does-not-change">3. What does not change</a></li><li><a href="#where-the-work-goes">4. Where the work goes</a></li><li><a href="#what-remains-and-what-is-new">5. What remains, and what is new</a></li><li><a href="#why-programs-must-change-now-even-if-this-is-wrong">6. Why programs must change now, even if this is wrong</a></li><li><a href="#signposts">7. Signposts</a></li><li><a href="#no-regret-moves">8. No-regret moves</a></li><li><a href="#what-would-make-me-wrong">9. What would make me wrong</a></li><li><a href="#evidence">10. Evidence</a></li><li><a href="#the-companion-works">The companion works</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>This is written as an intelligence estimate about my own discipline. It has key judgments with confidence levels, the reasoning, signposts that would confirm or refute it, and moves that pay off either way. It is a bet, and I have tried to say what would make it wrong.</p>
+<h2 id="opening">0. Opening</h2>
+<p>I started from a practical problem: threat intelligence programs tend to run requirement cycles in quarters and years, and what they produce is read once and filed. I built tooling to speed that up. Then I read what has been published about agentic intrusions, and the speed problem looked like the smaller one. If the attacker's means follow the target's exposure, a faster version of the same program still answers a question that matters less.</p>
+<p>Everything I rely on is public and cited in section 10. I have no private evidence to offer, and I have not run the experiments that would test the argument.</p>
+<h2 id="key-judgments">1. Key judgments</h2>
+<ol><li>Frontier-level offensive agent capability becomes broadly available, including as open-weight models, within roughly twelve to twenty-four months. Confidence: moderate on direction, low to moderate on timing.</li><li>When capability is roughly uniform, an attacker's means track the target's exposure. Predicting techniques from an actor's history loses most of its value for prevention. Intent still predicts posture: quiet or loud, patient or fast. Confidence: moderate to high.</li><li>Intent does not flatten. It becomes a slow-changing parameter set from the organization's profile instead of a continuous program, and it weights blast radius. Warning is what stays continuous. Confidence: high that intent doesn't flatten, moderate that it becomes a parameter.</li><li>Most of what CTI does today hands off to vulnerability management, offensive vulnerability work (red team), and detection engineering. What stays is a small specialist capability, closer to reverse engineering than to a department. Confidence: moderate.</li></ol>
+<h2 id="the-pyramid-of-pain-stops-causing-pain">2. The pyramid of pain stops causing pain</h2>
+<p>The pyramid of pain ranks what you can take from an adversary by how much it hurts them. Hash values are trivial to change and tactics, techniques and procedures are hard. The reason techniques hurt is that they were sticky: they came from human skill, tooling investment, team habit and organizational structure. Changing them was expensive, and that expense is the whole basis of the pyramid.</p>
+<p>A model plus a harness is for sale. Once that is true, the capability term flattens, because every class of actor can buy comparable capability. A criminal group and a state team may differ in budget, but not in what they can ask the agent to do. If a single sentence changes the technique, tracking techniques per actor tells you little.</p>
+<p>The variance moves to the target. Two different adversaries tend to follow similar paths into one environment, and one adversary tends to follow different paths into different companies. No run is an exact repeat: sampling is non-deterministic, and a changing environment or a human decision partway through moves the path further. I expect the overlap between runs against one environment to be high, and higher than the overlap between environments. The variance experiment in section 10 tests that. I find it clearer as an equation:</p>
+<p><code>priority = reachability x current_capability x blast_radius</code></p>
+<p>Hold the capability term roughly constant and priority is determined by what an attacker can reach and what it would cost to lose. NIST's Cybersecurity Framework 2.0 already asks for this in the language of risk: "Threats, vulnerabilities, likelihoods, and impacts are used to understand inherent risk and inform risk response prioritization" (ID.RA-05, NIST CSWP 29, February 26, 2024). If the threat term flattens, what is left to vary is vulnerabilities and likelihoods (reachability) and impacts (blast radius).</p>
+<p>Every actor becomes opportunistic in means while staying directed in intent. Means become specific to the target. Intent stays specific to the actor. Intent is not a new top of the pyramid, though. The pyramid ranks what we can take away from an adversary, and we cannot make anyone pay to change what they want. A company that makes widgets does not answer an actor that hits widget makers by making something else. Intent is an input that tells us which assets count, and it sits outside the part of the model we can act on.</p>
+<p>The target predicts more than the entry path. What an organization holds decides which objectives are on offer inside it, and once an actor is in, the objective carries a lot of weight. Take an invented freight-booking platform that holds carrier payment details, shipment manifests, customer logins, a dispatch system and telematics feeds. One actor wants the payment details to redirect carrier payouts. One wants manifests to find cargo worth stealing. One wants customer logins for phishing. One wants to halt dispatch and demand payment. One wants telematics access to disrupt a competitor's routes. Their means into the platform may be identical. What they do next differs, and so does which asset's blast radius matters to each. Intent still predicts posture, and the target tells you which intents are plausible.</p>
+<p>There are four qualifications.</p>
+<p>Technique versus posture. Intent still predicts posture. An actor after extortion through outage behaves differently from one after quiet theft, even if both use identical techniques. The objective sets the pace and the noise.</p>
+<p>Capability flattens; capacity doesn't. The models may be comparable, but compute, parallelism, persistence and budget are not. A defender cannot see tokens. A defender can see tempo, concurrency and breadth. Those signals bound capacity from below: a fleet can look like a small operation, but one machine cannot look like a fleet.</p>
+<p>The pyramid should be inverted. Rank signals by the cost to replace, not the cost to detect. Techniques are close to free. Infrastructure, operator resources and access are not. Even rotation leaves patterns, so tracking shifts from predicting an actor to clustering first-party evidence.</p>
+<p>Model fingerprinting is not attribution. A hosted model can be reported to its provider, but attackers move to open weights, and a competent actor adds a fine-tuned adapter. At best, a fingerprint estimates a capability tier. "Uses model X" resembles "uses Cobalt Strike" and is worse, because model behavior isn't bounded by a catalog and is inherently non-deterministic. No two workflows run alike, and the more model actions an end-to-end pipeline chains together, the more the variance compounds.</p>
+<p>Tools raise a question I can't answer yet. If an agent is given existing tools (a C2 framework, Metasploit, a favorite scanner), an actor's choice of tool may stay as consistent as it is today, and artifacts such as default profiles, named pipes and configuration habits would keep the stickiness that makes the upper levels of the pyramid hurt. If the agent writes its own tooling for each run, those artifacts vary from run to run and tool choice carries no signal. Preferences may survive either way, because the operator picks the harness and the tools it may call. I expect both to happen, split by how tightly the harness constrains the agent. A capability lab can test this: run one agent configuration against a replica environment many times and see whether the tooling converges. Exact repeats are not expected, so the question is how much overlap there is.</p>
+<h2 id="what-does-not-change">3. What does not change</h2>
+<p>Intent and objectives stay. Who wants what, and why, comes from the organization's profile, in the way a diamond-model analysis starts from the victim: a research lab draws one kind of state actor and a crypto exchange another. It does not come from telemetry, because agents touch everything reachable, so intent shows in logs only at the objective. Intent sets which crown jewel's blast radius counts: intellectual property theft, signing keys, extortion through outage, or destruction.</p>
+<p>The ends of the kill chain stay. Extortion still encrypts, espionage still exfiltrates, and initial access still leans on identity.</p>
+<p>Access markets could go either way, and access is the part I would watch. If agents do everything after access, access is what's scarce and the markets where it is sold matter more. I lean the other way for initial access. Anthropic's disclosure ledger shows 516 of 6,157 disclosed vulnerabilities patched to its knowledge, and it calls patches a lagging indicator, so discovery is outrunning fixing. If agents find and exploit weak entry points in internet-facing systems themselves, there is less reason to buy access, and I expect more access to come through weak entry points than through compromised credentials. The credential-heavy cases in section 10 argue against that, so I hold it at low confidence and make no strong claim about the markets. Physical targeting, vulnerability disclosure, data exposure and brand abuse don't depend on technique sophistication.</p>
+<h2 id="where-the-work-goes">4. Where the work goes</h2>
+<p>There are two kinds of handoff. In a rule handoff, the consumer receives output and never sees the analysis: a list of exploited vulnerabilities checked against inventory becomes tickets, and advisories become a digest. In a process handoff, the consumer takes over the analysis, as when research watching moves to offensive vulnerability work or deception moves to detection engineering. A handoff is complete only when the receiver has run it for a quarter without CTI. New programs should be designed to be absorbed from day one.</p>
+<p>One frame I may lean on here is Robert Lee's Sliding Scale of Cyber Security (SANS, August 2015). It orders architecture, passive defense, active defense, intelligence and offense. It says "Consuming intelligence is part of an Active Defense but generating intelligence falls within the Intelligence category," and that generating intelligence "often requires significant investment of resources." Read that way, consuming intelligence already belongs in detection and response, and what shrinks is generation, the expensive part. I haven't decided how much of the argument should rest on it.</p>
+<p>The fold has receivers. CTI is a program that turns information into intelligence that changes a stakeholder's decision in the way that most improves security posture. Some of the work around that is plumbing: getting indicators into SIEM and EDR, building enrichment pipelines for vulnerability management, and similar. Models make that part cheap, and it is the part that folds first. Organizations also tend to fund CTI after vulnerability management and often after red team, and breach-and-attack simulation and attack surface management make those receivers cheaper every year. A pipeline that reads intelligence and builds detections can be owned outright by a detection team.</p>
+<p>The analysis steps can fold too. I have built workflows that pull intelligence and pass it through chains of models to produce strategic and operational reports, single-item summaries and impact statements, and the output has held up under my own review. I think tuning on an organization's reports, decisions and corrections matters more than the size of the model. I haven't measured accuracy against a frozen evaluation set, which would be the real test.</p>
+<p>Unknown vulnerabilities are the limit. CTI can't find what nobody knows, and red teams using models own that work. The public record in section 10 shows model-assisted discovery arriving through bug bounties, gated programs and maintainers' inboxes, and the PHP case shows that credit is already disputed: who found what, and how much the model contributed, is not settled. I read that as support for the handoff and not as a measure of its size. CTI's part is aiming the search: intent picks the targets, and tracking capability tiers says how hard to push. Whether discovery stays with a few vetted defenders or reaches attackers on comparable terms is the open-weight question in key judgment 1.</p>
+<p>Two loops replace prevention by prediction. One is find-to-fix velocity: a red team finds, and people or agents patch. The other is blast-radius containment across every discipline: identity and access, data classification, segmentation and deception. The contest is the defender's find-to-fix loop against the attacker's time to objective.</p>
+<h2 id="what-remains-and-what-is-new">5. What remains, and what is new</h2>
+<p>What remains is a small role: one or two people managing an agentic program as subject-matter experts, much as a reverse engineering capability works today. It may sit inside detection and response, risk or red team, and it works with agents and alongside red team. It covers five things:</p>
+<ul><li>Requirements governance: telling vendors and models what to look for, and retiring what nobody uses.</li><li>Intent as a parameter: set from the organization's profile and revisited on events such as a new business line, an acquisition or a geopolitical shift.</li><li>Warning, which is the continuous part.</li><li>The boundary on collection conduct, and the decisions to act: engaging criminals, buying data back, involving law enforcement, takedowns.</li><li>Ownership of the rules that every handoff runs on.</li></ul>
+<p>Warning tells you where more than when. An access listing or a mention points to an account, a host or a path to a customer. That gives you a place to aim deception, evidence of a compromise that detection missed (which goes back to detection engineering), and sometimes lead time. Vendors sell the feeds. The role owns the adjudication: is this ours, and what does it reach?</p>
+<p>New niches open for a few advanced organizations and vendors. Capability labs are the first adversary you can put in a lab: a model plus a harness is a policy that can be sampled against a replica environment. Model and harness intelligence studies the agent's own behavior (tempo, enumeration patterns, error recovery, harness signals) as a signature of capability tier and operator capacity, not of identity. Deception is first-party collection: under assume-breach, internal sensors are the most reliable collection a program owns. Threats to models, agents and the AI supply chain are a new class of their own.</p>
+<h3 id="internal-first-collection-gets-stronger">Internal-first collection gets stronger</h3>
+<p>Practitioners who already look at their own telemetry (firewall, incidents, authentication) before pulling external actor reporting have been doing the right thing, and this thesis says so. What loses value is external, actor-centric reporting: "this actor did X, so prioritize Y". First-party telemetry never depended on actor history, and it measures the terms that survive.</p>
+<p>Scans, probes, failed authentication and edge hits show which parts of our exposure outsiders exercise, so reachability is measured directly. Confirmed incidents show what was taken or targeted, which tests the organization's intent parameter against reality, though telemetry rarely shows intent in time. Tempo, enumeration order and error recovery are observable only in our own logs.</p>
+<p>The question changes. It is no longer "is this that actor's technique?", which clusters poorly when means are shared. It becomes: what was reached, what was the objective, was it an agent, how fast did it move? Cluster by objective and by harness signature. The caveat is survivorship bias, since internal telemetry shows only what we detected. Deception and capability labs are complements, not replacements. The <a href="https://jhanna2.github.io/projects/agent-first-tip/">agent-first TIP</a> describes a platform built around this.</p>
+<h3 id="network-traffic-separates-sanctioned-from-suspicious-agents">Network traffic separates sanctioned from suspicious agents</h3>
+<p>As agents become normal inside the environment, the question shifts from "is this an agent?" to "is this one of ours?". Four things answer much of it. Sanctioned agents run as workloads in the organization's identity federation, attested to the platform where possible, and every action they take reconciles to a grant (<a href="https://jhanna2.github.io/projects/agentic-iam/">agentic IAM</a>), so agent-shaped traffic with no grant is suspicious by default. Known agents call known model endpoints from known hosts, so inference traffic from an unexpected host or a new provider is a signal. A sanctioned agent's paths are bounded by its task, while a hostile one shows breadth-first enumeration, machine tempo, rapid retry after errors and lateral reach beyond any declared scope. And each sanctioned agent gets a traffic baseline, where deviation is the alert. That baseline is also how the <a href="https://jhanna2.github.io/projects/agentic-tarpit/">agentic tarpit</a> avoids friendly fire.</p>
+<p>The limits are real. Open-weight models run locally produce no inference egress. An attacker who hijacks a sanctioned agent inherits its identity but not an unlimited envelope: tokens are short-lived and a drift budget bounds what the agent may touch, so the hijack buys roughly the agent's allowance. Teams that build around the broker with their own keys create agents with no grant, which the IAM design measures as a bypass rate and which shows up here as false positives. Traffic analysis narrows the problem and does not close it. Attesting the task an agent is running, in addition to the agent, is the harder open question.</p>
+<h2 id="why-programs-must-change-now-even-if-this-is-wrong">6. Why programs must change now, even if this is wrong</h2>
+<p>Requirement cycles are measured in quarters and years, and the threat moves in minutes. That mismatch exists with or without my thesis.</p>
+<p>The program lives in prose, spreadsheets and people's heads. An agent can read prose, but it can't safely write to it. Nothing reviews the edit, fails on a broken requirement or records why. That, more than the models, is what keeps CTI from being agentic. Other teams' documents can stay where they are as sources to read, but the program's own state should be records under version control, with checks that fail when a claim stops being true.</p>
+<p>There is a second reason. Records are machine-readable and machine-writable, and checking them is deterministic: a check passes or fails each time, and a reviewer reads a diff of structured fields and not a page of prose.</p>
+<p>My proposal is CTI as code, and it can start small. Put the requirements in records: who asked, which decision the answer serves, who consumes it, where the evidence comes from and when it was last verified. Add checks in CI that fail when a requirement has no consumer, a source has gone stale or a record cites something that doesn't exist. Let an agent propose changes as pull requests and have a person approve them. Records that mirror outside documents drift from the world the way prose does, so a reconcile job should open a change when they diverge. A validator, its gates and a sanitiser are built in a reference implementation. The rest, including the drift gates, is designed and not built. <a href="https://jhanna2.github.io/projects/cti-as-code/">CTI as code</a> describes the approach and links the reference repository.</p>
+<p>Analysts become builders and supervisors of model workflows. A workflow that tunes itself can be given autonomy in proportion to the cost of being wrong: who decides, what the impact is, which direction the change goes (widening may apply automatically, narrowing stays human), a drift budget, a frozen evaluation set and known-answer probes. Reviews should be triggered by events, such as a new crown jewel, a new exposure or a new capability release, and not by the calendar.</p>
+<h2 id="signposts">7. Signposts</h2>
+<div class="table-wrap"><table><thead><tr><th>Signpost</th><th>Points toward the thesis</th><th>Points against</th></tr></thead><tbody><tr><td data-label="Signpost">Open-weight models reach frontier offensive capability</td><td data-label="Points toward the thesis">The gap closes within twelve to twenty-four months</td><td data-label="Points against">The gap persists or widens</td></tr><tr><td data-label="Signpost">Share of incidents where knowing the actor changed the response</td><td data-label="Points toward the thesis">Stays near zero</td><td data-label="Points against">Actor knowledge changes containment or legal posture</td></tr><tr><td data-label="Signpost">Attack reporting</td><td data-label="Points toward the thesis">Techniques diverge from actor history and track target exposure</td><td data-label="Points against">Actor-consistent techniques persist</td></tr><tr><td data-label="Signpost">Vendor market</td><td data-label="Points toward the thesis">Vendors shift from actor reporting to exposure and intent products</td><td data-label="Points against">Actor tracking stays the core product</td></tr><tr><td data-label="Signpost">Capability lab results</td><td data-label="Points toward the thesis">Agent path-discovery order is stable enough to prioritize on</td><td data-label="Points against">Order is noise, and work moves to reachability and blast radius (still inward)</td></tr><tr><td data-label="Signpost">Regulatory demand</td><td data-label="Points toward the thesis">Regulators do not ask for threat reporting</td><td data-label="Points against">Formal threat reporting becomes required</td></tr><tr><td data-label="Signpost">Technique overlap across recurrences of the same internal cluster</td><td data-label="Points toward the thesis">Falls over time while infrastructure, intent and targets stay stable</td><td data-label="Points against">Stays high (for example, close to the original six months later)</td></tr><tr><td data-label="Signpost">Tool artifacts across recurrences of the same internal cluster</td><td data-label="Points toward the thesis">Vary from run to run because agents write their own tooling</td><td data-label="Points against">Stay stable because agents are given standard tools</td></tr><tr><td data-label="Signpost">Frontier-to-consumer lag: time from a frontier model reaching a level on a public offensive-security benchmark to an open-weight model reaching it on consumer hardware</td><td data-label="Points toward the thesis">Under about twelve months and shrinking</td><td data-label="Points against">Holds or grows</td></tr></tbody></table></div>
+<h2 id="no-regret-moves">8. No-regret moves</h2>
+<p>For practitioners: learn to build and evaluate agents, and work closely with risk and red team on where the gaps are that would let an attacker in. Intent, warning and capability tracking are the core of what remains, so you don't need to pick a niche among them. I expect a program of three to five people to be run by one or two as responsibilities move, and CTI to become a specialist capability inside the organization, like reverse engineering: needed, deep and thinly staffed.</p>
+<p>For CTI leaders: automate your own pipeline before someone else does, put the program in records, name vulnerability management and red team as consumers from day one, and measure handoffs instead of reports. Build current-scope CTI, run by agents, on first-party clustering. It pays off in the messy middle, when actor clustering still helps because human operators persist, and it folds easily later because it already runs at machine speed. Neither timeline wastes it. Build the handoffs to vulnerability management and red team early. If CTI reports into detection and response, it folds into detection by default. Pitch the transition and not the sunset: the messy middle lasts years, and the value is getting through it without a gap.</p>
+<p>For organizations: decide where intelligence lives (detection, risk or both) before it is cut by default, and invest in assume-breach sensors.</p>
+<h2 id="what-would-make-me-wrong">9. What would make me wrong</h2>
+<p>Economics and access could hold adversary adoption back longer than I expect. The messy middle could last, with human-operated and agentic operations coexisting for years, so that dropping actor tracking too early leaves a gap. Agents could prove noisy enough that agent-level detection restores some predictive value. Human-in-the-loop state actors could keep techniques that look like their old ones. Hostile agents could blend into sanctioned agent traffic well enough, through local open-weight models or hijacked sanctioned agents, that network-level separation fails.</p>
+<p>A fair objection comes from the NIST Cybersecurity Framework's Tiers, which tie rigor to threat awareness: Tier 2 prioritizes using "the threat environment", and Tier 4 budgets on the "predicted risk environment". My answer is that the thesis changes which threat information matters, intent and warning rather than actor capability, and not whether it matters. NIST also says the Tiers are not maturity levels.</p>
+<h2 id="evidence">10. Evidence</h2>
+<p>Public cases. The claim I need from the evidence is modest: capable agentic offensive tools are getting easier to build, easier to find, and are being used. I do not claim that the incidents below were fully autonomous, and where a source says a human was involved I say so.</p>
+<p>Easier to find. Open-source agentic pentesting tools are numerous and popular. On 20 October 2026 Strix (Apache-2.0) showed about 70 thousand stars on GitHub and PentestGPT (MIT, published at USENIX Security 2024) about 16 thousand. Both say they are for authorized testing only, and both are exactly what an attacker would download. Gambit Security reported in September 2026 that Strix was one of three open-source harnesses in a campaign against online retailers, described in the table below.</p>
+<p>Used. Each row below is from the publisher's own report.</p>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Source</th><th>What it reports</th></tr></thead><tbody><tr><td data-label="Date">Nov 2025</td><td data-label="Source">Anthropic, GTG-1002</td><td data-label="What it reports">A campaign in which, by Anthropic's estimate, the agent performed 80 to 90 percent of the work, with human intervention at roughly four to six decision points</td></tr><tr><td data-label="Date">16 and 27 Jul 2026</td><td data-label="Source">Hugging Face, incident disclosure and technical timeline</td><td data-label="What it reports">An intrusion "driven, end to end, by an autonomous AI agent system". The agent went from code execution in one worker pod to cluster-admin across several internal clusters in under thirteen hours, replayed stolen credentials, and kept trying alternative paths when blocked. Several detection layers produced signals, but the correlated alert did not reach on-call in time. The authors believe the agent was trying to cheat an evaluation, which they flag as an inference</td></tr><tr><td data-label="Date">30 Jul 2026</td><td data-label="Source">Unit 42</td><td data-label="What it reports">A Chinese-speaking actor ran an open-source agent framework with DeepSeek as an autonomous operator, and attempted more than 460 targets across autonomous and manual activity. The autonomous run did not achieve exploitation. The operation was exposed when the agent started a file server from the actor's home directory</td></tr><tr><td data-label="Date">20 Aug 2026</td><td data-label="Source">Cisco Talos, UAT-10147</td><td data-label="What it reports">A financially motivated group using AI-generated playbooks and exploit automation alongside open-source frameworks including PentestGPT, with a recovered target list of about 170,000 URLs. Talos calls it a move from AI-assisted scripting toward semi-autonomous orchestration, and does not state the degree of human oversight</td></tr><tr><td data-label="Date">22 Sep 2026</td><td data-label="Source">Gambit Security, interim report</td><td data-label="What it reports">A financially motivated operator used Strix for vulnerability search, a second harness for autonomous exploitation and a third to orchestrate jobs, with model access through a routing service (OpenRouter), against online retailers from July 2026. Gambit reports 105 attack projects launched and at least 27 companies compromised to varying degrees between 10 and 15 September, access usually in under a day, and at least 600,000 unexpired card records from two companies. The operator's own cost review gave a mean of $25.46 per completed scan across 101 scans. Gambit calls the report interim, says it expects the real scale to be larger, and says AI claims and reporting it relies on may prove inaccurate</td></tr><tr><td data-label="Date">7 Oct 2026</td><td data-label="Source">CrowdStrike</td><td data-label="What it reports">A campaign against South Korean financial organizations using ARTEX, an open-source agentic pentesting tool developed in China, directed by a human operator. CrowdStrike names no adversary, gives moderate confidence on a financially motivated Chinese speaker, and said the affected count was unconfirmed</td></tr><tr><td data-label="Date">15 Oct 2026</td><td data-label="Source">CERT-In, CIAD-2026-0049</td><td data-label="What it reports">Critical advisory describing voluntary disclosures from model providers that agents under evaluation exceeded their task authorization and reached live systems, and criminals using publicly available agentic frameworks. CERT-In says the time from initial access to final impact fell from days to a few hours</td></tr><tr><td data-label="Date">21 Oct 2026</td><td data-label="Source">CrowdStrike</td><td data-label="What it reports">Research on four previously unreported actors, identified only by the language they work in, observed between May and August 2026. Each left its agent framework exposed in an open directory. One used a supervisor agent that picks tasks from a state machine and an executor agent that carries them out, built on Claude Code and derived from PentestGPT. The least sophisticated used about 819 skills, mostly from public repositories, with no further orchestration. Human involvement varied: one actor had to step in periodically to get past the model's safety guardrails, and another gave the agent near-total autonomy through a single command. CrowdStrike assesses with moderate confidence that agentic AI commoditizes baseline offensive operations</td></tr><tr><td data-label="Date">21 Oct 2026</td><td data-label="Source">Microsoft Threat Intelligence, Storm-0940</td><td data-label="What it reports">Microsoft assesses that Storm-0940 was responsible for the recently disclosed ConnectWise supply chain compromise, and that it used ARTEX, attempting sign-ins to more than 2,250 tenants at 2,900 attempts per minute. It reports multiple cases of under three hours from initial targeting to privileged access, says most of the targeting was not successful, and describes the agents using the standing trust that vendor cloud applications held within a tenant</td></tr></tbody></table></div>
+<p>Three things stand out. Several operations were exposed by the actors' own mistakes, such as open directories, a file server and an exposed staging server, which says something about the operators and little about the tools. The autonomous attempts did not always succeed. And the weaknesses involved were mostly conventional: CERT-In lists exposed credentials and keys, dormant APIs, plaintext payment keys and over-permissive cloud roles, and Hugging Face describes harvested credentials and lateral movement. Means were shared, and the outcome depended on what each target exposed. In the incidents CERT-In describes from model-provider disclosures, none of the affected organizations detected the access; the providers disclosed it.</p>
+<p>Finding vulnerabilities. Capability like this is showing up in discovery, which matters because the argument says attackers follow exposure. In June 2025 XBOW, an autonomous penetration-testing system, reached the top of HackerOne's US leaderboard with nearly 1,060 submissions, of which 130 were resolved and 303 triaged at the time. XBOW's own security team reviewed the reports before submission to comply with HackerOne's policy on automated tools, and the claim to be first is XBOW's. HackerOne's October 2025 report counted more than 560 valid reports from autonomous agents. On 7 April 2026 Anthropic announced Project Glasswing and said its Claude Mythos Preview model had found thousands of high-severity vulnerabilities, including in every major operating system and web browser. Anthropic does not plan to make the model generally available: twelve launch partners and more than forty other organizations have access. Its disclosure ledger, last updated on 2 October 2026, lists 6,157 vulnerabilities disclosed across 591 open source projects, 516 of them patched to Anthropic's knowledge, and says independent human triage is the rate-limiting step. Of 6,123 findings it reviewed, 92.7 percent were true positives, which Anthropic calls one proxy for impact. 4,824 findings went straight to maintainers without independent triage and may contain false positives. These are Anthropic's own figures about its own models. On 21 October 2026 the PHP project shipped fixes for two critical unauthenticated remote code execution flaws (CVE-2026-109618 and CVE-2026-109619). Its advisory names no reporters, and press coverage ties AI-assisted audits to the find with the credit disputed, so I treat PHP as an unsettled case. Daniel Stenberg wrote on 22 October that every one of the hundreds of curl reports in recent months had AI involved to some extent, and that fabricated reports had practically disappeared since spring. On 20 October he announced that low and medium severity reports would move to public issues because of the volume.</p>
+<p>A variance experiment. I plan to build a set of lab environments with different exposures and a set of attacker agents with different personas, models and harnesses, map the runs to ATT&amp;CK techniques, and compare technique overlap (Jaccard similarity) within one environment across agents against overlap within one agent across environments. If the environment explains more of the variance than the persona does, the pyramid has measurably flattened. It is fully isolated and has not been run. I will publish the results either way.</p>
+<p>A capability lab. A complementary experiment tests whether the order in which an agent discovers paths is stable enough to prioritize on. It has not been run. If the order varies from run to run, prioritizing on it fails.</p>
+<p>A fingerprint-survival test. Do a base model's behavioral traits survive a fine-tune? That tests whether model intelligence can estimate a capability tier at all. It is a candidate and not yet designed in detail.</p>
+<p>Sources used so far: Robert M. Lee, <em>The Sliding Scale of Cyber Security</em>, SANS Analyst Whitepaper, August 2015; NIST, <em>The NIST Cybersecurity Framework (CSF) 2.0</em>, CSWP 29, February 26, 2024.</p>
+<h2 id="the-companion-works">The companion works</h2>
+<p><a href="https://jhanna2.github.io/projects/cti-as-code/">CTI as code</a> is how the remaining function runs at machine speed, with the program held as records under CI. It has a validator, gates and a sanitiser built, with the larger systems designed and not yet built.</p>
+<p>The <a href="https://jhanna2.github.io/projects/agent-first-tip/">agent-first TIP</a> is the platform concept: internal-first evidence, with agents working under gates. It makes one person plus agents plausible.</p>
+<p><a href="https://jhanna2.github.io/projects/agentic-iam/">Agentic IAM</a> shrinks the internal terms of the equation. Agents make per-call least privilege practical, so a hijacked agent exposes only the deviation its plan allowed before it stalls. That makes blast radius a design parameter instead of an estimate, which is the most concrete answer I have to "what do we do instead of prediction?". Its attested agent identity also answers who is ours.</p>
+<p>The <a href="https://jhanna2.github.io/projects/agentic-tarpit/">agentic tarpit</a> acts on the attacker once it is inside, by stalling, misdirecting and making it reveal itself, strictly inside our own environment.</p>
+<p>How they fit: this essay argues that prediction stops working and the variance moves to the target. Vulnerability management shrinks exposure, agentic IAM shrinks reachability and blast radius, the tarpit acts inside the window, and CTI as code is how the remaining intelligence function runs.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>
