@@ -10,6 +10,7 @@
       "blurb": "Securing agents and the systems they run in: isolation, identity, injection and poisoning.",
       "series": [],
       "standalone": [
+        "most-ai-security-is-security",
         "agentic-iam",
         "agentic-tarpit"
       ]
@@ -112,6 +113,20 @@
         "AI Agents",
         "Assume Breach",
         "Active Defense"
+      ]
+    },
+    "most-ai-security-is-security": {
+      "title": "Most AI Security Is Security",
+      "url": "most-ai-security-is-security/",
+      "type": "Essay",
+      "status": "Published",
+      "summary": "Comparing the ways organizations control coding agents, the controls that reached every agent were endpoint management, network egress and identity, none of them built for AI. Most of the risk in an AI system comes down to questions security programs already know how to answer, and the AI-specific tools belong on top, for the residue.",
+      "tags": [
+        "AI Security",
+        "IAM",
+        "Network Egress",
+        "Prompt Injection",
+        "Data Poisoning"
       ]
     }
   }

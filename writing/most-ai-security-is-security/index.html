@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Most AI Security Is Security — Jeff Hanna</title>
+  <meta name="description" content="Most of the risk in an AI system comes down to questions security programs already know how to answer: identity, data access, egress, endpoints and secrets. AI-specific tools belong on top, for the residue." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
+    --gold:      #c4993a;
+    --gold-dim:  #a8803c;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Essay</div>
+      <div class="tag-row"><span class="tag">AI Security</span><span class="tag">IAM</span><span class="tag">Network Egress</span><span class="tag">Prompt Injection</span><span class="tag">Data Poisoning</span></div>
+      <h1>Most AI Security Is Security</h1>
+      <div class="article-meta"><span>Published 24 October 2026. Jeff Hanna.</span><span class="sep">·</span><span>5 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#the-questions-an-ai-system-raises">The questions an AI system raises</a></li><li><a href="#where-the-bolt-on-tools-sit">Where the bolt-on tools sit</a></li><li><a href="#why-organizations-go-the-other-way">Why organizations go the other way</a></li><li><a href="#where-ai-specific-controls-earn-their-place">Where AI-specific controls earn their place</a></li><li><a href="#how-confident-i-am">How confident I am</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>This builds on the coding-agent research in this series, which I did from vendor documentation and haven't yet tested in a lab.</p>
+<p>When I set out to compare the ways organizations try to control coding agents, I expected the AI-specific products to do most of the work: the vendor's enterprise plan, a model gateway, a prompt firewall. The comparison came out the other way. The controls that reached every agent, whichever vendor made it, were endpoint management, network egress rules and identity. None of them was built for AI. The AI-specific controls each covered one product, or one path to the model, and every one of them had a documented way around it.</p>
+<p>I now think that's the general case. Most of the risk in an AI system comes down to questions security programs already know how to answer, and the bolt-on tools sit on top of those answers rather than replacing them.</p>
+<h2 id="the-questions-an-ai-system-raises">The questions an AI system raises</h2>
+<p>Take an agent that reads a repository, calls a model and runs commands. The ways it can hurt you are these:</p>
+<ul><li>It can reach things through the identity it runs as</li><li>It can read data that nobody classified or restricted</li><li>It can send data to places the network lets it reach</li><li>It can run programs on a device whose configuration you don't control</li><li>It can use keys that sit in its environment</li></ul>
+<p>Each of those has an owner and a mature practice. Identity and access management decides what the agent's token can touch. Data classification and access policy decide whether the sensitive files are readable at all. Network segmentation and egress control decide where anything can go. Device management and endpoint detection decide what runs and record it. Secrets management decides which keys are in the environment and for how long.</p>
+<p>Prompt injection is the case people treat as new, and the impact still runs through those same questions. An injected instruction can make an agent try anything. What it achieves is bounded by what the agent's identity can reach, what data it can read, and where it can send the result. An agent whose token can read one repository, with egress only to its model vendor and the package registry, gives an injection very little to work with. An agent running as a developer with broad cloud credentials and open egress gives it everything, and no prompt filter in front of it changes that much.</p>
+<h2 id="where-the-bolt-on-tools-sit">Where the bolt-on tools sit</h2>
+<p>The AI-specific products mostly watch the conversation: prompt and response filters, model gateways with content rules, AI security posture tools that read agent configuration, data loss rules tuned for prompts. They answer one question the fundamentals can't express, which is what the text going to the model says.</p>
+<p>That question matters. It's also a narrow one. A content filter can't see the hook that ran beside the conversation or the credential the agent used, and it can't see where the data went after the model's answer came back. It makes a probabilistic judgment about text, and it can be fooled by the same kind of text it's judging.</p>
+<p>So I'd order the work. Fundamentals first, sized to the agent: a workload identity with narrow scope, data that's classified and access-controlled before an agent can reach it, egress that names its destinations, managed devices, short-lived secrets. Then the AI-specific controls, for the residue the fundamentals can't express.</p>
+<p>A useful question for any AI security vendor is what their product adds if your identity, data and network controls are already right. A good product has an answer. Many pitches assume those controls aren't right, and sell the product as a substitute for fixing them.</p>
+<h2 id="why-organizations-go-the-other-way">Why organizations go the other way</h2>
+<p>The fundamentals are slow. Narrowing identities, classifying data and segmenting networks are organizational changes with long queues, and they belong to teams that already have plenty to do. An AI security product can be bought this quarter and shows a dashboard next month. I understand the choice. I think it gets the order wrong, because the product then sits on a foundation that leaks underneath it.</p>
+<p>Vendors make this worse. You can't throw a rock right now without hitting an AI or agent security company. I can't name a new one selling packet capture. Funding follows what's new, so the sales calls, conference talks and analyst reports all point at the AI layer, and the message a security leader hears is that AI risk needs AI products.</p>
+<p>I think the older disciplines also feel close to done. Most organizations have an identity program, a data classification policy and a network design, and the people who own them would call them good enough. That's rarely true for the specific case of an agent with a broad token, but the feeling of done moves attention to the new thing.</p>
+<p>Then there's the return on effort. Every discipline has diminishing returns. A team that spends a month on a ten-year-old identity design might remove a few standing permissions, and it looks like a small win. The same month spent on AI security, where nothing existed before, produces a policy, a tool and a dashboard, and it looks like a lot of progress. The newer the area, the more visible work each hour buys. But the small win in the old design may cut more real risk than everything built in the new one, because the agent's reach runs through it.</p>
+<p>There's also a reporting effect. "We deployed an AI firewall" is a sentence leadership can repeat. "We cut the agent's token scope from the whole cloud account to one bucket" sounds like routine work, and it's the change that limits what an attacker gets.</p>
+<h2 id="where-ai-specific-controls-earn-their-place">Where AI-specific controls earn their place</h2>
+<p>Some risks have no classic precondition, and that's where I'd spend on AI-specific work.</p>
+<p>Training data poisoning is the clearest. A backdoor planted in public web text that later lands in a training set never touched your identity system or your network. Research published in October 2025 by Anthropic, the UK AI Security Institute and the Alan Turing Institute found that around 250 poisoned documents were enough to plant a simple backdoor in models from 600 million to 13 billion parameters, regardless of how much clean data they trained on. Defending against that takes data provenance, evaluation and behavior monitoring, which are AI-specific practices.</p>
+<p>Model behavior is another. A hosted model can change under you between one week and the next, and only evaluation will tell you whether it still does the job and still refuses what it should.</p>
+<p>Even there, the fundamentals come back in. The training data store needs access control and integrity checks. The weights need custody. The evaluation pipeline needs to be something an attacker can't edit.</p>
+<h2 id="how-confident-i-am">How confident I am</h2>
+<p>High for agent and application risks: identity, data, network and endpoint controls bound most of what an AI system can do, and that follows from where the system acts. Medium for the claim that organizations get the order wrong, which comes from vendor messaging and public discussion rather than any survey.</p>
+<p>What would change my mind is an attack class against deployed AI systems that succeeds with narrow identities, classified data, controlled egress and managed endpoints all in place, and that only an AI-specific tool stops. I'd expect such cases to come from the model itself (poisoning, backdoors, behavior drift) and not from the agent's surroundings.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>
