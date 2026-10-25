@@ -137,7 +137,7 @@
       "title": "The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile",
       "url": "the-workload-is-the-adversary/",
       "type": "Paper",
-      "status": "Draft",
+      "status": "Published",
       "summary": "Most security architecture assumes the workload is on your side. AI puts a possible adversary inside the boundary: agents following injected instructions, training jobs on unread data, tenants on shared accelerators. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI up to a training cluster holding model weights. Nothing built yet; a lab is testing the first four.",
       "tags": [
         "Isolation",
