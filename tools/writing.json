@@ -1,6 +1,7 @@
 {
-  "intro": "Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).",
+  "intro": "Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper, Note) or something built and tested (Lab, Project).",
   "featured": [
+    "the-workload-is-the-adversary",
     "agentic-iam",
     "future-of-cti"
   ],
@@ -10,6 +11,7 @@
       "blurb": "Securing agents and the systems they run in: isolation, identity, injection and poisoning.",
       "series": [],
       "standalone": [
+        "the-workload-is-the-adversary",
         "most-ai-security-is-security",
         "agentic-iam",
         "agentic-tarpit"
@@ -118,7 +120,7 @@
     "most-ai-security-is-security": {
       "title": "Most AI Security Is Security",
       "url": "most-ai-security-is-security/",
-      "type": "Essay",
+      "type": "Note",
       "status": "Published",
       "summary": "Comparing the ways organizations control coding agents, the controls that reached every agent were endpoint management, network egress and identity, none of them built for AI. Most of the risk in an AI system comes down to questions security programs already know how to answer, and the AI-specific tools belong on top, for the residue.",
       "tags": [
@@ -127,6 +129,21 @@
         "Network Egress",
         "Prompt Injection",
         "Data Poisoning"
+      ]
+    },
+    "the-workload-is-the-adversary": {
+      "title": "The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile",
+      "url": "the-workload-is-the-adversary/",
+      "type": "Paper",
+      "status": "Draft",
+      "summary": "Most security architecture assumes the workload is on your side. AI puts a possible adversary inside the boundary: agents following injected instructions, training jobs on unread data, tenants on shared accelerators. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI up to a training cluster holding model weights. Nothing built yet; a lab is testing the first four.",
+      "tags": [
+        "Isolation",
+        "Model Weights",
+        "AI Agents",
+        "Confidential Computing",
+        "Attestation",
+        "Reference Architecture"
       ]
     }
   }

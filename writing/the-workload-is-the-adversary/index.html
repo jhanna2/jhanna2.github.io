@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile — Jeff Hanna</title>
+  <meta name="description" content="Most security architecture assumes the workload is on your side. AI puts a possible adversary inside the boundary. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI up to a training cluster holding model weights." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
+    --gold:      #c4993a;
+    --gold-dim:  #a8803c;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Paper</div>
+      <div class="tag-row"><span class="tag">Isolation</span><span class="tag">Model Weights</span><span class="tag">AI Agents</span><span class="tag">Confidential Computing</span><span class="tag">Attestation</span><span class="tag">Reference Architecture</span></div>
+      <h1>The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile</h1>
+      <div class="article-meta"><span>Draft. Jeff Hanna.</span><span class="sep">·</span><span>12 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#why-this-matters">1. Why this matters</a></li><li><a href="#start-here-the-minimum-viable-version">2. Start here: the minimum viable version</a></li><li><a href="#the-assumption-that-breaks">3. The assumption that breaks</a></li><li><a href="#one-problem-at-two-scales">4. One problem at two scales</a></li><li><a href="#where-ai-compute-breaks-classical-assumptions">5. Where AI compute breaks classical assumptions</a></li><li><a href="#hypotheses">6. Hypotheses</a></li><li><a href="#a-reference-architecture-by-layer">7. A reference architecture, by layer</a></li><li><a href="#cost">8. Cost</a></li><li><a href="#what-is-built">9. What is built</a></li><li><a href="#what-would-change-my-mind">10. What would change my mind</a></li><li><a href="#where-it-connects">11. Where it connects</a></li><li><a href="#references">12. References</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>Early research. Nine hypotheses are written down, each with what would show it wrong. None has been tested. A lab to test the first four at small scale is being built, and results will be published here, including the ones that go against me. The coding-agent material comes from vendor documentation. The training-cluster material is study: I haven't operated a training cluster, and I'm working from public research.</p>
+<h2 id="why-this-matters">1. Why this matters</h2>
+<p>Most security architecture protects workloads from outsiders. The perimeter, the identity system and the network rules keep attackers away from the programs an organization runs, and inside, those programs are trusted to do what they were written to do.</p>
+<p>AI systems put a possible adversary inside the boundary in several ways at once. A coding agent follows instructions it read in a file someone else wrote. A training job runs code from many people and libraries over data nobody fully read. A model can carry a backdoor planted in its training data. A tenant on a shared accelerator is someone else's workload a few memory addresses away. And the asset next to these workloads, model weights, is among the most valuable files in the industry.</p>
+<p>The design question this paper asks is how to build environments that stay defensible when the workload running inside them is the attacker.</p>
+<h2 id="start-here-the-minimum-viable-version">2. Start here: the minimum viable version</h2>
+<p>If you run coding agents on code you didn't write, such as in CI on pull requests, four controls cover most of the risk:</p>
+<ul><li>Run the agent in a VM or microVM, not a container on a shared kernel</li><li>Give the job one narrowly scoped, short-lived credential with a small budget, and nothing else in its environment</li><li>Allow egress only to the model vendor and the package registry</li><li>Record process and network activity from the host, outside the agent</li></ul>
+<p>If you hold model weights, the equivalent starting point:</p>
+<ul><li>Encrypt weights and checkpoints at rest, with keys in a key management service, not on the storage nodes</li><li>Scope storage access per job, so a training job can read its dataset and write its own checkpoints and nothing else</li><li>Monitor and cap egress from any environment that can read weights</li></ul>
+<p>Everything after this section is about why those controls, what they assume, and where they stop working.</p>
+<h2 id="the-assumption-that-breaks">3. The assumption that breaks</h2>
+<p>Classical isolation rests on a few guarantees that are easy to forget because they usually hold. The operating system clears memory before giving it to another process. The kernel mediates every access to devices and the network, so host policy sees everything. The workload's own logs describe what it did. Code that came from inside the organization was written to do the organization's work.</p>
+<p>Each of these weakens for AI workloads:</p>
+<ul><li><strong>Memory isn't always cleared.</strong> On some accelerators, it wasn't (section 5).</li><li><strong>The kernel isn't always in the path.</strong> High-speed fabrics move data between devices without it (section 5).</li><li><strong>The workload's logs can lie.</strong> A Claude Code mod runs inside the agent's process and can rewrite prompts before they leave and rewrite the local transcript afterward. A compromised training job controls its own logs.</li><li><strong>Inside code follows outside instructions.</strong> An agent's behavior is set partly by text in the repository it's working on, written by whoever committed it.</li></ul>
+<p>So the design rule is to place every boundary and every source of evidence at a layer the workload can't reach.</p>
+<h2 id="one-problem-at-two-scales">4. One problem at two scales</h2>
+<h3 id="the-small-case-a-coding-agent-in-ci">The small case: a coding agent in CI</h3>
+<p>A CI job runs a coding agent over a pull request. The pull request's author wrote the agent's configuration: hooks that run shell commands, MCP servers that start as local processes, instruction files that steer the model. In Claude Code's headless mode (<code>claude -p</code> and the Agent SDK), the workspace trust dialog never appears, and according to the permissions documentation the repository's hooks, environment block, helper commands and project MCP servers apply without it. The runner's secrets are in the environment those processes start in. The workload, meaning the agent plus everything the repository told it to do, is under the attacker's control and running inside the boundary with real credentials.</p>
+<p>The post <a href="https://jhanna2.github.io/writing/headless-is-the-hard-case/">Headless is the hard case</a> covers the Claude Code details.</p>
+<h3 id="the-large-case-a-training-cluster">The large case: a training cluster</h3>
+<p>A frontier training run is a workload spread over thousands of accelerators, connected by high-speed interconnects, reading from parallel storage, placed by a scheduler. Its code is the organization's own plus open-source libraries plus their dependencies. Its data is too large to read. Its output, and every checkpoint along the way, is a copy of the weights.</p>
+<p>RAND's 2024 report <em>Securing AI Model Weights</em> frames the threat. It lists 38 attack vectors on frontier model weights and defines five security levels, from SL1, which stops opportunistic attackers, up to SL5, intended against the most capable state operations. The SL5 Task Force, a separate effort, says current practice at frontier AI organizations doesn't reach SL5. I'm still reading the RAND report in full, so I use it here only for that frame: the threat to weights includes insiders and the workloads already running next to them.</p>
+<p>The two cases share a shape. Untrusted instructions or code run inside the boundary, next to something valuable, with credentials the environment gave them. The difference is the value of the asset and the size of the attacker it draws.</p>
+<h2 id="where-ai-compute-breaks-classical-assumptions">5. Where AI compute breaks classical assumptions</h2>
+<p>These are the places I've found, from public research and vendor material, where the components of an AI cluster break an assumption that isolation designs usually make. This section is study notes, and I expect people who work closer to the hardware to correct parts of it.</p>
+<p><strong>Accelerator memory.</strong> In January 2024 Trail of Bits published LeftoverLocals (CVE-2023-4969). On affected Apple, AMD, Qualcomm and Imagination GPUs, GPU local memory wasn't cleared between programs, so one process could read what another left behind. Their proof of concept recovered about 181 MB per query from another user's LLM session (a 7B model in llama.cpp on an AMD Radeon RX 7900 XT). AMD's mitigation was an operating mode an administrator has to enable, and Trail of Bits noted that a full fix needs changes to GPU kernel code. A tenant boundary that relied on the operating system's memory guarantees didn't have them on the accelerator. Device isolation on the host also depends on the IOMMU remapping device memory access. A host without one can't isolate devices between guests at all.</p>
+<p><strong>Interconnects.</strong> RDMA fabrics such as InfiniBand and RoCE move data directly between machines' memory, and GPUDirect RDMA lets a network card read and write GPU memory directly. The data path bypasses the host kernel's network stack. My understanding is that host firewalls and kernel-level network telemetry don't see that traffic, and isolation has to come from the fabric itself, such as InfiniBand partitions set by the subnet manager. This is the claim in this paper I'm least sure of, and the lab can only test a software version of it.</p>
+<p><strong>Schedulers.</strong> Cluster schedulers such as Slurm run a job as the user who submitted it, on nodes shared across jobs over time, with shared filesystems governed by ordinary file permissions. Slurm's usual authentication, MUNGE, uses a key shared across the cluster. The scheduler decides placement, and placement decides which jobs share a node, a fabric partition and a filesystem. In Kubernetes, pods on a node share its kernel unless a sandboxed runtime is used.</p>
+<p><strong>Checkpoint storage.</strong> Training writes checkpoints often, and each one is close to a full copy of the weights, usually with optimizer state. They sit on parallel storage that many jobs and people can reach. My inference is that custody tends to focus on the final weights and the serving path, while checkpoints get the access model of the training storage. That's a guess, and it's one of the hypotheses below.</p>
+<p><strong>Data.</strong> Research published in October 2025 by Anthropic, the UK AI Security Institute and the Alan Turing Institute found that around 250 poisoned documents planted a backdoor in models from 600 million to 13 billion parameters, whatever the size of the clean data. The backdoor they tested was narrow and low-risk, and the finding is about how little data it takes. Training data is part of the workload, and it can be hostile in the same way the code can.</p>
+<h2 id="hypotheses">6. Hypotheses</h2>
+<p>Each hypothesis has a falsifier. The first four can be tested at small scale in the lab. The rest need hardware, practitioners, or both.</p>
+<p><strong>H1. A boundary with its own kernel stops what container hardening misses.</strong> For hostile agent workloads, a VM or microVM boundary stops escape and exfiltration attempts that a container with seccomp and Landlock doesn't, at overhead acceptable for CI. <em>Wrong if</em> a hardened container or gVisor stops every tested attempt equally, or the VM overhead makes teams route around it.</p>
+<p><strong>H2. Telemetry from below sees what the workload's own record misses.</strong> Host-level eBPF telemetry records agent side-channel actions (a hook's outbound connection, an MCP server's file reads) that the agent's own telemetry and the vendor's server-side transcripts don't show. <em>Wrong if</em> the agent's own record shows everything host telemetry shows, in the lab tests.</p>
+<p><strong>H3. Narrow identity and egress bound an injected agent more than a content filter does.</strong> With a narrowly scoped credential and an egress allowlist, injected instructions achieve materially less than with a broad credential behind a prompt filter. <em>Wrong if</em> exfiltration success in the lab is similar under both setups.</p>
+<p><strong>H4. Attested key release turns custody into a deterministic decision.</strong> Encrypting weights at rest, with the key released only to an environment whose boot chain and image have been measured and checked, makes copies stolen from storage useless and replaces file permissions with a cryptographic check. <em>Wrong if</em> attestation failures and operational burden lead operators to bypass it, or if key exposure in memory after release undoes the benefit in practice.</p>
+<p><strong>H5. Checkpoints are the weak copy.</strong> Checkpoints get weaker custody than final weights while holding nearly the same value. <em>Wrong if</em> practitioners report checkpoints are covered by the same controls as final weights as a matter of course.</p>
+<p><strong>H6. Egress sized to the asset makes theft slow enough to catch.</strong> Egress caps and monitoring on environments that can read weights make moving a full copy out take long enough to detect and stop. <em>Wrong if</em> exfiltration can be split across enough paths, or slowed enough, to stay under detection, or if legitimate traffic such as checkpoint sync and dataset pulls is too large to cap.</p>
+<p><strong>H7. Accelerator memory has to be verified, not assumed.</strong> Tenant isolation on shared accelerators needs per-device verification of memory clearing and partitioning. <em>Wrong if</em> current data-center accelerators guarantee clearing between tenants and that guarantee has been independently verified.</p>
+<p><strong>H8. Kernel-bypass fabrics escape host network controls.</strong> RDMA and GPUDirect traffic is invisible to host network policy and telemetry, so fabric partitions and fabric-level telemetry are required for isolation. <em>Wrong if</em> host-level tooling sees and can block that traffic on real hardware.</p>
+<p><strong>H9. Data provenance catches what behavior evaluation misses.</strong> Dataset diffing and provenance records detect inserted poisoned data that evaluation on a fixed task set doesn't. <em>Wrong if</em> the drift lab shows evaluation catching narrow backdoors reliably. The <a href="https://jhanna2.github.io/writing/drift-is-the-alarm/">drift paper</a> covers the test.</p>
+<h2 id="a-reference-architecture-by-layer">7. A reference architecture, by layer</h2>
+<p>The principle at each layer is the same: the boundary and the evidence sit below anything the workload can reach.</p>
+<div class="table-wrap"><table><thead><tr><th>Layer</th><th>Boundary</th><th>What it assumes</th><th>Evidence from below</th></tr></thead><tbody><tr><td data-label="Layer">Hardware and firmware</td><td data-label="Boundary">Measured boot, firmware integrity, confidential computing where available</td><td data-label="What it assumes">The root of trust and firmware aren't already compromised</td><td data-label="Evidence from below">TPM measurements and attestation reports, checked by a verifier the workload can't reach</td></tr><tr><td data-label="Layer">Hypervisor</td><td data-label="Boundary">VM or microVM per hostile workload</td><td data-label="What it assumes">Hypervisor escapes are rarer than kernel escapes</td><td data-label="Evidence from below">Hypervisor and host logs</td></tr><tr><td data-label="Layer">Kernel</td><td data-label="Boundary">Per-workload kernel inside the VM; seccomp, Landlock and LSM policy as a second layer</td><td data-label="What it assumes">The guest kernel can fail; the VM is the real boundary</td><td data-label="Evidence from below">eBPF on the host, outside the guest</td></tr><tr><td data-label="Layer">Container</td><td data-label="Boundary">Image and admission policy (approved registry, no privileged workloads)</td><td data-label="What it assumes">Containers are packaging, not a boundary for hostile code</td><td data-label="Evidence from below">Admission and runtime logs</td></tr><tr><td data-label="Layer">Accelerator</td><td data-label="Boundary">Dedicated devices per tenant, or verified partitioning and memory clearing</td><td data-label="What it assumes">Device memory isn't cleared unless verified (H7)</td><td data-label="Evidence from below">Device and driver telemetry where it exists</td></tr><tr><td data-label="Layer">Fabric</td><td data-label="Boundary">Partitions per tenant or job, set by the fabric manager</td><td data-label="What it assumes">Host network controls don't see RDMA traffic (H8)</td><td data-label="Evidence from below">Fabric manager and switch telemetry</td></tr><tr><td data-label="Layer">Network</td><td data-label="Boundary">Egress allowlist; caps sized to the asset (H6)</td><td data-label="What it assumes">Anything not named is hostile</td><td data-label="Evidence from below">Proxy, DNS and flow logs</td></tr><tr><td data-label="Layer">Identity</td><td data-label="Boundary">Short-lived, per-job credentials; keys released on attestation (H4)</td><td data-label="What it assumes">A compromised job holds only its own key, briefly</td><td data-label="Evidence from below">Identity provider and key service logs</td></tr><tr><td data-label="Layer">Storage</td><td data-label="Boundary">Per-job access; checkpoints under weights custody (H5)</td><td data-label="What it assumes">Every checkpoint is a copy of the asset</td><td data-label="Evidence from below">Storage system's own access logs</td></tr><tr><td data-label="Layer">Data</td><td data-label="Boundary">Provenance and dataset diffing (H9)</td><td data-label="What it assumes">Data can be hostile</td><td data-label="Evidence from below">Dataset version history</td></tr><tr><td data-label="Layer">Physical</td><td data-label="Boundary">Access control to rooms and racks holding accelerators and storage</td><td data-label="What it assumes">Physical access defeats most of the above</td><td data-label="Evidence from below">Badge and camera records</td></tr></tbody></table></div>
+<p>The table is a design, not a finished architecture. Each row needs a specific product or mechanism chosen against an organization's hardware, and the hypotheses above say which rows I'm least sure of.</p>
+<h2 id="cost">8. Cost</h2>
+<p>The VM boundary costs startup time and memory per job. For CI agents that's small. For training jobs, where the job already owns whole machines, the boundary is the machine and the question becomes what's shared between machines: fabric, storage and scheduler.</p>
+<p>Attested key release adds a verifier, a key service in the critical path of every job start, and a failure mode: if attestation breaks, jobs don't start. That's the right failure mode for custody and the wrong one for a team with a deadline, so the operational path for attestation failures has to be designed as carefully as the happy path.</p>
+<p>Egress caps conflict with legitimate bulk transfer. Checkpoint replication, dataset ingest and model distribution all move large amounts of data, and each needs its own named path.</p>
+<p>Per-job storage access and per-tenant fabric partitions add scheduler complexity. The scheduler has to know about security boundaries, which schedulers built for throughput weren't designed for.</p>
+<h2 id="what-is-built">9. What is built</h2>
+<p>Nothing yet. A home lab is being set up to test H1 to H4 at small scale: coding agents run headless in VMs, microVMs and gVisor, under kernel-level policy, against malicious test repositories, with an attacker server on an isolated network and host-level eBPF telemetry. A second phase encrypts a small model's weights with a key released only to a node that passes measured-boot attestation. A software RDMA pair will show how far host tooling sees RDMA traffic in software, though that won't settle H8, because software RDMA runs through the kernel and hardware RDMA doesn't.</p>
+<p>H5 to H8 can't be tested in a home lab. They need data-center hardware or people who operate it, and I'd welcome correction from either.</p>
+<h2 id="what-would-change-my-mind">10. What would change my mind</h2>
+<p>The overall argument is wrong if environments that treat workloads as trusted, with good perimeter and identity controls, turn out to hold up against hostile AI workloads in practice. For coding agents, that would look like headless runs on untrusted repositories causing no real incidents even without VM boundaries. For training clusters, it would look like weights custody failures coming almost entirely from outside the cluster rather than from jobs, insiders or shared infrastructure.</p>
+<p>Individual hypotheses each have their own falsifier above. I expect H6 (egress sizing) and H4 (attested key release) to draw the strongest arguments from people who run these systems, because both put security in the path of throughput.</p>
+<h2 id="where-it-connects">11. Where it connects</h2>
+<ul><li><a href="https://jhanna2.github.io/writing/agentic-iam/">Agentic IAM</a> covers the identity side in depth: just-in-time credentials, capability tokens and attested agent identity</li><li><a href="https://jhanna2.github.io/writing/agentic-tarpit/">Tarpitting agentic attacks</a> covers what to do once a hostile agent is inside: slow it, misdirect it, measure time to objective</li><li><a href="https://jhanna2.github.io/writing/most-ai-security-is-security/">Most AI security is security</a> is the argument that the fundamentals bound most of this risk</li><li><a href="https://jhanna2.github.io/writing/drift-is-the-alarm/">Drift is the alarm</a> covers the data side and the H9 test</li></ul>
+<h2 id="references">12. References</h2>
+<ul><li>RAND Corporation, <em>Securing AI Model Weights: Preventing Theft and Misuse of Frontier Models</em> (2024). <a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">https://www.rand.org/pubs/research_reports/RRA2849-1.html</a></li><li>SL5 Task Force. <a href="https://securityandtechnology.org/sl5/">https://securityandtechnology.org/sl5/</a> (opened 2026-10-24)</li><li>Trail of Bits, "LeftoverLocals: Listening to LLM responses through leaked GPU local memory" (2024-01-16). <a href="https://blog.trailofbits.com/2024/01/16/leftoverlocals-listening-to-llm-responses-through-leaked-gpu-local-memory/">https://blog.trailofbits.com/2024/01/16/leftoverlocals-listening-to-llm-responses-through-leaked-gpu-local-memory/</a></li><li>CERT/CC, VU#446598. <a href="https://kb.cert.org/vuls/id/446598">https://kb.cert.org/vuls/id/446598</a></li><li>AMD, GPU Memory Leaks bulletin (AMD-SB-6010). <a href="https://www.amd.com/en/resources/product-security/bulletin/amd-sb-6010.html">https://www.amd.com/en/resources/product-security/bulletin/amd-sb-6010.html</a></li><li>Anthropic, UK AI Security Institute and Alan Turing Institute, "A small number of samples can poison LLMs of any size" (2025-10-09). <a href="https://www.anthropic.com/research/small-samples-poison">https://www.anthropic.com/research/small-samples-poison</a></li><li>Claude Code documentation: permissions and headless mode. <a href="https://code.claude.com/docs/en/permissions">https://code.claude.com/docs/en/permissions</a> (checked 2026-10-19)</li></ul>
+<p>TODO: add references for InfiniBand partitions, GPUDirect RDMA and Slurm authentication once those study notes are done.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>

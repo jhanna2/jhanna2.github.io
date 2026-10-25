@@ -2,15 +2,17 @@
 """Build a long-form article page for /writing/<slug>/ from a Markdown source.
 
 Usage:
-  python3 tools/build_article.py SOURCE.md SLUG [--type Essay|Paper|Lab] [--tags "A,B,C"] [--description "..."]
+  python3 tools/build_article.py SOURCE.md SLUG [--type Essay|Paper|Note|Lab] [--tags "A,B,C"] [--description "..."]
 
 The source keeps its own title (the first "# " heading) and status line (the
 first paragraph after it, e.g. "Draft. Jeff Hanna."). Edit the source and
 rebuild; don't hand-edit the generated HTML.
 
 Supported Markdown: #/##/### headings, paragraphs, ordered and unordered lists
-(with wrapped continuation lines), pipe tables, `code`, [links](url), *em* and
-**strong**. That covers the essays; extend here if a new piece needs more.
+(with wrapped continuation lines), pipe tables, `code`, [links](url), bare
+https:// URLs, *em* and **strong**. A "## Contents" section in the source is
+dropped, since the page builds its own contents box. That covers the essays;
+extend here if a new piece needs more.
 """
 import argparse
 import html
@@ -28,6 +30,14 @@ def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
+def autolink(m):
+    url = m.group(0)
+    trail = re.search(r"[.,;:)]+$", url)
+    trail = trail.group(0) if trail else ""
+    url = url[: len(url) - len(trail)]
+    return f'<a href="{url}">{url}</a>{trail}'
+
+
 def inline(text):
     # Pull code spans out first so nothing inside them is formatted.
     codes = []
@@ -43,6 +53,7 @@ def inline(text):
         lambda m: f'<a href="{html.escape(m.group(2))}">{m.group(1)}</a>',
         text,
     )
+    text = re.sub(r'(?<![">])https?://[^\s<]+', autolink, text)
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", text)
     return re.sub(
@@ -68,6 +79,11 @@ def convert(lines):
             continue
 
         m = re.match(r"^(#{2,3})\s+(.*)$", s)
+        if m and m.group(2).strip().lower() == "contents":
+            i += 1
+            while i < n and not lines[i].startswith("## "):
+                i += 1
+            continue
         if m:
             level = len(m.group(1))
             text = inline(m.group(2))

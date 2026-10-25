@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Writing — Jeff Hanna</title>
-  <meta name="description" content="Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project)." />
+  <meta name="description" content="Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper, Note) or something built and tested (Lab, Project)." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -141,10 +141,17 @@
     <div class="fade-up">
       <div class="page-eyebrow">writing</div>
       <h1 class="page-title">Writing</h1>
-      <p class="page-sub intro-sub">Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).</p>
+      <p class="page-sub intro-sub">Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper, Note) or something built and tested (Lab, Project).</p>
     </div>
     <div class="ruled-divider fade-up"><span>// featured</span></div>
     <div class="fade-up">
+      <div class="project-card featured-card">
+        <div class="project-meta"><span class="project-badge">Draft</span><span class="project-badge type">Paper</span></div>
+        <div class="project-title">The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile</div>
+        <p class="project-desc">Most security architecture assumes the workload is on your side. AI puts a possible adversary inside the boundary: agents following injected instructions, training jobs on unread data, tenants on shared accelerators. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI up to a training cluster holding model weights. Nothing built yet; a lab is testing the first four.</p>
+        <div class="tag-row"><span class="tag">Isolation</span><span class="tag">Model Weights</span><span class="tag">AI Agents</span><span class="tag">Confidential Computing</span><span class="tag">Attestation</span><span class="tag">Reference Architecture</span></div>
+        <div class="project-links"><a href="the-workload-is-the-adversary/" class="proj-link">Read →</a></div>
+      </div>
       <div class="project-card featured-card">
         <div class="project-meta"><span class="project-badge">Published</span><span class="project-badge type">Paper</span></div>
         <div class="project-title">Agentic IAM: Designing Blast Radius for AI Agents</div>
@@ -166,8 +173,13 @@
       <p class="track-blurb">Securing agents and the systems they run in: isolation, identity, injection and poisoning.</p>
       <ul class="entry-list unnumbered">
         <li class="entry"><div>
+          <a href="the-workload-is-the-adversary/" class="entry-title">The Workload Is the Adversary: Isolation for AI Systems When the Thing Inside Is Hostile</a>
+          <div class="entry-meta"><span class="project-badge">Draft</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">Most security architecture assumes the workload is on your side. AI puts a possible adversary inside the boundary: agents following injected instructions, training jobs on unread data, tenants on shared accelerators. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI up to a training cluster holding model weights. Nothing built yet; a lab is testing the first four.</p>
+        </div></li>
+        <li class="entry"><div>
           <a href="most-ai-security-is-security/" class="entry-title">Most AI Security Is Security</a>
-          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
+          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Note</span></div>
           <p class="entry-desc">Comparing the ways organizations control coding agents, the controls that reached every agent were endpoint management, network egress and identity, none of them built for AI. Most of the risk in an AI system comes down to questions security programs already know how to answer, and the AI-specific tools belong on top, for the residue.</p>
         </div></li>
         <li class="entry"><div>
