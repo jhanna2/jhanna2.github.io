@@ -50,10 +50,10 @@
       ]
     },
     "detection-priority": {
-      "title": "Prioritizing Detections When Any Technique Is Possible",
+      "title": "After the Heat Map: Prioritizing Detections When Any Technique Is Possible",
       "url": "detection-priority/",
       "type": "Essay",
-      "status": "Draft",
+      "status": "Published",
       "summary": "Ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage.",
       "tags": [
         "Detection Engineering",
