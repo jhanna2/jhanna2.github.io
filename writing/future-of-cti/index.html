@@ -16,10 +16,10 @@
     --bg3:       #18160f;
     --border:    #2d2820;
     --text:      #ccc5b5;
-    --text-dim:  #7a7060;
-    --text-faint:#3d3830;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
     --gold:      #c4993a;
-    --gold-dim:  #7d5f28;
+    --gold-dim:  #a8803c;
     --white:     #ede8dc;
     --mono: 'DM Mono', monospace;
     --serif: 'Playfair Display', Georgia, serif;
@@ -83,7 +83,7 @@
 
   .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
   @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
-  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); border: 1px solid var(--gold-dim, #7d5f28); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
   .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
   h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
@@ -107,16 +107,16 @@
   .article a:hover { color: var(--white); }
   .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
   .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
-  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #7d5f28); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
   .article ol { counter-reset: item; }
   .article ol li { counter-increment: item; }
   .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
   .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
-  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #7d5f28); text-align: center; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
 
   .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
   .article table { width: 100%; border-collapse: collapse; }
-  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #7d5f28); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
   .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
   .article tr:last-child td { border-bottom: none; }
   .article td:first-child { color: var(--white); }
@@ -128,7 +128,7 @@
     .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
     .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
-    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); margin-bottom: 0.1rem; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
   }
 
   .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }

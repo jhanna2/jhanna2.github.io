@@ -16,10 +16,10 @@
     --bg3:       #18160f;
     --border:    #2d2820;
     --text:      #ccc5b5;
-    --text-dim:  #7a7060;
-    --text-faint:#3d3830;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
     --gold:      #c4993a;
-    --gold-dim:  #7d5f28;
+    --gold-dim:  #a8803c;
     --white:     #ede8dc;
     --mono: 'DM Mono', monospace;
     --serif: 'Playfair Display', Georgia, serif;
@@ -83,18 +83,18 @@
 
     .page-wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
     @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
-    .page-eyebrow { font-family: var(--mono); font-size: 0.75rem; color: var(--gold-dim, #7d5f28); letter-spacing: 0.08em; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
-    .page-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--gold-dim, #7d5f28); }
+    .page-eyebrow { font-family: var(--mono); font-size: 0.75rem; color: var(--gold-dim, #a8803c); letter-spacing: 0.08em; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+    .page-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--gold-dim, #a8803c); }
     .page-title { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; color: var(--white); line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 0.6rem; }
     .page-title em { font-style: italic; font-weight: 600; color: var(--gold); }
     .page-sub { font-size: 1rem; line-height: 1.72; color: var(--text); max-width: 640px; margin-bottom: 0; }
     .project-card { border: 1px solid var(--border); padding: 1.4rem 1.25rem 1.2rem; margin-bottom: 1rem; background: var(--bg2); position: relative; transition: border-color 0.25s, background 0.25s; overflow: hidden; }
     @media (min-width: 600px) { .project-card { padding: 2rem 2rem 1.6rem; } }
     .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0; transition: opacity 0.25s; }
-    .project-card:hover { border-color: var(--gold-dim, #7d5f28); background: var(--bg3); }
+    .project-card:hover { border-color: var(--gold-dim, #a8803c); background: var(--bg3); }
     .project-card:hover::before { opacity: 1; }
     .project-meta { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; }
-    .project-badge { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #7d5f28); border: 1px solid var(--gold-dim, #7d5f28); padding: 0.15rem 0.5rem; }
+    .project-badge { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; }
     .project-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin-bottom: 0.75rem; }
     .project-desc { font-size: 0.9rem; line-height: 1.72; color: var(--text); margin-bottom: 1.1rem; }
     .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
