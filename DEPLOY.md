@@ -104,4 +104,6 @@ python3 tools/build_article.py path/to/writeup.md <slug> \
   --tags "Tag A,Tag B" --description "One-sentence summary for search results"
 ```
 
-The first `# ` heading becomes the title and the paragraph under it becomes the status line (e.g. "Draft. Jeff Hanna."). Layout and styles are in `tools/article_template.html`. Then add a card for it to `writing/index.html`.
+The first `# ` heading becomes the title and the paragraph under it becomes the status line (e.g. "Draft. Jeff Hanna."). Layout and styles are in `tools/article_template.html`.
+
+Then list it on the Writing page: add the piece to `tools/writing.json` (under `pieces`, and in a track's `series` or `standalone` list, or in `featured`) and run `python3 tools/build_writing_index.py`. A track with no pieces stays hidden. `/writing/` is for anything written; `/projects/` is for work with code or a repo.

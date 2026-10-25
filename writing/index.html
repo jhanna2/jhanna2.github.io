@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Writing — Jeff Hanna</title>
+  <meta name="description" content="Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project)." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -104,6 +105,23 @@
     .proj-link:hover { color: var(--white); }
     .proj-link.ext { color: var(--text-dim); }
     .proj-link.ext:hover { color: var(--text); }
+    .intro-sub { margin-bottom: 0.5rem; }
+    .featured-card { border-left: 3px solid var(--gold); }
+    .featured-card .project-title { font-size: 1.5rem; }
+    .track { margin-bottom: 1rem; }
+    .track-name { font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+    .track-blurb { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 1.4rem; }
+    .series-label { font-family: var(--mono); font-size: 0.7rem; color: var(--gold-dim); letter-spacing: 0.08em; margin: 0 0 0.6rem; }
+    .entry-list { list-style: none; border-top: 1px solid var(--border); margin-bottom: 1.6rem; }
+    .entry { display: grid; grid-template-columns: 2rem 1fr; gap: 0.2rem 0.6rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .entry-num { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); padding-top: 0.2rem; }
+    .entry-list.unnumbered .entry { grid-template-columns: 1fr; }
+    .entry-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--white); text-decoration: none; transition: color 0.2s; }
+    a.entry-title:hover { color: var(--gold); }
+    .entry-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.35rem 0 0.4rem; }
+    .entry-desc { font-size: 0.88rem; line-height: 1.65; color: var(--text); }
+    .entry.pending .entry-title, .entry.pending .entry-desc { color: var(--text-dim); }
+    .project-badge.type { color: var(--text-dim); border-color: var(--border); }
   </style>
 </head>
 <body>
@@ -123,23 +141,56 @@
     <div class="fade-up">
       <div class="page-eyebrow">writing</div>
       <h1 class="page-title">Writing</h1>
-      <p class="page-sub">Long-form essays on threat intelligence and security work.</p>
+      <p class="page-sub intro-sub">Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).</p>
     </div>
-    <div class="ruled-divider fade-up"><span>// essays</span></div>
+    <div class="ruled-divider fade-up"><span>// featured</span></div>
     <div class="fade-up">
-
-      <div class="project-card">
-        <div class="project-meta"><span class="project-badge">Published</span></div>
+      <div class="project-card featured-card">
+        <div class="project-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
         <div class="project-title">The Future of CTI: A Forecast</div>
-        <p class="project-desc">When capability stops varying between attackers, an attacker's means track the target's exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence: what hands off to other teams, what stays, and what to build now.</p>
-        <div class="tag-row"><span class="tag">CTI</span><span class="tag">Threat Intelligence</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span><span class="tag">Strategy</span></div>
-        <div class="project-links">
-          <a href="future-of-cti/" class="proj-link">Read →</a>
-          <a href="../projects/future-of-cti/" class="proj-link ext">Summary</a>
-        </div>
+        <p class="project-desc">When capability stops varying between attackers, an attacker&#x27;s means track the target&#x27;s exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence: what hands off to other teams, what stays, and what to build now.</p>
+        <div class="tag-row"><span class="tag">Threat Intelligence</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span><span class="tag">Strategy</span></div>
+        <div class="project-links"><a href="future-of-cti/" class="proj-link">Read →</a></div>
       </div>
-
     </div>
+    <div class="ruled-divider fade-up"><span>// threat intelligence</span></div>
+    <section class="track fade-up">
+      <h2 class="track-name">Threat Intelligence</h2>
+      <p class="track-blurb">What CTI keeps, and what it hands off, when offensive capability stops varying between actors.</p>
+      <div class="series-label">SERIES · THE FUTURE OF CTI</div>
+      <ol class="entry-list">
+        <li class="entry"><span class="entry-num">01</span><div>
+          <a href="future-of-cti/" class="entry-title">The Future of CTI: A Forecast</a>
+          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
+          <p class="entry-desc">When capability stops varying between attackers, an attacker&#x27;s means track the target&#x27;s exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence: what hands off to other teams, what stays, and what to build now.</p>
+        </div></li>
+        <li class="entry pending"><span class="entry-num">02</span><div>
+          <span class="entry-title">Prioritizing Detections When Any Technique Is Possible</span>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Essay</span></div>
+          <p class="entry-desc">Ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage.</p>
+        </div></li>
+        <li class="entry pending"><span class="entry-num">03</span><div>
+          <a href="../projects/cti-as-code/" class="entry-title">CTI as Code</a>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Project</span></div>
+          <p class="entry-desc">The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI.</p>
+        </div></li>
+        <li class="entry pending"><span class="entry-num">04</span><div>
+          <a href="agent-first-tip/" class="entry-title">Agent-First TIP</a>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">A threat intelligence platform built on first-party evidence, where agents propose, gates check, and humans own ground truth.</p>
+        </div></li>
+        <li class="entry pending"><span class="entry-num">05</span><div>
+          <a href="agentic-iam/" class="entry-title">Agentic IAM</a>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">Access control for AI agents: just-in-time credentials, attenuated delegation and attested agent identity, framed as falsifiable hypotheses.</p>
+        </div></li>
+        <li class="entry pending"><span class="entry-num">06</span><div>
+          <a href="agentic-tarpit/" class="entry-title">Agentic Tarpit</a>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">Defensive prompt injection: content that stalls, misdirects or exposes an autonomous attacker, while the defender&#x27;s own agents stay immune.</p>
+        </div></li>
+      </ol>
+    </section>
   </div>
 
   <footer>
