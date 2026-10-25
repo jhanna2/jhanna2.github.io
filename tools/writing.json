@@ -88,14 +88,17 @@
       ]
     },
     "agentic-iam": {
-      "title": "Agentic IAM",
+      "title": "Agentic IAM: Designing Blast Radius for AI Agents",
       "url": "agentic-iam/",
       "type": "Paper",
-      "status": "Coming soon",
-      "summary": "Access control for AI agents: just-in-time credentials, attenuated delegation and attested agent identity, framed as falsifiable hypotheses.",
+      "status": "Published",
+      "summary": "Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses.",
       "tags": [
         "IAM",
+        "AI Agents",
         "Capability Tokens",
+        "JIT Access",
+        "Delegation",
         "Attestation"
       ]
     },

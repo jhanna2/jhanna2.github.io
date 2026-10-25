@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentic IAM — Jeff Hanna</title>
-  <meta name="description" content="Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses." />
+  <title>Agentic IAM: Designing Blast Radius for AI Agents — Jeff Hanna</title>
+  <meta name="description" content="Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -81,42 +81,62 @@
   .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
 
-  .page-wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
   @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
   .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
   .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
   h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
-  .proj-summary { font-size: 1rem; line-height: 1.78; color: var(--text); margin-bottom: 1.5rem; max-width: 680px; }
-  .proj-summary strong { color: var(--white); font-weight: 500; }
-  .source-link { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.03em; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s, color 0.2s; margin-bottom: 2.5rem; }
-  .source-link:hover { color: var(--white); gap: 0.7rem; }
-  .prose h2 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 2.5rem 0 0.8rem; }
-  .prose p { font-size: 0.93rem; line-height: 1.78; color: var(--text); margin-bottom: 1rem; }
-  .prose p strong { color: var(--white); font-weight: 500; }
-  .prose ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-  .prose ul li { font-size: 0.93rem; line-height: 1.68; color: var(--text); padding-left: 1.1rem; position: relative; }
-  .prose ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.75rem; top: 0.1em; }
-  .prose pre { background: var(--bg2); border: 1px solid var(--border); padding: 1.2rem 1.4rem; overflow-x: auto; margin-bottom: 1.2rem; border-left: 3px solid var(--gold-dim, #a8803c); }
-  .prose code { font-family: var(--mono); font-size: 0.8rem; color: var(--text); line-height: 1.6; }
-  .prose p code { background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; font-size: 0.78rem; color: var(--gold); }
-  .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.2rem; font-size: 0.85rem; }
-  .prose th { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
-  .prose td { font-size: 0.85rem; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.55rem 0.6rem; vertical-align: top; }
-  .prose tr:last-child td { border-bottom: none; }
-  .prose ol { list-style: none; counter-reset: item; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
-  .prose ol li { counter-increment: item; font-size: 0.93rem; line-height: 1.68; color: var(--text); padding-left: 1.6rem; position: relative; }
-  .prose ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.78rem; top: 0.15em; }
-  .prose a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; }
-  .prose a:hover { color: var(--white); }
-  .series-note { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 1.2rem; margin-top: 2.5rem; }
-  .series-note a { color: var(--gold); text-decoration: none; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
   .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
   .back-link:hover { color: var(--gold); }
 </style>
 </head>
 <body>
-  
+
   <nav>
     <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
     <div class="nav-links">
@@ -129,17 +149,60 @@
     </div>
   </nav>
   <div class="page-wrap">
-    <div class="fade-up">
-      <div class="proj-eyebrow">Coming soon</div>
-      <div class="tag-row"><span class="tag">IAM</span><span class="tag">AI Agents</span><span class="tag">Capability Tokens</span><span class="tag">JIT Access</span><span class="tag">Attestation</span></div>
-      <h1>Agentic IAM</h1>
-      <p class="proj-summary">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses.</p>
+    <header class="fade-up">
+      <div class="proj-eyebrow">Paper</div>
+      <div class="tag-row"><span class="tag">IAM</span><span class="tag">AI Agents</span><span class="tag">Capability Tokens</span><span class="tag">JIT Access</span><span class="tag">Delegation</span><span class="tag">Attestation</span></div>
+      <h1>Agentic IAM: Designing Blast Radius for AI Agents</h1>
+      <div class="article-meta"><span>Published 24 October 2026. Jeff Hanna.</span><span class="sep">·</span><span>9 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#why-this-matters-to-the-argument">Why this matters to the argument</a></li><li><a href="#start-here-the-minimum-viable-version">Start here: the minimum viable version</a></li><li><a href="#four-control-points">Four control points</a></li><li><a href="#the-core-problem-with-model-written-roles">The core problem with model-written roles</a></li><li><a href="#micro-privilege-and-bounded-drift">Micro-privilege and bounded drift</a></li><li><a href="#the-broker-as-a-control-plane">The broker as a control plane</a></li><li><a href="#when-the-resource-cannot-enforce-it">When the resource cannot enforce it</a></li><li><a href="#people-policy-and-failure">People, policy and failure</a></li><li><a href="#fitting-an-existing-iam-estate">Fitting an existing IAM estate</a></li><li><a href="#cost">Cost</a></li><li><a href="#what-is-built">What is built</a></li><li><a href="#what-would-change-my-mind">What would change my mind</a></li><li><a href="#where-it-connects">Where it connects</a></li><li><a href="#references">References</a></li></ol>
     </div>
-    <div class="prose fade-up">
-<p>This write-up is not published yet. It is a companion to <a href="../future-of-cti/">The Future of CTI: A Forecast</a>, which explains where it fits.</p>
-
-      <a href="../" class="back-link">← All Writing</a>
-    </div>
+    <article class="article fade-up">
+<p>Status: early research. Sixteen hypotheses are written down. A small reference implementation tests the structural claims behind three of them; everything else is designed and nothing has been tested empirically.</p>
+<h2 id="why-this-matters-to-the-argument">Why this matters to the argument</h2>
+<p>In <a href="https://jhanna2.github.io/writing/future-of-cti/">the essay</a> I argue that when attacker capability stops varying, priority depends on three things: reachability, current capability and blast radius. A defender cannot move the capability term. Reachability and blast radius are ours to shrink. For autonomous agents, our own and anyone else's, that means deciding what an agent may touch, for how long, and how much damage it can do before something stops it. This piece describes one design for that and the claims it rests on.</p>
+<h2 id="start-here-the-minimum-viable-version">Start here: the minimum viable version</h2>
+<p>The design has many layers. You should not build most of them first. I would begin with an inventory of access: for each resource, what reaches it and how (a standing key, a service account, an OAuth grant, a human session), which agents already touch it, whether it lives in a cloud, a SaaS product or your own code, how critical its data is, and which of its actions can do damage on their own.</p>
+<p>Then build four things in one low-criticality area. Short-lived tokens replace the standing keys. A task envelope limits a token to the signed task and the plan the agent committed to. A broker sits between the agent and the credential, so the agent never holds one. An audit log records every grant, and doubles as the evidence for every later decision. When that slice works, move it to where agents already touch critical data, because that is where the risk is today. Add the other layers when a trigger says you need them: a decomposed broker when it fronts critical resources, an enforcing proxy when a critical SaaS product only offers coarse credentials, drift budgets when agents do bulk work.</p>
+<h2 id="four-control-points">Four control points</h2>
+<p>Agent access is a pipeline: issuance, delegation, execution and monitoring. Most failures I have seen described come from hardening one point and neglecting the others. A well-scoped token does nothing if the agent spawns a sub-agent with a wider one. A tight issuance check does nothing if nobody watches what the agent does with the token for the next ten minutes.</p>
+<h2 id="the-core-problem-with-model-written-roles">The core problem with model-written roles</h2>
+<p>Human roles are coarse because nobody can author a permission per action. Agents are cheap to issue for, so a model can draft a narrow scope at request time. That solves the authoring problem and creates a new one: the model doing the drafting becomes the highest-value target in the system, and an injection aimed at the scope request is worth more than one aimed at the task.</p>
+<p>The answer is to take authority away from the model. A human writes a ceiling for each class of agent. A model proposes a scope as structured data. Code checks the proposal against the ceiling and the signed task and either issues or refuses. Models judge only what code cannot: whether a well-formed plan serves the stated goal. They can raise a request to a human but never approve one. If every checker model fails the same way, the cost is a missed flag inside bounds that code already enforces, not a grant outside them.</p>
+<p>A natural objection is that scoping a write to one row seems to require knowing every row of every table. It does not have to. The synthesizer sees a catalog of resources, with names, classes, owners and the scope parameters each accepts, and never the data. It scopes by predicate tied to the task, such as "rows for customer A", and the resource's own layer resolves it. Resource owners publish the templates, so each domain's synthesizer knows only its own. Anything without a template is denied. I treat this as a hypothesis, because the open question is how much a template language can say before owners stop writing templates.</p>
+<h2 id="micro-privilege-and-bounded-drift">Micro-privilege and bounded drift</h2>
+<p>Because agents are cheap, a task can be broken down until each agent holds almost nothing: write one value, read one row, run one query. A million records is a million sub-agents. The limit that matters is how far an agent strays from its plan, not how much it touches. An agent meant to update one customer that touches fifteen others has drifted by fifteen. The envelope carries drift budgets, and crossing one stalls the agent and revokes its tokens. Budgets are carved out of the parent's across delegation, never copied, so ten thousand sub-agents cannot add up to the whole database.</p>
+<p>The result is a blast radius you can design to. A compromised agent exposes roughly its drift allowance before it stops. Drift is also an operating cost: wasted calls, retries, wrong permissions and slower products all show up as the same measurements, so the same counters serve security and finance.</p>
+<h2 id="the-broker-as-a-control-plane">The broker as a control plane</h2>
+<p>A broker that holds every key, the budget ledger and the audit trail is one compromise away from yielding all three. I would split it the way Kubernetes splits admission, control and audit: a minter that turns approved grants into short-lived tokens and holds no model; a decider that applies policy and never holds a key; a ledger that only counts; and an append-only audit store in a separate trust domain. The decider answers with graduated responses: allow, allow narrowed (masked results, a smaller breadth, a shorter life), or escalate. A model may narrow a grant but never widen one.</p>
+<p>Two features matter more than they look. A feasibility reviewer that can only alert compares the task's goal with what is currently permitted, so a decider that denies too much shows up before the business routes around it. And canary requests mixed into live traffic test the decider continuously: one that treats canaries differently has drifted or been compromised.</p>
+<h2 id="when-the-resource-cannot-enforce-it">When the resource cannot enforce it</h2>
+<p>Fine-grained tokens only help where the resource accepts them. I sort resources into four tiers. Some support native narrowing (cloud session policies, downscoped tokens). Some are yours, and enforcement can sit at the resource, keyed on the grant (row-level security, views per task class). Some are coarse SaaS products, where an enforcing proxy holds the service-account key and agents hold a narrow token valid only at the proxy. Some cannot be proxied, and the only control is that every action in the vendor's own log must reconcile to a grant, with those resources kept out of autonomous reach.</p>
+<p>The proxy has weaknesses worth naming. Per-API adapters break when vendors change formats. Response filtering is harder than request filtering. And the team that owns the SaaS relationship can usually mint another key and build around the proxy, usually for good reasons and usually to move faster. I treat that team as an adversary class of its own and measure a bypass rate: the share of vendor audit events with no grant ID. The durable defense is making the sanctioned path less work than the shortcut. Vendors adopting downscopable tokens would shrink the problem. Token exchange (RFC 8693, January 2020) and rich authorization requests (RFC 9396, May 2023) already exist as standards; the gap is adoption.</p>
+<h2 id="people-policy-and-failure">People, policy and failure</h2>
+<p>At agent scale nobody approves individual requests. If they try, they approve to make the prompts stop. The human tier works only as a budgeted resource: escalations go to the data owner, only irreversible actions on critical assets reach a person, each approver has a daily budget, approvals require reading something only the request reveals, and known-bad canaries test whether approvers catch them. A timeout on a critical action denies.</p>
+<p>Response actions need their own rating. Quarantining a host or disabling an account can do more damage than any read, and the damage does not track the asset's data criticality. Isolating a low-value host that runs an essential service is still an outage. I rate actions separately, cap the number of targets, expire the action unless someone confirms it, and require a human for critical targets.</p>
+<p>Since people govern policy rather than requests, the policy is what an attacker goes after, along with plain entropy. It lives in version control with review, compared against a pinned baseline so a slow widening shows up as one change. Fail-safe controls are also switches someone outside can flip: planted data pushes legitimate tasks over their budgets, an escalation flood times approvals out. The failure mode is a matrix, not a default. Reads fail open, writes and egress fail closed, adjusted by criticality and whether the service is essential, and the failure state is a narrowed mode instead of a halt, so an essential service keeps working while someone investigates.</p>
+<h2 id="fitting-an-existing-iam-estate">Fitting an existing IAM estate</h2>
+<p>This sits on top of an identity provider, human single sign-on, privileged access management and cloud IAM. It does not replace them. Cloud IAM becomes the ceiling and the first enforcement tier. What it replaces is the standing agent credential. Agents are workloads, so their identity lives in the same federation, and hardware-rooted attestation ties it to a measured platform instead of a secret handed to the agent.</p>
+<p>It also depends on programs that may or may not exist: data classification, an asset inventory with owners, network egress control, logging that can be reconciled, secrets management, change review, third-party risk management and incident response. Where one is missing, the design degrades in a known way. Without classification, criticality is set by hand and goes stale. Without egress control, the proxy is advisory. I would choose the first area to deploy by readiness as well as risk.</p>
+<h2 id="cost">Cost</h2>
+<p>The obvious objection is that a model writing scopes all the time costs too much. Most of the work is code: the ceiling, the envelope, budgets, lineage checks. Models see only the residue. Synthesis happens once per class of task, and each request instantiates the template with code. The likely largest cost is people's time, which is why it is budgeted. I have a cost model with named variables and a hypothesis to measure them. I do not have measurements, so I quote no figures.</p>
+<h2 id="what-is-built">What is built</h2>
+<p>About 230 lines of Python model three of the structural claims: a scope language with a conservative "within" check and a compiler that refuses any proposal outside the ceiling; capability tokens built on the macaroon construction (Birgisson et al., NDSS 2014), where anyone can add a restriction and nobody can remove one; and the carved-budget ledger. I wrote a proof sketch for each and twelve randomized and exhaustive tests. None found a widening, a forged token or a subtree overspend, and three deliberate bugs I planted were each caught. This shows the logic holds in a model I wrote. It does not show that real cloud policy languages have a clean subset relation, which is the main risk to the compiler claim, and it measures no latency. The tokens as written need the verifier to hold the root key; a public-key variant is future work. Nothing else here is built.</p>
+<h2 id="what-would-change-my-mind">What would change my mind</h2>
+<p>The claims are written as hypotheses with falsifiers. Examples:</p>
+<ul><li>If catalog-only synthesis produces scopes materially worse than synthesis with full data access, the template idea fails.</li><li>If red teams cause outages through the controls about as easily under the fail-mode matrix as under uniform fail-closed, the matrix does not help.</li><li>If a large share of decisions still needs a model after the deterministic checks, the cost argument weakens.</li><li>If checkers with different inputs are no better than same-input checkers at catching injected escalations, the diversity argument weakens.</li></ul>
+<p>I will publish negative results.</p>
+<h2 id="where-it-connects">Where it connects</h2>
+<p>Attested agent identity, the question of whether an agent is one of ours, is a candidate answer to the friendly-fire problem in the <a href="https://jhanna2.github.io/writing/agentic-tarpit/">agentic tarpit</a>: our own agents must tell real from decoy, and an attacker's must not. The open question is attesting the task an agent is doing, not only the agent. For the program that runs on top of all this, see <a href="https://jhanna2.github.io/projects/cti-as-code/">CTI as code</a> and the <a href="https://jhanna2.github.io/writing/agent-first-tip/">agent-first TIP</a>.</p>
+<p>The threat model and the hypotheses are kept in a private research repository. I will publish results, including negative ones, as they exist.</p>
+<h2 id="references">References</h2>
+<ul><li>A. Birgisson, J. Gibbs Politz, Ú. Erlingsson, A. Taly, M. Vrable and M. Lentczner, "Macaroons: Cookies with Contextual Caveats for Decentralized Authorization in the Cloud", NDSS, 2014.</li><li>IETF RFC 8693, "OAuth 2.0 Token Exchange", January 2020.</li><li>IETF RFC 9396, "OAuth 2.0 Rich Authorization Requests", May 2023.</li></ul>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
   </div>
 
   <footer>
