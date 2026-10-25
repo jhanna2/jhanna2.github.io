@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Let Code Decide — Jeff Hanna</title>
+  <meta name="description" content="If the output has a grammar, or the decision has a rule, code should produce it. A model belongs where the input really is unstructured, and even there, code should check what the model says." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
+    --gold:      #c4993a;
+    --gold-dim:  #a8803c;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article pre { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold-dim, #a8803c); padding: 1rem 1.2rem; margin: 0 0 1.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .article pre code { display: block; background: none; border: none; padding: 0; font-size: 0.78rem; line-height: 1.65; color: var(--text); white-space: pre; overflow-wrap: normal; }
+  .article p.formula > code { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Note</div>
+      <div class="tag-row"><span class="tag">AI Security</span><span class="tag">Guardrails</span><span class="tag">Deterministic Controls</span><span class="tag">Prompt Injection</span><span class="tag">LLM Pipelines</span></div>
+      <h1>Let Code Decide</h1>
+      <div class="article-meta"><span>Published 25 October 2026. Jeff Hanna.</span><span class="sep">·</span><span>5 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#how-consistent-a-model-judge-is">How consistent a model judge is</a></li><li><a href="#what-i-use-models-for-now">What I use models for now</a></li><li><a href="#the-judge-problem">The judge problem</a></li><li><a href="#the-ladder">The ladder</a></li><li><a href="#probability-compounds">Probability compounds</a></li><li><a href="#why-this-matters-for-security">Why this matters for security</a></li><li><a href="#the-cost">The cost</a></li><li><a href="#how-confident-i-am">How confident I am</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>The numbers here are ones I noted while building and testing pipelines, over many runs. They aren't from a controlled study, I didn't keep run counts, and they depend on the models and prompts I used. I'd expect the direction to hold for anyone who measures it.</p>
+<p>I was building a workflow that took data, sent it to a model, and had the model write a search query from it. Partway through I realized the query was a language with a grammar. Given the same data it should come out the same every time. I was sending it to something slower and more expensive than a function, and the accuracy was a dice roll. So I wrote the query builder in Python, and the problem went away.</p>
+<p>That's the whole idea, and it applies far more widely than I first thought. If the output has a grammar, or the decision has a rule, code should produce it. A model belongs where the input really is unstructured, and even there, code should check what the model says.</p>
+<h2 id="how-consistent-a-model-judge-is">How consistent a model judge is</h2>
+<p>I measured consistency across repeated runs, because a control that gives different answers to the same input can't be trusted with either answer.</p>
+<p>Using a small model (3 billion parameters) as a guardrail to rule pass or block on prompt injection, I got about 60 percent consistency. The model was small on purpose: the guardrail had to run locally and inline on any user's machine, shipped with a coding tool. That's the normal constraint for an inline guardrail, and it's the model size you get. Four in ten prompts could be blocked on one run and let through on the next, depending on the ruling. As a security gate, that's a coin flip for a large share of inputs, and an attacker only needs to retry.</p>
+<p>Having a model write queries and then checking them against verified query syntax rules did much better, in the low 90s. A Python script that built the query from the data was right every time, because there was nothing left to vary.</p>
+<p>That spread, from about 60 to the 90s to 100, is the reason for the rule.</p>
+<h2 id="what-i-use-models-for-now">What I use models for now</h2>
+<p>I still combine syntax checks and model detection in pipelines. The syntax side handles everything that has a known shape: query structure, fields, patterns, allowed values. The model handles what's left, the text that has no structure to check, and its output goes into something deterministic rather than straight to a decision.</p>
+<p>When I do need a model's judgment, I don't take one answer. I send the same input through several models, or through one model several times, and compare the outputs. Sometimes I pass a result only when enough of the runs agree. Sometimes I attach a confidence score based on the share of runs that agreed, and let that score decide what happens next. This turns the model's inconsistency from a hidden risk into a number I can set a threshold on.</p>
+<h2 id="the-judge-problem">The judge problem</h2>
+<p>For a long time I had a model judge the agreement as well: here are five outputs, how similar are they? That puts a second dice roll on top of the first.</p>
+<p>What worked far better was changing what the models return. I moved most of my model outputs to structured, JSON-style responses with defined fields, and had a script compare them. Field-by-field comparison in code is exact. It's also cheap and fast, and it's been far more accurate for my assessments than a model reading prose and deciding whether two answers mean the same thing.</p>
+<p>The general move is to shrink the model's job to filling in fields, and let code do the comparing, validating and deciding.</p>
+<h2 id="the-ladder">The ladder</h2>
+<p>I now think of every step in a pipeline as sitting on a ladder, and I try to push each one as high as it will go:</p>
+<ol><li>Code produces the output. Queries, transforms, anything with a grammar</li><li>A model produces it and code checks it. Schema validation, syntax rules, allowed values</li><li>Several model runs produce it and code measures agreement. Pass on a threshold or attach a confidence</li><li>A model produces it alone. Only where a wrong answer is cheap</li></ol>
+<p>Most steps I first built at rung 4 turned out to belong at rung 1 or 2. The model was doing work a function could do, because asking the model was the fastest way to get something running.</p>
+<h2 id="probability-compounds">Probability compounds</h2>
+<p>Every model call in a workflow adds probability, and a chain of calls multiplies it. If each step in a four-step chain gives the right answer 95 percent of the time, the chain is right about 81 percent of the time (0.95 to the fourth power). At 90 percent per step it's about 66 percent. Three steps at 90 percent come to about 73 percent. A step that looks reliable on its own becomes a workflow that's wrong a third of the time.</p>
+<p>That arithmetic assumes the errors are independent. In practice they're often worse, because a wrong answer early in the chain becomes the input to the next call, which then reasons confidently from it. And when the final output is wrong, it's hard to tell which step caused it.</p>
+<p>Every step moved to code drops out of the multiplication. Replace two of four model calls with deterministic steps and you're multiplying two probabilities instead of four.</p>
+<h2 id="why-this-matters-for-security">Why this matters for security</h2>
+<p>A security control is a decision that has to come out the same way every time for the same input. A model at rung 4 can't promise that. My 60 percent figure for injection rulings is what that looks like in practice, and the attacker chooses which inputs to send.</p>
+<p>Deterministic steps can also be tested properly. You can list a script's failure modes and break each one on purpose, which the post <a href="https://jhanna2.github.io/writing/fail-open-by-default/">Fail open by default</a> argues every control needs. You can't list every input a model misjudges.</p>
+<p>And they don't change under you. A model update can move a judge's behavior without any change on your side. A query builder means the same thing next year.</p>
+<h2 id="the-cost">The cost</h2>
+<p>Writing the builder takes longer than writing the prompt. Rules go stale and edge cases pile up. Some inputs really are unstructured, and forcing them into a grammar loses information. Ensembles multiply model calls, so a five-run agreement check costs five times as much as one call, which is another reason to push steps up the ladder before reaching for an ensemble.</p>
+<p>For me the trade has been worth it every time. The pipelines got faster and cheaper, and I could say how often they were right.</p>
+<h2 id="how-confident-i-am">How confident I am</h2>
+<p>High that code beats a model for anything with a grammar or a fixed rule, since the consistency numbers above were large and repeatable. Medium that my specific figures carry over to other models and prompts. A larger model than the one behind the 60 percent would do better. But the point isn't the exact figure: a model adds probability wherever it sits, and code doesn't. I'd expect the gaps to narrow as models improve, though not to close.</p>
+<p>What would change my mind is a model judge that, run repeatedly on the same inputs, gave the same verdict at the rate a script does, and kept doing so across model versions. I haven't seen one.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>

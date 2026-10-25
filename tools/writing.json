@@ -13,6 +13,7 @@
       "standalone": [
         "the-workload-is-the-adversary",
         "most-ai-security-is-security",
+        "let-code-decide",
         "agentic-iam",
         "agentic-tarpit"
       ]
@@ -145,6 +146,20 @@
         "Confidential Computing",
         "Attestation",
         "Reference Architecture"
+      ]
+    },
+    "let-code-decide": {
+      "title": "Let Code Decide",
+      "url": "let-code-decide/",
+      "type": "Note",
+      "status": "Published",
+      "summary": "If the output has a grammar, or the decision has a rule, code should produce it. A model belongs where the input really is unstructured, and even there, code should check what the model says. Consistency figures from building guardrails and pipelines, a ladder from code to model, and why probability compounds across a chain of model calls.",
+      "tags": [
+        "AI Security",
+        "Guardrails",
+        "Deterministic Controls",
+        "Prompt Injection",
+        "LLM Pipelines"
       ]
     }
   }
