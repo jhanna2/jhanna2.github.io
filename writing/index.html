@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Writing — Jeff Hanna</title>
-  <meta name="description" content="Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project)." />
+  <meta name="description" content="Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project)." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -141,10 +141,17 @@
     <div class="fade-up">
       <div class="page-eyebrow">writing</div>
       <h1 class="page-title">Writing</h1>
-      <p class="page-sub intro-sub">Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).</p>
+      <p class="page-sub intro-sub">Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).</p>
     </div>
     <div class="ruled-divider fade-up"><span>// featured</span></div>
     <div class="fade-up">
+      <div class="project-card featured-card">
+        <div class="project-meta"><span class="project-badge">Published</span><span class="project-badge type">Paper</span></div>
+        <div class="project-title">Agentic IAM: Designing Blast Radius for AI Agents</div>
+        <p class="project-desc">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses.</p>
+        <div class="tag-row"><span class="tag">IAM</span><span class="tag">AI Agents</span><span class="tag">Capability Tokens</span><span class="tag">JIT Access</span><span class="tag">Delegation</span><span class="tag">Attestation</span></div>
+        <div class="project-links"><a href="agentic-iam/" class="proj-link">Read →</a></div>
+      </div>
       <div class="project-card featured-card">
         <div class="project-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
         <div class="project-title">The Future of CTI: A Forecast</div>
@@ -153,6 +160,35 @@
         <div class="project-links"><a href="future-of-cti/" class="proj-link">Read →</a></div>
       </div>
     </div>
+    <div class="ruled-divider fade-up"><span>// ai security</span></div>
+    <section class="track fade-up">
+      <h2 class="track-name">AI Security</h2>
+      <p class="track-blurb">Securing agents and the systems they run in: isolation, identity, injection and poisoning.</p>
+      <ul class="entry-list unnumbered">
+        <li class="entry"><div>
+          <a href="agentic-iam/" class="entry-title">Agentic IAM: Designing Blast Radius for AI Agents</a>
+          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses.</p>
+        </div></li>
+        <li class="entry pending"><div>
+          <a href="agentic-tarpit/" class="entry-title">Agentic Tarpit</a>
+          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
+          <p class="entry-desc">Defensive prompt injection: content that stalls, misdirects or exposes an autonomous attacker, while the defender&#x27;s own agents stay immune.</p>
+        </div></li>
+      </ul>
+    </section>
+    <div class="ruled-divider fade-up"><span>// detection &amp; response</span></div>
+    <section class="track fade-up">
+      <h2 class="track-name">Detection &amp; Response</h2>
+      <p class="track-blurb">Detection engineering, deception and response, measured against how intrusions actually move.</p>
+      <ul class="entry-list unnumbered">
+        <li class="entry"><div>
+          <a href="detection-priority/" class="entry-title">After the Heat Map: Prioritizing Detections When Any Technique Is Possible</a>
+          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
+          <p class="entry-desc">Ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage.</p>
+        </div></li>
+      </ul>
+    </section>
     <div class="ruled-divider fade-up"><span>// threat intelligence</span></div>
     <section class="track fade-up">
       <h2 class="track-name">Threat Intelligence</h2>
@@ -163,16 +199,6 @@
           <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
           <p class="entry-desc">When capability stops varying between attackers, an attacker&#x27;s means track the target&#x27;s exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence: what hands off to other teams, what stays, and what to build now.</p>
         </div></li>
-        <li class="entry"><div>
-          <a href="detection-priority/" class="entry-title">After the Heat Map: Prioritizing Detections When Any Technique Is Possible</a>
-          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Essay</span></div>
-          <p class="entry-desc">Ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage.</p>
-        </div></li>
-        <li class="entry"><div>
-          <a href="agentic-iam/" class="entry-title">Agentic IAM: Designing Blast Radius for AI Agents</a>
-          <div class="entry-meta"><span class="project-badge">Published</span><span class="project-badge type">Paper</span></div>
-          <p class="entry-desc">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity. Framed as falsifiable hypotheses.</p>
-        </div></li>
         <li class="entry pending"><div>
           <a href="../projects/cti-as-code/" class="entry-title">CTI as Code</a>
           <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Project</span></div>
@@ -182,11 +208,6 @@
           <a href="agent-first-tip/" class="entry-title">Agent-First TIP</a>
           <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
           <p class="entry-desc">A threat intelligence platform built on first-party evidence, where agents propose, gates check, and humans own ground truth.</p>
-        </div></li>
-        <li class="entry pending"><div>
-          <a href="agentic-tarpit/" class="entry-title">Agentic Tarpit</a>
-          <div class="entry-meta"><span class="project-badge">Coming soon</span><span class="project-badge type">Paper</span></div>
-          <p class="entry-desc">Defensive prompt injection: content that stalls, misdirects or exposes an autonomous attacker, while the defender&#x27;s own agents stay immune.</p>
         </div></li>
       </ul>
     </section>

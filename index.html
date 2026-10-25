@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Security engineer building detection systems, threat intelligence pipelines, and AI security architecture — from Kubernetes runtime detection to LLM gateway guardrails." />
+  <meta name="description" content="Infrastructure and AI security engineer: hardened Kubernetes, runtime detection, and LLM gateway guardrails on LiteLLM, plus writing on agent access control and threat intelligence." />
   <title>Home — Jeff Hanna</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -467,19 +467,16 @@
 
     <div class="hero-grid fade-up">
       <div>
-        <div class="eyebrow">security engineer &amp; threat intelligence researcher</div>
+        <div class="eyebrow">infrastructure &amp; AI security engineer</div>
         <h1>Jeff <em>Hanna</em></h1>
         <p class="hero-body">
-          Senior Security Engineer at <strong>GoDaddy</strong>, where I've spent the last three years building the programs, pipelines, and automation that didn't exist before I got there.
+          I build security for infrastructure and AI systems: a hardened Kubernetes cluster, runtime detection you can prove in-cluster, and an LLM gateway on <strong>LiteLLM</strong> where every model call passes sanitization and policy guards that default closed.
         </p>
         <p class="hero-body">
-          The work ranges from LLM-orchestrated threat intelligence systems and credential remediation pipelines to DNS-scale packet analysis and SOC-style triage workflows — most of it built from scratch, in a domain where the tools rarely do exactly what you need. Before GoDaddy: intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including USCYBERCOM's first OSINT program.
+          By day I'm a Senior Security Engineer at <strong>GoDaddy</strong>, where I've spent three years building threat intelligence programs, pipelines and automation that didn't exist before I got there, including LLM-orchestrated intel systems and credential remediation pipelines. Before that: intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including USCYBERCOM's first OSINT program.
         </p>
         <p class="hero-body">
-          The through-line is the same everywhere: find the gap, build the solution, make it <strong>robust enough to outlast you</strong>.
-        </p>
-        <p class="hero-body">
-          The homelab projects below skew the same way: <strong>detection you can prove in-cluster</strong>, <strong>intel pipelines you can trace end-to-end</strong>, and <strong>LLM guardrails that default closed</strong> — not slide-deck security.
+          The projects below run in my own lab. I also write about how to give AI agents access without handing them the keys, and what security programs look like when attackers run agents.
         </p>
       </div>
       <div class="hero-portrait-wrap">
@@ -494,14 +491,15 @@
       <div>
         <div class="col-label">// core disciplines</div>
         <ul class="plain-list">
-          <li>Security Program Engineering</li>
-          <li>Threat Intelligence (CTI)</li>
+          <li>AI &amp; LLM Security</li>
+          <li>Kubernetes &amp; Infrastructure Security</li>
           <li>Detection Engineering</li>
+          <li>Cloud Security (AWS)</li>
           <li>LLM Orchestration &amp; Agentic Systems</li>
           <li>Automation &amp; Integration Engineering</li>
-          <li>Threat Hunting</li>
-          <li>Incident Response</li>
-          <li>Cloud Security (AWS)</li>
+          <li>Security Program Engineering</li>
+          <li>Threat Intelligence (CTI)</li>
+          <li>Threat Hunting &amp; Incident Response</li>
           <li>OSINT</li>
           <li>Packet &amp; Log Analysis</li>
         </ul>
@@ -509,22 +507,25 @@
       <div>
         <div class="col-label">// tools / ecosystems</div>
         <ul class="plain-list">
-          <li>Python</li>
-          <li>Splunk / Elastic</li>
+          <li>LiteLLM / llm-guard</li>
+          <li>Kubernetes (k3s) / Helm / Kyverno</li>
+          <li>Falco</li>
+          <li>Terraform / Proxmox</li>
+          <li>Python / Go</li>
+          <li>AWS: CDK, IAM, S3, EC2, Athena, ECS</li>
+          <li>OpenSearch / Splunk / Elastic</li>
           <li>SentinelOne / Defender (EDR)</li>
-          <li>SOAR / API Integration</li>
-          <li>AWS — CDK, IAM, S3, EC2, Athena, ECS</li>
           <li>Docker</li>
           <li>YARA / Sigma / Snort</li>
-          <li>Anomali ThreatStream</li>
-          <li>Recorded Future</li>
           <li>MITRE ATT&amp;CK</li>
+          <li>Anomali ThreatStream / Recorded Future</li>
         </ul>
       </div>
     </div>
 
     <div class="cta-row fade-up">
       <a href="projects/" class="cta-link">View all projects →</a>
+      <a href="writing/" class="cta-link">Read the writing →</a>
       <a href="resume.html" class="cta-link">View resume →</a>
     </div>
 
@@ -533,15 +534,34 @@
 
       <article class="project-card">
         <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">LLM Safety Platform</h3>
+        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses.</p>
+        <div class="tag-row"><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Python</span><span class="tag">Go</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="projects/llm-safety/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
         <h3 class="project-title">Kubernetes Security Homelab</h3>
-        <p class="project-desc">A security-first k3s cluster built from scratch on bare-metal Proxmox, starting from a deliberately misconfigured baseline and hardened systematically. Documents the full attack surface before fixing it — RBAC, network policies, pod security standards, and Kyverno admission control.</p>
+        <p class="project-desc">A security-first k3s cluster built from scratch on bare-metal Proxmox, starting from a deliberately misconfigured baseline and hardened systematically. Documents the full attack surface before fixing it: RBAC, network policies, pod security standards, and Kyverno admission control.</p>
         <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
         <div class="project-links">
           <a href="projects/k8s-homelab/" class="proj-link">Details →</a>
           <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
         </div>
       </article>
-
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">Content Sanitizer &amp; TOON Normalizer</h3>
+        <p class="project-desc">A Python library for cleaning and compacting external content before it reaches an LLM. The sanitizer removes HTML attack surface, invisible text, Unicode tricks, and embedded prompt injection. The TOON normalizer compacts the result to semantic core, around 95% token reduction on typical web content while preserving structured data like IOCs.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Security</span><span class="tag">LLM</span><span class="tag">Prompt Injection</span><span class="tag">Token Optimization</span><span class="tag">NLP</span></div>
+        <div class="project-links">
+          <a href="projects/toon-sanitizer/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
       <article class="project-card">
         <div class="project-meta"><span class="project-badge">Public</span></div>
         <h3 class="project-title">Falco Detection Engineering</h3>
@@ -552,40 +572,6 @@
           <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
         </div>
       </article>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">CTI Agent</h3>
-        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM.</p>
-        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
-        <div class="project-links">
-          <a href="projects/cti-agent/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">LLM Safety Platform</h3>
-        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses.</p>
-        <div class="tag-row"><span class="tag">Python</span><span class="tag">Go</span><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
-        <div class="project-links">
-          <a href="projects/llm-safety/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">Content Sanitizer &amp; TOON Normalizer</h3>
-        <p class="project-desc">A Python library for cleaning and compacting external content before it reaches an LLM. The sanitizer removes HTML attack surface, invisible text, Unicode tricks, and embedded prompt injection. The TOON normalizer compacts the result to semantic core — around 95% token reduction on typical web content while preserving structured data like IOCs.</p>
-        <div class="tag-row"><span class="tag">Python</span><span class="tag">Security</span><span class="tag">LLM</span><span class="tag">Prompt Injection</span><span class="tag">Token Optimization</span><span class="tag">NLP</span></div>
-        <div class="project-links">
-          <a href="projects/toon-sanitizer/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-
       <article class="project-card">
         <div class="project-meta"><span class="project-badge">Public</span></div>
         <h3 class="project-title">OpenSearch SIEM</h3>
@@ -596,12 +582,44 @@
           <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
         </div>
       </article>
-
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <h3 class="project-title">CTI Agent</h3>
+        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM.</p>
+        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="projects/cti-agent/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </article>
       <article class="project-card">
         <div class="project-meta"><span class="project-badge personal">Private</span></div>
         <h3 class="project-title">vira</h3>
-        <p class="project-desc">Modal terminal code editor with multi-agent orchestration at its core. Role-based agent pools (implement, review, document, test) that run blind, collaborative, or adversarial — with a dedicated security-review agent auditing every action outside the primary context window. Per-agent token gauges with user-set ceilings and automatic model fallback, plus Headroom-style context compression to keep long sessions cheap. Built on a kernel-enforced sandbox foundation for agent shell isolation. Provider-agnostic: Ollama, Claude, Codex.</p>
+        <p class="project-desc">Modal terminal code editor with multi-agent orchestration at its core. Role-based agent pools (implement, review, document, test) that run blind, collaborative, or adversarial, with a dedicated security-review agent auditing every action outside the primary context window. Per-agent token gauges with user-set ceilings and automatic model fallback, plus Headroom-style context compression to keep long sessions cheap. Built on a kernel-enforced sandbox foundation for agent shell isolation. Provider-agnostic: Ollama, Claude, Codex.</p>
         <div class="tag-row"><span class="tag">Multi-Agent Orchestration</span><span class="tag">Agent Pooling</span><span class="tag">Token Management</span><span class="tag">Context Compression</span><span class="tag">Rust</span><span class="tag">MCP</span></div>
+      </article>
+
+      <h2 class="featured-header" style="margin-top:3rem">Writing</h2>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Paper</span></div>
+        <h3 class="project-title">Agentic IAM: Designing Blast Radius for AI Agents</h3>
+        <p class="project-desc">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity.</p>
+        <div class="tag-row"><span class="tag">IAM</span><span class="tag">AI Agents</span><span class="tag">Capability Tokens</span><span class="tag">JIT Access</span><span class="tag">Attestation</span></div>
+        <div class="project-links">
+          <a href="writing/agentic-iam/" class="proj-link">Read →</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta"><span class="project-badge">Essay</span></div>
+        <h3 class="project-title">The Future of CTI: A Forecast</h3>
+        <p class="project-desc">When capability stops varying between attackers, an attacker's means track the target's exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence.</p>
+        <div class="tag-row"><span class="tag">Threat Intelligence</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span></div>
+        <div class="project-links">
+          <a href="writing/future-of-cti/" class="proj-link">Read →</a>
+          <a href="writing/" class="proj-link external">All writing</a>
+        </div>
       </article>
     </section>
 

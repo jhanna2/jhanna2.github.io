@@ -1,33 +1,36 @@
 {
-  "intro": "Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).",
+  "intro": "Essays, papers and lab write-ups on AI security, detection and threat intelligence. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).",
   "featured": [
+    "agentic-iam",
     "future-of-cti"
   ],
   "tracks": [
+    {
+      "name": "AI Security",
+      "blurb": "Securing agents and the systems they run in: isolation, identity, injection and poisoning.",
+      "series": [],
+      "standalone": [
+        "agentic-iam",
+        "agentic-tarpit"
+      ]
+    },
+    {
+      "name": "Detection & Response",
+      "blurb": "Detection engineering, deception and response, measured against how intrusions actually move.",
+      "series": [],
+      "standalone": [
+        "detection-priority"
+      ]
+    },
     {
       "name": "Threat Intelligence",
       "blurb": "What CTI keeps, and what it hands off, when offensive capability stops varying between actors.",
       "series": [],
       "standalone": [
         "future-of-cti",
-        "detection-priority",
-        "agentic-iam",
         "cti-as-code",
-        "agent-first-tip",
-        "agentic-tarpit"
+        "agent-first-tip"
       ]
-    },
-    {
-      "name": "AI Security",
-      "blurb": "Securing agents and the systems they run in: isolation, identity, injection and poisoning.",
-      "series": [],
-      "standalone": []
-    },
-    {
-      "name": "Detection & Response",
-      "blurb": "Detection engineering, deception and response, measured against how intrusions actually move.",
-      "series": [],
-      "standalone": []
     }
   ],
   "pieces": {

@@ -123,11 +123,21 @@
     <div class="fade-up">
       <div class="page-eyebrow">projects</div>
       <h1 class="page-title">Projects</h1>
-      <p class="page-sub">Detection engineering, CTI pipelines, LLM safety, and a self-hosted SIEM — documented from a security-first Kubernetes homelab.</p>
+      <p class="page-sub">LLM security, Kubernetes hardening, runtime detection and a self-hosted SIEM, documented from a security-first Kubernetes homelab.</p>
     </div>
     <div class="ruled-divider fade-up"><span>// public repos</span></div>
     <div class="fade-up">
       
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">LLM Safety Platform</div>
+        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses. Privacy-first: unflagged conversations auto-purge after 24 hours.</p>
+        <div class="tag-row"><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Python</span><span class="tag">Go</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="llm-safety/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
       <div class="project-card">
         <div class="project-meta"><span class="project-badge">Public</span></div>
         <div class="project-title">Kubernetes Security Homelab</div>
@@ -135,36 +145,6 @@
         <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
         <div class="project-links">
           <a href="k8s-homelab/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <div class="project-title">Falco Detection Engineering</div>
-        <p class="project-desc">Custom Falco runtime detection rules for a live Kubernetes cluster targeting realistic attack scenarios: shell spawns, credential harvesting, C2 beaconing, privilege escalation, service account token theft, and multi-step recon-to-exfil sequences. Every rule is ATT&CK-mapped and validated with a simulation script that proves the alert reaches OpenSearch.</p>
-        <div class="tag-row"><span class="tag">Falco</span><span class="tag">Detection Engineering</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Go</span><span class="tag">Kubernetes</span></div>
-        <div class="project-links">
-          <a href="falco-detection/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <div class="project-title">CTI Agent</div>
-        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM. GPU-backed inference via Ollama with KEDA scale-to-zero when idle.</p>
-        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
-        <div class="project-links">
-          <a href="cti-agent/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <div class="project-title">LLM Safety Platform</div>
-        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses. Privacy-first: unflagged conversations auto-purge after 24 hours.</p>
-        <div class="tag-row"><span class="tag">Python</span><span class="tag">Go</span><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
-        <div class="project-links">
-          <a href="llm-safety/" class="proj-link">Details →</a>
           <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
         </div>
       </div>
@@ -180,11 +160,31 @@
       </div>
       <div class="project-card">
         <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">Falco Detection Engineering</div>
+        <p class="project-desc">Custom Falco runtime detection rules for a live Kubernetes cluster targeting realistic attack scenarios: shell spawns, credential harvesting, C2 beaconing, privilege escalation, service account token theft, and multi-step recon-to-exfil sequences. Every rule is ATT&CK-mapped and validated with a simulation script that proves the alert reaches OpenSearch.</p>
+        <div class="tag-row"><span class="tag">Falco</span><span class="tag">Detection Engineering</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Go</span><span class="tag">Kubernetes</span></div>
+        <div class="project-links">
+          <a href="falco-detection/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
         <div class="project-title">OpenSearch SIEM</div>
         <p class="project-desc">A self-hosted OpenSearch deployment serving as the central data platform for a homelab security stack. Ingests Falco runtime alerts, Kubernetes audit logs, CTI pipeline output, and LLM interaction flags. Maintains a live cluster asset CMDB. Ephemeral LLM conversation store with 24-hour ISM auto-purge. Custom dashboards for alert triage and CTI summaries.</p>
         <div class="tag-row"><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Go</span><span class="tag">Detection Engineering</span></div>
         <div class="project-links">
           <a href="opensearch-siem/" class="proj-link">Details →</a>
+          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-meta"><span class="project-badge">Public</span></div>
+        <div class="project-title">CTI Agent</div>
+        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM. GPU-backed inference via Ollama with KEDA scale-to-zero when idle.</p>
+        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
+        <div class="project-links">
+          <a href="cti-agent/" class="proj-link">Details →</a>
           <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link ext" target="_blank" rel="noopener">Source ↗</a>
         </div>
       </div>
