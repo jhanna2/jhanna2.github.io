@@ -9,8 +9,8 @@ first paragraph after it, e.g. "Draft. Jeff Hanna."). Edit the source and
 rebuild; don't hand-edit the generated HTML.
 
 Supported Markdown: #/##/### headings, paragraphs, ordered and unordered lists
-(with wrapped continuation lines), pipe tables, `code`, [links](url), bare
-https:// URLs, *em* and **strong**. A "## Contents" section in the source is
+(with wrapped continuation lines), pipe tables, ``` fenced code blocks, `code`,
+[links](url), <https://...> and bare https:// URLs, *em* and **strong**. A "## Contents" section in the source is
 dropped, since the page builds its own contents box. That covers the essays;
 extend here if a new piece needs more.
 """
@@ -47,6 +47,7 @@ def inline(text):
         return f"\x00{len(codes) - 1}\x00"
 
     text = re.sub(r"`([^`]+)`", stash, text)
+    text = re.sub(r"<(https?://[^>\s]+)>", r"\1", text)
     text = html.escape(text, quote=False)
     text = re.sub(
         r"\[([^\]]+)\]\(([^)\s]+)\)",
@@ -76,6 +77,16 @@ def convert(lines):
         s = line.strip()
         if not s:
             i += 1
+            continue
+
+        if s.startswith("```"):
+            i += 1
+            code = []
+            while i < n and not lines[i].strip().startswith("```"):
+                code.append(lines[i])
+                i += 1
+            i += 1
+            out.append(f'<pre><code>{html.escape(chr(10).join(code), quote=False)}</code></pre>')
             continue
 
         m = re.match(r"^(#{2,3})\s+(.*)$", s)
@@ -135,10 +146,12 @@ def convert(lines):
             continue
 
         para = []
-        while i < n and lines[i].strip() and not re.match(r"^(#{1,3}\s|\||\d+\.\s|[-*]\s)", lines[i].strip()):
+        while i < n and lines[i].strip() and not re.match(r"^(#{1,3}\s|\||\d+\.\s|[-*]\s|```)", lines[i].strip()):
             para.append(lines[i].strip())
             i += 1
-        out.append(f"<p>{inline(' '.join(para))}</p>")
+        text = " ".join(para)
+        cls = ' class="formula"' if re.fullmatch(r"`[^`]+`", text) else ""
+        out.append(f"<p{cls}>{inline(text)}</p>")
     return "\n".join(out), toc
 
 

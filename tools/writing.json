@@ -65,12 +65,13 @@
       ]
     },
     "cti-as-code": {
-      "title": "CTI as Code",
-      "url": "../projects/cti-as-code/",
-      "type": "Project",
-      "status": "Coming soon",
-      "summary": "The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI.",
+      "title": "CTI as Code: The Intelligence Program as Version-Controlled Records",
+      "url": "cti-as-code/",
+      "type": "Paper",
+      "status": "Published",
+      "summary": "The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI. Every intelligence question resolves to a collection source or names a gap, or the build fails. Agents declare a contract before they may run, and an agent that reads adversary-written text may not run unattended.",
       "tags": [
+        "CTI",
         "Intel as Code",
         "CI",
         "Agents"

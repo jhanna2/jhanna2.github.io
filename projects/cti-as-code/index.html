@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CTI as Code — Jeff Hanna</title>
-  <meta name="description" content="The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI. Every intelligence question resolves to a collection source or names a gap, or the build fails. Agents declare a contract before they may run, and an agent that reads adversary-written text may not run unattended." />
+  <meta name="description" content="The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -111,6 +111,8 @@
   .prose a:hover { color: var(--white); }
   .series-note { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 1.2rem; margin-top: 2.5rem; }
   .series-note a { color: var(--gold); text-decoration: none; }
+  .link-row { display: flex; flex-wrap: wrap; gap: 0.6rem 1.8rem; margin-bottom: 2.5rem; }
+  .link-row .source-link { margin-bottom: 0; }
   .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
   .back-link:hover { color: var(--gold); }
 </style>
@@ -130,13 +132,33 @@
   </nav>
   <div class="page-wrap">
     <div class="fade-up">
-      <div class="proj-eyebrow">Coming soon</div>
-      <div class="tag-row"><span class="tag">CTI</span><span class="tag">Intel as Code</span><span class="tag">Python</span><span class="tag">CI</span><span class="tag">YAML</span><span class="tag">Agents</span></div>
+      <div class="proj-eyebrow">Public</div>
+      <div class="tag-row"><span class="tag">CTI</span><span class="tag">Intel as Code</span><span class="tag">Python</span><span class="tag">CI</span><span class="tag">YAML</span><span class="tag">Agents</span><span class="tag">Prompt Injection</span></div>
       <h1>CTI as Code</h1>
-      <p class="proj-summary">The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI. Every intelligence question resolves to a collection source or names a gap, or the build fails. Agents declare a contract before they may run, and an agent that reads adversary-written text may not run unattended.</p>
+      <p class="proj-summary">The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI. A priority intelligence requirement names the decision it serves. Every question under it resolves to a collection source or names a gap, and the build fails when it does neither. Agents declare a contract before they may run.</p>
+      <div class="link-row">
+        <a href="https://github.com/jhanna2/cti-as-code" class="source-link" target="_blank" rel="noopener">View Source ↗</a>
+        <a href="../../writing/cti-as-code/" class="source-link">Read the paper →</a>
+      </div>
     </div>
     <div class="prose fade-up">
-<p>This write-up is not published yet. It is a companion to <a href="../../writing/future-of-cti/">The Future of CTI: A Forecast</a>, which explains where it fits.</p>
+<h2>The Problem</h2>
+<p>Detection engineering moved its rules into git years ago. Threat intelligence never moved its program. Requirements live in a slide deck, the collection plan in a spreadsheet, campaigns in a wiki, and none of them can fail. They go stale silently, and the program finds out when an incident asks one of them a question.</p>
+<p>Program management is where most of CTI's time goes, and it has stayed in prose where no model can help. What keeps CTI from being truly agentic is those foundations, not the models.</p>
+<h2>Approach</h2>
+<p>The program becomes a repository of records. A requirement names the decision it serves and who makes it. Each question under it resolves to a collection source or names a gap, and the build fails when it does neither. Decoys, detection candidates and campaigns each point back up to a requirement, and an agent is a record with a contract it must satisfy before it may run. Three commands read the chain: <code>trace</code> prints requirement to collection to candidate to campaign, <code>gaps</code> prints everything the program says it cannot see, and <code>report</code> gives a coverage summary. The worked example is a fictional freight-booking platform, small on purpose and honest about its gaps.</p>
+<h2>Key Design Decisions</h2>
+<ul>
+  <li><strong>A gap is named, or the build fails.</strong> An unnamed gap looks like coverage, so a requirement with neither a source nor a named gap is rejected. Named gaps, printed together, are the case for each new source or hire.</li>
+  <li><strong>Every record publishes its blind spot.</strong> A detection candidate lists what it does not cover, and an agent lists where it fails.</li>
+  <li><strong>A gate without a negative test is a comment.</strong> Each rule has a test that constructs the forbidden shape, and an empty result is an error, never a pass.</li>
+  <li><strong>Authority follows determinism.</strong> Deterministic checks may block. A model may only raise a flag for review, so the sanitiser that decides what a model sees is a static transform and not a model.</li>
+  <li><strong>Untrusted input never runs autonomously.</strong> An agent that reads text an adversary can influence may not have an autonomous approval level, and agents change the program only through pull requests a person signs.</li>
+</ul>
+<h2>Built, and Designed</h2>
+<p>Built and tested: the eight record trees and a worked example, a validator enforcing every gate marked enforced with 42 tests, the <code>validate</code>, <code>trace</code>, <code>gaps</code> and <code>report</code> commands, the deterministic sanitiser with a golden test, a decoy canary predicate, and CI. Designed and not built: the read API, the model-driven extraction pipeline, the filter audit, actor clustering and ranking, the sharing pipeline, and the retrieval and drift loop over adjudicated cases. Every fixture is synthetic and nothing has run against real telemetry.</p>
+<h2>Direction</h2>
+<p>The next records would sit beside detection candidates: exposure and emulation candidates, so vulnerability management and red teams are consumers from day one, and reviews triggered by events and not by calendars. The example's ACTOR-06 ("intent is zero, exposure is not") is the essay's thesis in miniature. The test that would matter is a real program run under these gates, measuring whether named gaps turn into sources. That has not been done.</p>
 
       <a href="../" class="back-link">← All Projects</a>
     </div>

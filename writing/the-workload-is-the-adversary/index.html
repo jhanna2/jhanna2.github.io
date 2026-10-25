@@ -112,7 +112,9 @@
   .article ol li { counter-increment: item; }
   .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
   .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
-  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+  .article pre { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold-dim, #a8803c); padding: 1rem 1.2rem; margin: 0 0 1.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .article pre code { display: block; background: none; border: none; padding: 0; font-size: 0.78rem; line-height: 1.65; color: var(--text); white-space: pre; overflow-wrap: normal; }
+  .article p.formula > code { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
 
   .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
   .article table { width: 100%; border-collapse: collapse; }
@@ -221,7 +223,6 @@
 <ul><li><a href="https://jhanna2.github.io/writing/agentic-iam/">Agentic IAM</a> covers the identity side in depth: just-in-time credentials, capability tokens and attested agent identity</li><li><a href="https://jhanna2.github.io/writing/agentic-tarpit/">Tarpitting agentic attacks</a> covers what to do once a hostile agent is inside: slow it, misdirect it, measure time to objective</li><li><a href="https://jhanna2.github.io/writing/most-ai-security-is-security/">Most AI security is security</a> is the argument that the fundamentals bound most of this risk</li><li><a href="https://jhanna2.github.io/writing/drift-is-the-alarm/">Drift is the alarm</a> covers the data side and the H9 test</li></ul>
 <h2 id="references">12. References</h2>
 <ul><li>RAND Corporation, <em>Securing AI Model Weights: Preventing Theft and Misuse of Frontier Models</em> (2024). <a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">https://www.rand.org/pubs/research_reports/RRA2849-1.html</a></li><li>SL5 Task Force. <a href="https://securityandtechnology.org/sl5/">https://securityandtechnology.org/sl5/</a> (opened 2026-10-24)</li><li>Trail of Bits, "LeftoverLocals: Listening to LLM responses through leaked GPU local memory" (2024-01-16). <a href="https://blog.trailofbits.com/2024/01/16/leftoverlocals-listening-to-llm-responses-through-leaked-gpu-local-memory/">https://blog.trailofbits.com/2024/01/16/leftoverlocals-listening-to-llm-responses-through-leaked-gpu-local-memory/</a></li><li>CERT/CC, VU#446598. <a href="https://kb.cert.org/vuls/id/446598">https://kb.cert.org/vuls/id/446598</a></li><li>AMD, GPU Memory Leaks bulletin (AMD-SB-6010). <a href="https://www.amd.com/en/resources/product-security/bulletin/amd-sb-6010.html">https://www.amd.com/en/resources/product-security/bulletin/amd-sb-6010.html</a></li><li>Anthropic, UK AI Security Institute and Alan Turing Institute, "A small number of samples can poison LLMs of any size" (2025-10-09). <a href="https://www.anthropic.com/research/small-samples-poison">https://www.anthropic.com/research/small-samples-poison</a></li><li>Claude Code documentation: permissions and headless mode. <a href="https://code.claude.com/docs/en/permissions">https://code.claude.com/docs/en/permissions</a> (checked 2026-10-19)</li></ul>
-<p>TODO: add references for InfiniBand partitions, GPUDirect RDMA and Slurm authentication once those study notes are done.</p>
     </article>
     <a href="../" class="back-link">← All Writing</a>
   </div>

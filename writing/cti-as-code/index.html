@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTI as Code: The Intelligence Program as Version-Controlled Records — Jeff Hanna</title>
+  <meta name="description" content="The threat intelligence program held as version-controlled records whose claims about each other are enforced in CI, so agent help is safe to accept and the program&#x27;s gaps are visible. Part built, part designed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
+    --gold:      #c4993a;
+    --gold-dim:  #a8803c;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article pre { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold-dim, #a8803c); padding: 1rem 1.2rem; margin: 0 0 1.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .article pre code { display: block; background: none; border: none; padding: 0; font-size: 0.78rem; line-height: 1.65; color: var(--text); white-space: pre; overflow-wrap: normal; }
+  .article p.formula > code { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Paper</div>
+      <div class="tag-row"><span class="tag">CTI</span><span class="tag">Intel as Code</span><span class="tag">CI</span><span class="tag">Agents</span><span class="tag">Prompt Injection</span></div>
+      <h1>CTI as Code: The Intelligence Program as Version-Controlled Records</h1>
+      <div class="article-meta"><span>Published 25 October 2026. Jeff Hanna.</span><span class="sep">·</span><span>8 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#why-this-matters-to-the-argument">Why this matters to the argument</a></li><li><a href="#the-problem">The problem</a></li><li><a href="#the-approach">The approach</a></li><li><a href="#a-change-the-gates-refuse">A change the gates refuse</a></li><li><a href="#the-principles-i-would-defend">The principles I would defend</a></li><li><a href="#what-is-built-and-what-is-designed">What is built, and what is designed</a></li><li><a href="#what-would-make-me-wrong">What would make me wrong</a></li><li><a href="#where-it-connects">Where it connects</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>Status: part built, part designed. The record contracts, a validator, the commands that read them, a deterministic sanitiser and a worked example are built and tested. The larger systems around them are designed and not built. The code is at <a href="https://github.com/jhanna2/cti-as-code">https://github.com/jhanna2/cti-as-code</a>.</p>
+<h2 id="why-this-matters-to-the-argument">Why this matters to the argument</h2>
+<p>In <a href="https://jhanna2.github.io/writing/future-of-cti/">the essay</a> I argue that when attacker capability stops varying, prediction from actor history loses most of its preventive value, and what remains of threat intelligence is small: requirements, intent, warning, collection conduct and the rules every handoff runs on. A small function has to run at machine speed, because the people who do the handoff work will not scale with the volume. This piece describes one way to run it, and it is the part of the series that exists as code.</p>
+<p>Two key judgments, with confidence:</p>
+<ol><li>The part of CTI that keeps it from being agentic is the program's own state, not the models. Confidence: moderate to high.</li><li>Holding that state as records under CI makes agent help safe to accept and makes the program's gaps visible. Confidence: moderate. I have built the checks and not measured what they change in a real program.</li></ol>
+<h2 id="the-problem">The problem</h2>
+<p>Detection engineering moved its rules into version control years ago. A detection is a file, it is reviewed as a pull request, and CI refuses one that does not parse or does not fire on its own true positive.</p>
+<p>The intelligence program has usually not made the same move. The requirements sit in a slide deck, the collection plan in a spreadsheet, a campaign on a wiki page. None of these can fail. They go stale quietly, and the program learns they were wrong when an incident asks one of them a question.</p>
+<p>The lopsided part is where the effort goes. Collection and processing have been automated for years, and the platforms sell exactly that. Analysis has been partly automated, and models do it well: turning prose into techniques, extracting indicators, clustering reporting, drafting an assessment. Program management has not been touched. Setting and maintaining requirements, knowing which sources answer which of them and which answer nothing, noticing a requirement that has lost its consumer, tracking what the program cannot see, and deciding what automation may do unattended: that work takes much of a lead's time and has the largest effect on whether the function changes anything. It is held in prose, spreadsheets and people's heads.</p>
+<p>Models read prose, so reading is not the obstacle. Writing is. An agent can summarize a collection plan kept in a spreadsheet. It cannot safely change one, because nothing reviews the edit, nothing fails when the edit leaves a requirement unanswered, and nothing records why it happened.</p>
+<h2 id="the-approach">The approach</h2>
+<p>Coding agents became useful because software already had the environment an agent needs: a repository to read, tests and CI that say whether a change is correct, and pull requests through which a person approves what lands. The agent proposes, the build checks, a human signs. The idea here is to give the intelligence program the same environment.</p>
+<p>The program becomes a repository of records. A priority intelligence requirement is a YAML file that names the decision it serves and who makes it. Each question under it resolves to a collection source or names a gap. Decoys, detection candidates and campaigns each point back up to a requirement. An agent is a record too, with a contract it must satisfy before it may run. CI enforces the claims the records make about each other, and one command walks the whole chain.</p>
+<p>The example in the repository is a fictional freight-booking platform. Every name in it is invented, and it is small on purpose: a few records of each kind, with some requirements only partly sourced and one that leads with two gaps that have no source at all. That is the shape a real program has early on. This is what the commands print for it:</p>
+<pre><code>$ ctiac trace example/
+PIR coverage (requirement -&gt; collection):
+  PIR-03  EEI-03-1  &lt;- SRC-04
+  PIR-03  EEI-03-2  &lt;- SRC-01  PARTIAL: Partial only. SRC-01 sees actors that get written up publicly…
+  PIR-06  EEI-06-1  &lt;- GAP: No source. This inventory usually lives in contracts and integration…
+  ...
+Campaigns (cross-tier corroboration):
+  CAMP-01  CAMPAIGN-001  spans 3 tier(s): external-open, external-shared, internal-deception
+  CAMP-02  CAMPAIGN-002  spans 1 tier(s): internal-telemetry  &lt;- single-tier, weakly corroborated</code></pre>
+<p>A <code>GAP</code> line is correct output. The failure is a requirement with neither a source nor a named gap, because an unnamed gap looks like coverage.</p>
+<h2 id="a-change-the-gates-refuse">A change the gates refuse</h2>
+<p>The repository has a walkthrough of an agent proposing a new requirement. It reads well. It also cites an actor class that does not exist and a source that does not exist. The validator, run in CI, prints:</p>
+<pre><code>FAIL [requirements] PIR-09: threat_profile_ref 'ACTOR-09' resolves to no CJ or ACTOR
+FAIL [requirements] PIR-09: EEI EEI-09-1 has neither a resolvable source nor a named gap</code></pre>
+<p>and exits nonzero, so the pull request cannot merge. Neither failure needed a person or a model to find. The corrected version points the reference at a class that exists, cites the ticket source that holds part of the answer, and names what is still missing. The program gets one more named gap, and <code>ctiac gaps</code> lists it with the rest. The agent that drafted the proposal is not in the repository. The gates that refused it are.</p>
+<h2 id="the-principles-i-would-defend">The principles I would defend</h2>
+<p>The repository states eleven. Five carry most of the argument.</p>
+<p>A gap is named, or the build fails. This gate matters most because the failure it prevents is common: pointing a requirement at whichever source happens to exist and reporting it covered. Named gaps are also the most useful output the program produces. Printed together they are the case for each new source, purchase or hire.</p>
+<p>Every record publishes its own blind spot. A detection candidate carries a non-empty list of what it does not cover. An agent declares where it is known to fail. A suspected overlap between an internal cluster and a publicly named actor must say what knowing it would change, and "nothing" is a permitted answer that has to be written down. Pitching a detection without stating what it misses is how coverage numbers start to lie.</p>
+<p>A gate without a negative test is a comment. Every rule in the validator has a test that constructs the forbidden shape and checks that it is refused. A related rule: an empty result is an error. Run against the wrong directory, the validator finds no records, and reporting "0 violations" would be a green build that read nothing.</p>
+<p>Authority follows determinism. A deterministic, reproducible check may sit in the path and block. A model's judgment may only raise a flag for review. The sharpest case is sanitization. The stage that decides what a model may see of text an adversary wrote for the purpose cannot itself be a model, because that moves the injection one step earlier onto a more privileged victim. The sanitizer in the repository is a static transform. A planted prompt-injection article goes in, five injections are stripped, the two genuine claims survive, and the item is flagged so it routes to a person and not to the auto-dismiss the injection asked for. A golden test holds the published output to the code byte for byte.</p>
+<p>Agents are records, and untrusted input never runs autonomously. An agent must have a contract before it runs: its trigger, its approval level, whether it reads text an adversary can influence, where its evaluation set lives and where it is known to fail. The gate that carries the weight is one line. If an agent reads untrusted input and its approval level is autonomous, the build fails. Intelligence work reads text written by the adversary, so an agent that does so and may act without review is a channel for arguing into the automation. In the example, the extraction agent reads scraped reporting and needs review. A second agent, which only summarizes the program's own reviewed records, may run unattended, and the contract says why.</p>
+<p>Writes are pull requests. Agents read the trees. If one wants to change the program, it opens a pull request validated by the same gates as a human commit, and a person signs it. Adjudicated cases are stricter: a case record with no human reviewer fails, because once an agent writes its own precedent the learning loop amplifies its own errors.</p>
+<h2 id="what-is-built-and-what-is-designed">What is built, and what is designed</h2>
+<p>Built and tested: the eight record trees and a worked example; a validator enforcing every gate marked enforced in the contracts document, each with a negative test (42 tests in all); the <code>validate</code>, <code>trace</code>, <code>gaps</code> and <code>report</code> commands; the deterministic sanitizer with its golden test; a decoy canary predicate; and CI running all of it.</p>
+<p>Designed and not built: the read API, the model-driven extraction pipeline, a filter audit that scores what a collection filter drops against the requirements, actor clustering and ranking, the sharing pipeline, and the retrieval and drift loop over adjudicated cases, along with drift detection and a drift budget for self-tuning controls. They are specified with their gates, and nothing has run against real telemetry. Every fixture is synthetic.</p>
+<h2 id="what-would-make-me-wrong">What would make me wrong</h2>
+<p>The gates can be gamed. If records start being written to satisfy the checks and not to describe the program, gaps get named vaguely enough to pass. The remedy in that case is fewer gates, not more. A requirement that passes every gate can still be the wrong requirement; the gates enforce the program's honesty about itself and do no analysis.</p>
+<p>The overhead may exceed the value. A small program with a few requirements may find that a document is cheaper to keep than a repository. I expect the break-even to depend on how many consumers and sources there are, and I have not measured it.</p>
+<p>Models may not need the structure. If agents become reliable enough at editing prose that review and checking add little, the argument for records weakens, though determinism and diffability would still matter for audit.</p>
+<p>I have not run this in a real program. The example is fictional, so it shows that the checks work and cannot show that they improve outcomes. The experiment that would count is a real program run under these gates for a stretch, measuring whether named gaps turn into sources and whether stale requirements are caught earlier than before. I will publish the result either way.</p>
+<h2 id="where-it-connects">Where it connects</h2>
+<p>The essay says what remains of the function after the shift; this is how it runs. The <a href="https://jhanna2.github.io/writing/agent-first-tip/">agent-first TIP</a> is the platform that would sit under these records. <a href="https://jhanna2.github.io/writing/agentic-iam/">Agentic IAM</a> covers what an agent may touch once it runs. The <a href="https://jhanna2.github.io/writing/detection-priority/">detection paper</a> hands detection a priority built from paths and not from actors, and a detection with an owner, a path it serves and a last-validated date is a record this repository's checks could verify.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>
