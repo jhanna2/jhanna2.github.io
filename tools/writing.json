@@ -1,6 +1,8 @@
 {
   "intro": "Essays, papers and lab write-ups on threat intelligence, detection and AI security. Each piece is labelled with what it is: an argument (Essay, Paper) or something built and tested (Lab, Project).",
-  "featured": ["future-of-cti"],
+  "featured": [
+    "future-of-cti"
+  ],
   "tracks": [
     {
       "name": "Threat Intelligence",
@@ -8,7 +10,14 @@
       "series": [
         {
           "name": "The future of CTI",
-          "pieces": ["future-of-cti", "detection-priority", "cti-as-code", "agent-first-tip", "agentic-iam", "agentic-tarpit"]
+          "pieces": [
+            "future-of-cti",
+            "detection-priority",
+            "cti-as-code",
+            "agent-first-tip",
+            "agentic-iam",
+            "agentic-tarpit"
+          ]
         }
       ],
       "standalone": []
@@ -33,15 +42,26 @@
       "type": "Essay",
       "status": "Published",
       "summary": "When capability stops varying between attackers, an attacker's means track the target's exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence: what hands off to other teams, what stays, and what to build now.",
-      "tags": ["Threat Intelligence", "AI Agents", "Intelligence Estimate", "Strategy"]
+      "tags": [
+        "Threat Intelligence",
+        "AI Agents",
+        "Intelligence Estimate",
+        "Strategy"
+      ]
     },
     "detection-priority": {
       "title": "Prioritizing Detections When Any Technique Is Possible",
-      "url": null,
+      "url": "detection-priority/",
       "type": "Essay",
-      "status": "Coming soon",
+      "status": "Draft",
       "summary": "Ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage.",
-      "tags": ["Detection Engineering", "ATT&CK", "Attack Paths"]
+      "tags": [
+        "Detection Engineering",
+        "ATT&CK",
+        "AI Agents",
+        "Intelligence Estimate",
+        "Attack Paths"
+      ]
     },
     "cti-as-code": {
       "title": "CTI as Code",
@@ -49,7 +69,11 @@
       "type": "Project",
       "status": "Coming soon",
       "summary": "The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI.",
-      "tags": ["Intel as Code", "CI", "Agents"]
+      "tags": [
+        "Intel as Code",
+        "CI",
+        "Agents"
+      ]
     },
     "agent-first-tip": {
       "title": "Agent-First TIP",
@@ -57,7 +81,11 @@
       "type": "Paper",
       "status": "Coming soon",
       "summary": "A threat intelligence platform built on first-party evidence, where agents propose, gates check, and humans own ground truth.",
-      "tags": ["Threat Intelligence Platform", "Agents", "Deception"]
+      "tags": [
+        "Threat Intelligence Platform",
+        "Agents",
+        "Deception"
+      ]
     },
     "agentic-iam": {
       "title": "Agentic IAM",
@@ -65,7 +93,11 @@
       "type": "Paper",
       "status": "Coming soon",
       "summary": "Access control for AI agents: just-in-time credentials, attenuated delegation and attested agent identity, framed as falsifiable hypotheses.",
-      "tags": ["IAM", "Capability Tokens", "Attestation"]
+      "tags": [
+        "IAM",
+        "Capability Tokens",
+        "Attestation"
+      ]
     },
     "agentic-tarpit": {
       "title": "Agentic Tarpit",
@@ -73,7 +105,11 @@
       "type": "Paper",
       "status": "Coming soon",
       "summary": "Defensive prompt injection: content that stalls, misdirects or exposes an autonomous attacker, while the defender's own agents stay immune.",
-      "tags": ["Deception", "Prompt Injection", "Assume Breach"]
+      "tags": [
+        "Deception",
+        "Prompt Injection",
+        "Assume Breach"
+      ]
     }
   }
 }

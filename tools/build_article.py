@@ -2,7 +2,7 @@
 """Build a long-form article page for /writing/<slug>/ from a Markdown source.
 
 Usage:
-  python3 tools/build_article.py SOURCE.md SLUG [--tags "A,B,C"] [--description "..."]
+  python3 tools/build_article.py SOURCE.md SLUG [--type Essay|Paper|Lab] [--tags "A,B,C"] [--description "..."]
 
 The source keeps its own title (the first "# " heading) and status line (the
 first paragraph after it, e.g. "Draft. Jeff Hanna."). Edit the source and
@@ -130,6 +130,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("source")
     ap.add_argument("slug")
+    ap.add_argument("--type", default="Essay")
     ap.add_argument("--tags", default="")
     ap.add_argument("--description", default="")
     args = ap.parse_args()
@@ -159,6 +160,7 @@ def main():
     page = TEMPLATE.read_text(encoding="utf-8")
     for key, val in {
         "TITLE": html.escape(title),
+        "TYPE": html.escape(args.type),
         "DESCRIPTION": html.escape(args.description),
         "STATUS": inline(status),
         "TAGS": tags,

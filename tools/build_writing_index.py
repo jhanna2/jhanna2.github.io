@@ -44,7 +44,7 @@ def featured_card(p):
 def entry(p, num=None):
     title = (f'<a href="{e(p["url"])}" class="entry-title">{e(p["title"])}</a>' if p["url"]
              else f'<span class="entry-title">{e(p["title"])}</span>')
-    cls = "entry" if p["status"] == "Published" else "entry pending"
+    cls = "entry pending" if p["status"] == "Coming soon" else "entry"
     num_html = f'<span class="entry-num">{num:02d}</span>' if num else ""
     return f'''        <li class="{cls}">{num_html}<div>
           {title}

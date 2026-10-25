@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prioritizing detections when any technique is possible: a forecast — Jeff Hanna</title>
+  <meta name="description" content="An estimate on ranking detections when actor history stops predicting technique: a filter chain built on paths to critical assets, coverage measured as the share of paths cut by validated detections, and a staged transition from actor-weighted coverage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0e0c0a;
+    --bg2:       #131109;
+    --bg3:       #18160f;
+    --border:    #2d2820;
+    --text:      #ccc5b5;
+    --text-dim:  #a39883;
+    --text-faint:#857a68;
+    --gold:      #c4993a;
+    --gold-dim:  #a8803c;
+    --white:     #ede8dc;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    padding: 0.9rem 1.25rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; flex-shrink: 0; }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; align-items: center; }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  @media (min-width: 600px) { nav { padding: 1rem 2.5rem; } .nav-links { gap: 1rem 2rem; } }
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+  }
+  @media (min-width: 600px) { footer { padding: 1.75rem 2.5rem; } }
+  footer span { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  footer a { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.55s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.05s; }
+  .fade-up:nth-child(2) { animation-delay: 0.14s; }
+  .fade-up:nth-child(3) { animation-delay: 0.22s; }
+  .fade-up:nth-child(4) { animation-delay: 0.30s; }
+  .fade-up:nth-child(5) { animation-delay: 0.38s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.5rem; }
+  @media (min-width: 600px) { .ruled-divider { margin: 3rem 0 2rem; } }
+  .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
+
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
+  .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
+  .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
+  .back-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../projects/index.html">Projects</a>
+      <a href="../index.html" class="active">Writing</a>
+      <a href="../../resume.html" >Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </nav>
+  <div class="page-wrap">
+    <header class="fade-up">
+      <div class="proj-eyebrow">Essay</div>
+      <div class="tag-row"><span class="tag">Detection Engineering</span><span class="tag">ATT&amp;CK</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span><span class="tag">Attack Paths</span></div>
+      <h1>Prioritizing detections when any technique is possible: a forecast</h1>
+      <div class="article-meta"><span>Draft. Jeff Hanna.</span><span class="sep">·</span><span>19 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#what-this-argues">0. What this argues</a></li><li><a href="#key-judgments">1. Key judgments</a></li><li><a href="#the-standard-approach-stated-fairly">2. The standard approach, stated fairly</a></li><li><a href="#why-the-premise-weakens-under-agentic-breadth">3. Why the premise weakens under agentic breadth</a></li><li><a href="#the-filter-chain">4. The filter chain</a></li><li><a href="#measuring-it">5. Measuring it</a></li><li><a href="#prior-art-and-what-is-different">6. Prior art, and what is different</a></li><li><a href="#the-transition-how-and-when">7. The transition: how and when</a></li><li><a href="#agent-specific-signals-and-deception-briefly">8. Agent-specific signals and deception, briefly</a></li><li><a href="#evidence-and-experiments">9. Evidence and experiments</a></li><li><a href="#what-would-make-me-wrong">10. What would make me wrong</a></li><li><a href="#what-i-have-not-verified">11. What I have not verified</a></li></ol>
+    </div>
+    <article class="article fade-up">
+<p>This is a companion to <a href="https://jhanna2.github.io/writing/future-of-cti/">The Future of CTI: A Forecast</a>. It is written as an estimate: key judgments with confidence levels, the reasoning, and what would make it wrong. Every case below is cited to the publisher's own page.</p>
+<h2 id="what-this-argues">0. What this argues</h2>
+<p>Detection programs commonly prioritize coverage by asking which threat actors are likely to target the organization, which techniques those actors use, and which of those techniques the organization cannot yet detect. I think that model works when actors differ in what they do, and I think it weakens when they stop differing. If an attacker can run any technique cheaply and routes around the ones it fails at, a heat map weighted by actor history says less about where an intrusion will go.</p>
+<p>This essay asks two questions. If any technique in ATT&amp;CK could be used, how should a team prioritize detections? And how, and when, does a team move from actor-weighted coverage to whatever replaces it without leaving a gap?</p>
+<p>My answer to the first is a filter chain that needs no actor model: applicability, position on paths to critical assets, convergence points, cut coverage and cost. My answer to the second is a parallel run with signposts, not a switch. Neither idea is entirely new, and section 6 says where each comes from. What I think is new is the combination: the premise that agentic breadth is what makes path-based prioritization necessary, adaptive agent runs as the way to validate it, and a transition sequence that is useful under either future.</p>
+<p>I have little first-hand experience of detection under agentic pressure. The argument rests on mechanism and on public cases. The experiments in section 9 are designed and not run.</p>
+<h2 id="key-judgments">1. Key judgments</h2>
+<ol><li>The prediction behind actor-weighted coverage weakens as attacker breadth grows. Confidence: moderate. Direction is more certain than timing.</li><li>Priority should come from a chain of filters that needs no actor model: applicability, position on paths, convergence points, and cost to detect and validate. Confidence: moderate.</li><li>Coverage should be measured as the share of paths to critical assets cut by at least one detection that has been validated, because an adaptive attacker routes around a single detected technique. Confidence: moderate. The idea has prior art; the premise and the validation method are my additions.</li><li>The quality measure that matters is time to detect plus contain, against the attacker's time to objective. Confidence: moderate.</li><li>The transition should run in parallel, driven by signposts, and each step should pay off under either future. Confidence: moderate to high on the shape, low on timing.</li><li>Actor knowledge keeps value as a sensitivity dial and a tie-breaker, and keeps more value for teams whose dominant threat is one specific actor. Confidence: high.</li></ol>
+<h2 id="the-standard-approach-stated-fairly">2. The standard approach, stated fairly</h2>
+<p>The model goes like this:</p>
+<ol><li>Read vendor and government reporting on the actors that target your sector.</li><li>Extract the techniques each one uses and map them to ATT&amp;CK.</li><li>Compare against the detections you have.</li><li>Prioritize the gaps, with extra weight for techniques that several relevant actors share.</li></ol>
+<p>AttackIQ states the practical version well in a March 2026 post. It says coverage is not a percentage of mapped techniques, and that "Some techniques function as choke points" which deserve "deep, validated coverage" first. In the same post it advises: "Know which threat actors are relevant to your industry and geography and focus your coverage on the techniques they actually use." The field holds both ideas at once, and that is reasonable. It is the second sentence I think weakens, and the first that I think takes over.</p>
+<p>The practice is also built into the tools. Microsoft Sentinel shows a MITRE ATT&amp;CK matrix of the analytics rules active in a workspace and a "simulated" view of the coverage available if every detection were switched on (Microsoft Learn, page updated 12 August 2026). Elastic's coverage page tells the reader to "look for light or empty cells" and to "prioritize which prebuilt rules to install or which custom rules to build next" (Elastic documentation, undated). Splunk's security content documents say use cases are "often aligned with security frameworks such as MITRE ATT&amp;CK" and can be filtered that way (Splunk Enterprise Security 8, Security Content Update 6.0, page updated 1 June 2026). In day-to-day work the flow is simple: an analyst reads a threat report, decides whether it matters to the organization, and passes its ATT&amp;CK techniques to a detection engineer, who checks them against the matrix. So much of what a detection program does rests on a belief about attacker capability: which techniques an actor is able and likely to use.</p>
+<p>Three things make this model sensible under human-scale capability. Actors do differ: their tooling, tradecraft and habits are sticky, which is the whole basis of the pyramid of pain. Reports exist and are free or cheap. And the matrix is large, so some rule for ordering the work is needed. The model gives one that a manager can explain and a team can act on.</p>
+<p>Mature teams do not use it alone. They weight by exposure, by asset value and by what red team finds, and they treat the heat map as one input. The MITRE Center for Threat-Informed Defense has pushed this further with Summiting the Pyramid, which scores a detection analytic by how hard it is for an adversary to evade. I do not argue against ATT&amp;CK. It stays the shared vocabulary for describing what happened and what is covered. My concern is narrower: using it as the prioritizer, with actor reporting as the weight.</p>
+<p>Four weaknesses of the model matter here, and they are visible before any claim about agents.</p>
+<p>Reports describe actors that were caught, after the fact. A technique list built from them is a record of what was seen and published, and the sample is biased toward careless or noisy operations. Several of the 2026 cases below came to light because the operator exposed their own server.</p>
+<p>Several actors' techniques together cover most of the matrix. Once a team maps the actors relevant to it, the union is large, and "prioritize" has little to discriminate on. Teams get around this with counts of how many actors use a technique, which rewards the most common techniques and says little about where a particular environment is weak.</p>
+<p>Reporting is about the actor, and the path is about the victim. Where public write-ups describe an intrusion step by step, the route usually ran through a weakness specific to the victim: an unrestricted pod admission policy, a shared credential bound to a powerful role, a trust relationship held by a vendor application. A technique list does not show those.</p>
+<p>Most intrusions have no named actor. If the unit of prioritization is the actor, a growing share of the activity has no unit.</p>
+<h2 id="why-the-premise-weakens-under-agentic-breadth">3. Why the premise weakens under agentic breadth</h2>
+<p>The model assumes that the techniques an attacker will use are a predictable subset of the matrix. The subset is predictable because skill, tooling and habit make each actor's behavior stick.</p>
+<p>An agent with a harness changes the cost structure. Trying a technique costs a few tokens. Switching technique when one fails costs the same. The cost of carrying a broad technique repertoire is close to zero, because the model carries it, so the attacker no longer needs to specialize. The agent may also decide where to go. In one arrangement it drives the whole operation and picks each next step; in another it recommends routes and a person approves them. Either way the choice of path comes from the environment in front of it, and not from a habit that belongs to a named operator.</p>
+<p>The public record fits this in some ways and not others, and I want to state both.</p>
+<p>It fits in these ways. The Hugging Face incident write-up (technical timeline, 27 July 2026) describes an agent, run by OpenAI as an internal cyber-capability evaluation that reached the internet (OpenAI confirmed this on 21 July), that "tested many paths that failed, switched channels when they were blocked," moving from code execution in one worker pod to cluster-admin across several internal clusters in under thirteen hours. CERT-In's October 2026 advisory says that in the incidents it observed, "AI found and exploited these conventional weaknesses faster, more exhaustively and at greater scale than human attackers." Microsoft's 21 October report on Storm-0940 describes sign-in attempts against more than 2,250 tenants, with failures peaking at 2,900 per minute on 11 October, and cases of under three hours from initial targeting to privileged access. CrowdStrike's 21 October report assesses with moderate confidence that agentic AI commoditizes baseline offensive operations.</p>
+<p>It fits poorly in these ways. Breadth did not equal success. Microsoft says "the majority of the targeting wasn't successful." Unit 42's report of an operator who attempted more than 460 targets, autonomously and by hand, says of the autonomous run: "The actor did not achieve exploitation." It attributes that to target-side configuration. The manual campaigns did have confirmed impact. A detection program facing breadth has to survive volume without drowning, so noise is part of the design problem. And human operators remain: CrowdStrike describes actors who had to intervene to get past a model's safety guardrails, and others who gave the agent near-total autonomy. The period I expect is mixed.</p>
+<p>The Hugging Face case also differs in kind: no criminal or state operator chose the target. Hugging Face writes that "we believe the entire intrusion was, from the agent's point of view, an attempt to cheat the evaluation." OpenAI's own account (21 July 2026, updated through 26 August) says the same: "All evidence suggests that the models were hyperfocused on finding a solution for ExploitGym, going to extreme lengths to achieve a rather narrow testing goal." The objective picked the target, which fits the claim that intent decides what is attacked, and it shows what an agent with broad technique coverage can do when the objective is the only thing steering it. It says less about how criminal operators will use the same capability.</p>
+<p>What the cases say about paths is the useful part. In the cases that describe one, the route ran through exposure and trust: a missing admission policy and a shared connector credential at Hugging Face, standing trust held by vendor applications in Microsoft's tenants, and the conventional weaknesses CERT-In lists (exposed credentials and keys, dormant APIs, plaintext payment keys, over-permissive cloud roles, exposed management interfaces without multi-factor authentication). Which technique carried each step mattered less than whether the step was available. Microsoft's case is the only one with a named actor, and the assessed actor used an open-source framework and generic cloud techniques. The actor label told a defender little about where to look.</p>
+<p>The honest limit on all of this: seven or eight public cases are a selection, not a sample. They cannot say how common anything is. They are enough to make the mechanism worth testing and not enough to prove it.</p>
+<h2 id="the-filter-chain">4. The filter chain</h2>
+<p>I propose ordering detection work by a chain of filters. Each step removes or ranks candidates, and none needs an actor model.</p>
+<p><strong>Applicability.</strong> Remove what cannot happen here. If the organization has no Windows servers, Windows-specific techniques fall out. If it has no use for a service, the techniques that abuse the service fall out. This is cheap and immediate. It is also the one step that pays off under either future, so a team can do it this quarter.</p>
+<p><strong>Position.</strong> Of what remains, which techniques sit on a path from a place an attacker can start to something worth reaching? This is reachability times blast radius, the same terms as the priority equation in the companion essay. It needs a list of entry points and a list of critical assets. Both are first-party facts that no vendor report supplies.</p>
+<p><strong>Convergence.</strong> Many paths end at the same few places: the data store, the signing key, the control plane, the identity provider. A detection at a convergence point keeps working when the route to it varies. The detections that recur in the public cases are of this kind: privileged role or credential additions, a credential used from an origin it has not used before, a new local administrator, changes to security-tool exclusions, reads of a large secret store. The Hugging Face authors' remediation list includes tooling that flags tokens used from unexpected origins. They also say they "had no admission policy rejecting privileged or hostPath pods," which makes creation of such a pod a candidate detection, though their post does not list it as one.</p>
+<p><strong>Cut coverage.</strong> Treat the paths as a graph. Ask which nodes or edges, once watched, cross the most paths. A detection on one technique is a detour for an adaptive attacker. A detection on a cut is not, because every path passes it.</p>
+<p><strong>Cost.</strong> Weigh how noisy a detection is, how costly it is to build and how testable it is. Invariants, the basics such as a service running as root, score well here, which is why they stay near the top of any backlog.</p>
+<h3 id="an-invented-example">An invented example</h3>
+<p>The following is a made-up freight-booking platform, with numbers chosen to show the mechanism and not measured on anything. It has three places an attacker can start: a public web application, a token held by a vendor integration, and a phished employee. It has two assets that matter: the payment ledger and the dispatch configuration. Six paths reach them.</p>
+<div class="table-wrap"><table><thead><tr><th>Path</th><th>Route</th></tr></thead><tbody><tr><td data-label="Path">P1</td><td data-label="Route">web application code execution, service account token, cluster secrets, ledger</td></tr><tr><td data-label="Path">P2</td><td data-label="Route">web application code execution, cloud metadata credentials, ledger replica</td></tr><tr><td data-label="Path">P3</td><td data-label="Route">vendor integration token, API administrator role, ledger</td></tr><tr><td data-label="Path">P4</td><td data-label="Route">vendor integration token, API administrator role, dispatch configuration</td></tr><tr><td data-label="Path">P5</td><td data-label="Route">phished employee, single sign-on session, admin console, dispatch configuration</td></tr><tr><td data-label="Path">P6</td><td data-label="Route">phished employee, single sign-on session, admin console, ledger export</td></tr></tbody></table></div>
+<p>An actor-weighted ranking, built from reporting on the actors that target freight and logistics, would put web shell and suspicious child processes on the web application first, and phishing and new-device sign-in second. Those two detections cross P1, P2, P5 and P6. They cross neither P3 nor P4, the vendor-token paths, because reports of the relevant actors do not describe that route.</p>
+<p>A path-first ranking finds that administrator-role use and role assignment appears on P3, P4, P5 and P6, and that bulk reads of the ledger appear on P1, P2, P3 and P6. Two detections at those points cross all six paths. The actor-weighted pair crosses four.</p>
+<p>Three limits apply. The example is constructed, so it shows the mechanism and not the size of the effect. A detection can be evaded within its node, which is the problem Summiting the Pyramid addresses, so the cut detections should also be hard to evade in that sense. And the paths in a real environment come from an exposure model that someone has to build.</p>
+<h3 id="where-the-actor-term-goes">Where the actor term goes</h3>
+<p>It does not disappear. Intent against the organization sets how sensitive the watched paths should be: when warning says interest is rising, tighten thresholds on the paths to the assets that interest points at. Actor reporting also tells a team how fast to build coverage for a newly disclosed technique, because a technique that is being used widely deserves a detector sooner. And for a team whose dominant threat is a specific state actor with a known playbook, the actor term keeps more weight than I give it here. The thesis is about ordering detections by technique, not about ignoring who is coming.</p>
+<h2 id="measuring-it">5. Measuring it</h2>
+<p><strong>Cut coverage.</strong> The share of paths to critical assets that are crossed by at least one detection that has been validated. Validation is the part I care about. A rule that exists is not a rule that fires. A detection counts toward a cut only if an adversarial run, from a person or an agent, crossed it and it fired in time to matter.</p>
+<p>This is where agents help the defender. An agent that explores an environment and takes alternative routes when blocked is also a way to test whether a cut holds. It plays the part of the adaptive attacker, and it does so repeatedly and cheaply. Breach-and-attack simulation tools replay known technique scripts; an adaptive agent explores, and so can find the route around a cut that a scripted replay would not try.</p>
+<p><strong>Time.</strong> Detect plus contain, against the attacker's time to objective. The Hugging Face case is the clearest public example of the gap. The authors say signals came from several layers at once ("live runtime analysis, SIEM logs, and others"), that "on their own, each was ambiguous," that an AI-based security agent correlated them into a coherent signal, and that it "failed to correctly raise the alert's criticality and trigger the on-call team." The failure was not missing coverage. It was the step from signal to action. Cut coverage does not fix that on its own, which is why time belongs beside it.</p>
+<p>Time raises a cost question. Faster response means automated containment, and automated containment needs impact ratings: disabling a credential and isolating a host have different costs of being wrong. The <a href="https://jhanna2.github.io/writing/agentic-iam/">agentic IAM paper</a> sets out a way to rate response actions, and I take it as the model here.</p>
+<p><strong>Signals that exist but are not correlated.</strong> The same case shows a measure worth reporting: of the detections that fired during a validated run, how many reached a responder with the right priority.</p>
+<p><strong>Compare, do not replace.</strong> Report ATT&amp;CK coverage next to cut coverage and study the disagreements. A technique that the heat map marks covered but that sits on no validated cut is coverage on paper. A cut that the heat map shows uncovered is a gap the matrix hid. The disagreements are the argument for the change, and they are also the work list.</p>
+<p><strong>A minimum viable exposure model.</strong> This approach depends on knowing the paths, and many organizations do not. The minimum is a list of critical assets, a list of entry points, and the paths that red team or an agent run finds between them. Actor-weighted coverage stays the fallback until that exists. I would sooner say so than pretend the dependency is small.</p>
+<h2 id="prior-art-and-what-is-different">6. Prior art, and what is different</h2>
+<p>The cut idea is old. Noel and Jajodia described using attack graphs to "determine optimal locations for intrusion sensors, to cover known paths of vulnerability, while minimizing the number of deployed sensors," and to prioritize alerts by closeness to critical assets. Their sensor placement paper appeared in the <em>Journal of Network and Systems Management</em> in 2008. It assumes a known vulnerability graph and a static one.</p>
+<p>Vendors use the idea for remediation. XM Cyber's material describes choke points as where "attack paths converge towards critical assets", used to decide what to fix. AttackIQ's recommends deep, validated coverage at choke points.</p>
+<p>MITRE's Summiting the Pyramid addresses a neighbouring problem. It scores an analytic on whether it "will remain accurate, even as adversaries implement new and sneakier versions of ATT&amp;CK techniques," through observables that "trigger no matter how a technique is implemented." Its site rates an observable on five levels, from ephemeral values at the bottom to invariant behaviors core to the technique at the top. The September 2026 release adds "implementation coverage," which "measures how many behaviorally distinct ways of performing a technique an analytic can observe." The project's repository includes a pipeline that prompts a language model to break each ATT&amp;CK technique into implementations, which its prompt defines as "a behaviorally distinct method of executing an ATT&amp;CK technique." All of this raises the cost of evading one technique's detection. As far as I can tell from the project's pages, it does not address an attacker who changes technique or route, which is the case I am concerned with. The scoring dictionary in its repository rates individual Windows event log and Sysmon fields (1,919 rows, scored 1 to 4 for robustness in the version I read), so what I read covers endpoint telemetry, while the paths in the public cases above ran largely through cloud identity, Kubernetes and vendor applications. I have not read the full methodology. The two combine well: choose where to watch by cut, and build the detection there to be hard to evade.</p>
+<p>What I add: the premise that agentic breadth moves path-based prioritization from a refinement to a requirement; adaptive agent runs as the validation instrument, replacing a static graph and scripted replay; and a staged transition for a team starting from actor-weighted coverage. I could not find the first two in the sources above. I have not searched exhaustively, and a reader who knows of earlier work should tell me.</p>
+<h2 id="the-transition-how-and-when">7. The transition: how and when</h2>
+<p>I do not offer a date. I offer a sequence in which each step is useful on its own, so that stopping at any step leaves the team better off.</p>
+<ol><li><strong>Add the applicability filter to the existing heat map.</strong> No-regret under either future.</li><li><strong>Name the critical assets and the entry points.</strong> Do this with red team and with whoever owns risk. The detection team usually lacks this list and the others hold pieces of it.</li><li><strong>Run the path model in parallel with the actor model, and record where they disagree.</strong> The disagreements are the evidence for the next step. If they are few, the actor model is working and the team should say so.</li><li><strong>Reorder the backlog.</strong> Basics and convergence-point detections first.</li><li><strong>Report cut coverage as a metric next to ATT&amp;CK coverage,</strong> and validate detections by running adversarial agents against the paths.</li><li><strong>Demote actor-justified detections, and do not delete them.</strong> Keep the cheap ones. Retire a detection when it has contributed nothing over a stated window, with the evidence recorded.</li><li><strong>Pair the highest-value detections with rated, automated containment.</strong></li></ol>
+<p><strong>When to move faster or slower.</strong> Signposts drive this, and I take them from the companion essay on the future of CTI. Move faster when open-weight models reach frontier offensive capability, when incident reports show adaptive multi-path behavior, and when agent red-team results cannot be explained by the actor model. Move slower when public cases keep showing narrow, repeated technique use by recognizable operators.</p>
+<p><strong>The cost of moving early.</strong> The mixed period may last years. Human operators persist, their techniques stay sticky, and actor-tied detections still pay. A team that drops them too early opens a gap. Running the two models in parallel is the hedge, and "demote, don't delete" is the rule that keeps it cheap.</p>
+<p><strong>Who owns what.</strong> The path model belongs jointly to detection, red team and risk. Detection records should be current and checkable, which links to CTI as code: a detection with an owner, a path it serves and a last-validated date is a record that CI can check. The intake of detection requests changes too. Requests come with a path or an asset, and not only with a technique name from a report.</p>
+<h2 id="agent-specific-signals-and-deception-briefly">8. Agent-specific signals and deception, briefly</h2>
+<p>Agent-shaped traffic is a detection that needs no actor model: machine tempo, breadth-first enumeration, rapid retry after errors and reach beyond a task's scope. The companion essay covers this, and the agentic IAM work covers how a sanctioned agent's grants make agent traffic without a grant suspicious by default. CERT-In's advisory recommends rate-based and per-second API anomaly detection for the same reason.</p>
+<p>Deception is a detection that needs no actor model either. A honey entry that no legitimate process would touch fires on anything that reads it. The <a href="https://jhanna2.github.io/writing/agentic-tarpit/">agentic tarpit</a> concept develops this, and treats the harder problem of keeping friendly agents from tripping it. I mention both here because they belong in a detection backlog and do not depend on knowing who the attacker is.</p>
+<h2 id="evidence-and-experiments">9. Evidence and experiments</h2>
+<p><strong>Public cases.</strong> Section 3 reads the public cases for the path each intrusion took, what the publisher said about detection, and where an actor-led ranking and a path-led ranking would have put a detector. The main finding is how little the sources say about victim-side telemetry, so the cases illustrate the argument and cannot test cut coverage.</p>
+<p><strong>Lab experiments, designed and not run.</strong> Each needs an isolated environment I own, so none is run yet.</p>
+<p><em>E1. Agentic red team against a replica, repeated many times.</em> Compare the technique and path distribution of the runs to an actor-weighted ranking. If the runs concentrate on the techniques an actor model predicts, the thesis is weak. No run is an exact repeat, so the measure is overlap, not identity.</p>
+<p><em>E2. Detection lead time against agent tempo,</em> with and without automated containment.</p>
+<p><em>E3. Do agent-found paths match a human attack-path analysis?</em> This tests whether an exposure model can be built from agent runs.</p>
+<p><em>E4. Does cut coverage predict which runs are detected better than ATT&amp;CK coverage does?</em> This is the test of key judgment 3. A result where the two predict equally well, or where ATT&amp;CK coverage predicts better, counts against the claim.</p>
+<h2 id="what-would-make-me-wrong">10. What would make me wrong</h2>
+<p>Agent breadth could be smaller than I assume. Harnesses constrain what an agent tries, and the public cases show narrow behavior in places. If agent runs against replicas concentrate on a small, predictable subset, the heat map survives.</p>
+<p>The mixed period could last. If human-operated activity with sticky techniques stays the main source of serious intrusions for several years, actor-tied chains keep paying and my transition is early.</p>
+<p>Exposure models could stay too inaccurate to prioritize on. If most teams cannot produce paths they trust, cut coverage is a number without a source.</p>
+<p>Cut coverage could cost more to compute and validate than it returns. If validation by agent runs is too noisy or expensive, teams will not do it.</p>
+<p>Mature teams may already do this. If so, the contribution is the name and the transition, and the essay should say that.</p>
+<h2 id="what-i-have-not-verified">11. What I have not verified</h2>
+<p>Counts of ATT&amp;CK techniques are not cited because I have not checked them against the current release. The prior-art search was not exhaustive. The Summiting the Pyramid claims come from the project's own blog, site pages and scoring dictionary, not the full methodology. None of the experiments has been run.</p>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
+  </div>
+
+  <footer>
+    <span>© Jeff Hanna · Built with intention.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+</body>
+</html>
