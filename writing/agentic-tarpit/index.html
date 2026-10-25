@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentic Tarpit — Jeff Hanna</title>
-  <meta name="description" content="Defensive indirect prompt injection: seeding the infrastructure an autonomous attacker reads with content that stalls, misdirects or exposes it, while the defender&#x27;s own agents stay immune. Pre-prototype, with the friendly-fire problem treated as the central one." />
+  <title>Tarpitting Agentic Attacks — Jeff Hanna</title>
+  <meta name="description" content="Deception for agentic attackers: a maintained catalog of agent weaknesses turned against an attacker inside our own environment, to stall it, misdirect it and make it reveal itself, measured by attacker time to objective." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -81,42 +81,62 @@
   .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .ruled-divider span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; white-space: nowrap; }
 
-  .page-wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  .page-wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
   @media (min-width: 600px) { .page-wrap { padding: 4.5rem 2rem 7rem; } }
   .proj-eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); border: 1px solid var(--gold-dim, #a8803c); padding: 0.15rem 0.5rem; display: inline-block; margin-bottom: 1rem; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.8rem; }
   .tag { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.55rem; letter-spacing: 0.03em; }
   h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; color: var(--white); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 1rem; }
-  .proj-summary { font-size: 1rem; line-height: 1.78; color: var(--text); margin-bottom: 1.5rem; max-width: 680px; }
-  .proj-summary strong { color: var(--white); font-weight: 500; }
-  .source-link { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--gold); text-decoration: none; letter-spacing: 0.03em; display: inline-flex; align-items: center; gap: 0.4rem; transition: gap 0.2s, color 0.2s; margin-bottom: 2.5rem; }
-  .source-link:hover { color: var(--white); gap: 0.7rem; }
-  .prose h2 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 2.5rem 0 0.8rem; }
-  .prose p { font-size: 0.93rem; line-height: 1.78; color: var(--text); margin-bottom: 1rem; }
-  .prose p strong { color: var(--white); font-weight: 500; }
-  .prose ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-  .prose ul li { font-size: 0.93rem; line-height: 1.68; color: var(--text); padding-left: 1.1rem; position: relative; }
-  .prose ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.75rem; top: 0.1em; }
-  .prose pre { background: var(--bg2); border: 1px solid var(--border); padding: 1.2rem 1.4rem; overflow-x: auto; margin-bottom: 1.2rem; border-left: 3px solid var(--gold-dim, #a8803c); }
-  .prose code { font-family: var(--mono); font-size: 0.8rem; color: var(--text); line-height: 1.6; }
-  .prose p code { background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; font-size: 0.78rem; color: var(--gold); }
-  .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.2rem; font-size: 0.85rem; }
-  .prose th { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
-  .prose td { font-size: 0.85rem; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.55rem 0.6rem; vertical-align: top; }
-  .prose tr:last-child td { border-bottom: none; }
-  .prose ol { list-style: none; counter-reset: item; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
-  .prose ol li { counter-increment: item; font-size: 0.93rem; line-height: 1.68; color: var(--text); padding-left: 1.6rem; position: relative; }
-  .prose ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.78rem; top: 0.15em; }
-  .prose a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; }
-  .prose a:hover { color: var(--white); }
-  .series-note { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 1.2rem; margin-top: 2.5rem; }
-  .series-note a { color: var(--gold); text-decoration: none; }
+  .article-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.03em; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-bottom: 2rem; }
+  .article-meta .sep { color: var(--text-faint); }
+
+  .toc { border: 1px solid var(--border); background: var(--bg2); padding: 1.1rem 1.25rem; margin-bottom: 2.5rem; }
+  .toc-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+  .toc ol { list-style: none; display: grid; gap: 0.3rem; }
+  @media (min-width: 600px) { .toc ol { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; } }
+  .toc a { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--gold); }
+
+  .article { font-size: 1rem; }
+  .article h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin: 3rem 0 1rem; scroll-margin-top: 5rem; }
+  .article h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; font-style: italic; color: var(--white); margin: 2rem 0 0.7rem; scroll-margin-top: 5rem; }
+  .article p { font-size: 1rem; line-height: 1.85; color: var(--text); margin-bottom: 1.2rem; }
+  .article strong { color: var(--white); font-weight: 500; }
+  .article em { font-style: italic; }
+  .article a { color: var(--gold); text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; transition: color 0.2s; }
+  .article a:hover { color: var(--white); }
+  .article ul, .article ol { margin: 0 0 1.3rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .article li { font-size: 1rem; line-height: 1.8; color: var(--text); padding-left: 1.8rem; position: relative; }
+  .article ul li::before { content: '—'; position: absolute; left: 0.2rem; color: var(--gold-dim, #a8803c); font-family: var(--mono); font-size: 0.8rem; top: 0.15em; }
+  .article ol { counter-reset: item; }
+  .article ol li { counter-increment: item; }
+  .article ol li::before { content: counter(item) '.'; position: absolute; left: 0; color: var(--gold); font-family: var(--mono); font-size: 0.8rem; top: 0.2em; }
+  .article code { font-family: var(--mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); padding: 0.1rem 0.35rem; color: var(--gold); overflow-wrap: anywhere; }
+  .article p > code:only-child { display: block; padding: 0.9rem 1.1rem; border-left: 3px solid var(--gold-dim, #a8803c); text-align: center; }
+
+  .table-wrap { margin: 0.5rem 0 1.8rem; overflow-x: auto; border-top: 1px solid var(--border); }
+  .article table { width: 100%; border-collapse: collapse; }
+  .article th { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; color: var(--gold-dim, #a8803c); letter-spacing: 0.06em; border-bottom: 1px solid var(--border); padding: 0.6rem 0.7rem; text-align: left; vertical-align: bottom; }
+  .article td { font-size: 0.86rem; line-height: 1.6; color: var(--text); border-bottom: 1px solid var(--bg3); padding: 0.7rem; vertical-align: top; }
+  .article tr:last-child td { border-bottom: none; }
+  .article td:first-child { color: var(--white); }
+  .article td:first-child { min-width: 7rem; }
+  /* Phones: stack each row into a card, labelled from the header. */
+  @media (max-width: 640px) {
+    .table-wrap { border-top: none; overflow: visible; }
+    .article table, .article tbody, .article tr, .article td { display: block; width: 100%; }
+    .article thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .article tr { border: 1px solid var(--border); background: var(--bg2); padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; }
+    .article td, .article tr:last-child td { border-bottom: none; padding: 0.3rem 0; }
+    .article td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold-dim, #a8803c); margin-bottom: 0.1rem; }
+  }
+
   .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
   .back-link:hover { color: var(--gold); }
 </style>
 </head>
 <body>
-  
+
   <nav>
     <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
     <div class="nav-links">
@@ -129,17 +149,54 @@
     </div>
   </nav>
   <div class="page-wrap">
-    <div class="fade-up">
-      <div class="proj-eyebrow">Coming soon</div>
-      <div class="tag-row"><span class="tag">Deception</span><span class="tag">Prompt Injection</span><span class="tag">AI Agents</span><span class="tag">Assume Breach</span></div>
-      <h1>Agentic Tarpit</h1>
-      <p class="proj-summary">Defensive indirect prompt injection: seeding the infrastructure an autonomous attacker reads with content that stalls, misdirects or exposes it, while the defender's own agents stay immune. Pre-prototype, with the friendly-fire problem treated as the central one.</p>
+    <header class="fade-up">
+      <div class="proj-eyebrow">Paper</div>
+      <div class="tag-row"><span class="tag">Deception</span><span class="tag">Prompt Injection</span><span class="tag">AI Agents</span><span class="tag">Assume Breach</span><span class="tag">Active Defense</span></div>
+      <h1>Tarpitting Agentic Attacks</h1>
+      <div class="article-meta"><span>Published 24 October 2026. Jeff Hanna.</span><span class="sep">·</span><span>9 min read</span></div>
+    </header>
+    <div class="toc fade-up" role="navigation" aria-label="Contents">
+      <div class="toc-label">CONTENTS</div>
+      <ol><li><a href="#the-premise-and-why-i-accept-it">The premise, and why I accept it</a></li><li><a href="#what-changed-since-the-first-draft">What changed since the first draft</a></li><li><a href="#four-things-a-catalog-entry-can-do">Four things a catalog entry can do</a></li><li><a href="#the-legal-line">The legal line</a></li><li><a href="#surviving-a-cross-check">Surviving a cross-check</a></li><li><a href="#the-hard-problems">The hard problems</a></li><li><a href="#who-this-does-not-work-against">Who this does not work against</a></li><li><a href="#validation">Validation</a></li><li><a href="#where-it-connects">Where it connects</a></li><li><a href="#references">References</a></li></ol>
     </div>
-    <div class="prose fade-up">
-<p>This write-up is not published yet. It is a companion to <a href="../future-of-cti/">The Future of CTI: A Forecast</a>, which explains where it fits.</p>
-
-      <a href="../" class="back-link">← All Writing</a>
-    </div>
+    <article class="article fade-up">
+<p>Status: hypothesis, pre-prototype. No experiment has run, so nothing here is evidence that the idea works. This is a design and a plan to test it.</p>
+<h2 id="the-premise-and-why-i-accept-it">The premise, and why I accept it</h2>
+<p>Two assumptions drive everything. Intrusion is inevitable, and so is access to sensitive infrastructure: identity systems, secrets, and the tools used to pivot and persist. Prevention buys time and does not buy certainty. Both are bets, so here is the argument and what would break it.</p>
+<p>Defenders have to be right everywhere and attackers once. That was always true. What has changed is the cost of finding the one gap. Agents are competent at reconnaissance and chaining, so the exposures worth an attacker's time grow to include nearly all of them. Once inside, an agent pursues every branch an enumeration reveals in parallel, where a person triages and skips. It reads large amounts of configuration and directory data and notices misconfigurations a person would take longer to see, or never read. It retries through errors and does not tire.</p>
+<p>The public record fits this, though it is a selection and not a sample. Hugging Face's technical timeline (27 July 2026) describes an agent that went from code execution in one worker pod to cluster-admin across several internal clusters in under thirteen hours. CERT-In's October 2026 advisory (CIAD-2026-0049) describes attackers running parallel multi-agent operations.</p>
+<p>Speed is the part that matters most. Anthropic's report on GTG-1002 (November 2025) describes a campaign in which a human approved a few phase transitions: from reconnaissance to exploitation, use of harvested credentials for lateral movement, and the scope of exfiltration. The report estimates that the AI executed 80 to 90 percent of tactical work, with humans at 10 to 20 percent of total effort. In its database extraction example the AI worked for two to six hours against five to twenty minutes of human action. Incident response at human pace loses that race.</p>
+<p>Two things would break the premise: prevention becoming cheaper than agentic exploitation, or agentic attackers proving much weaker at long multi-step intrusions in real environments. I do not see either today, and both are checkable.</p>
+<p>So the interesting question is the window between an attacker reaching sensitive infrastructure and completing its objective. A tarpit tries to widen that window and use it. It is not a detection network. Detection tells responders the window opened. The tarpit keeps it open long enough for them to act, and the number I care about is attacker time to objective, with and without it.</p>
+<h2 id="what-changed-since-the-first-draft">What changed since the first draft</h2>
+<p>The first draft was defensive indirect prompt injection: seed instructions where an attacker's agent reads, and hope the model obeys. A round of adversarial review took that apart. Model vendors are training models to rank untrusted text below privileged instructions (the instruction hierarchy, Wallace et al., April 2024), and attackers get every improvement for free. Prompt injection survives as one entry in a larger catalog, and not a durable one.</p>
+<p>What replaces it is a maintained catalog of agent weaknesses, turned against the attacker inside our own environment. The design principle is to exploit what vendors reinforce. Labs can train models not to obey instructions found in data. They cannot train them to disbelieve data, to stop completing the workflows they find, to stop using the tools available, to stop persisting through errors, or to stop trusting their own memory, without breaking the product. Entries built on those behaviors should last longer. That is the hypothesis, and it is falsified if they decay as fast as injection does.</p>
+<h2 id="four-things-a-catalog-entry-can-do">Four things a catalog entry can do</h2>
+<p>Stall: hold the attacker in place with recoverable errors, endless pagination or useless but plausible subtasks. Stall in wall-clock time, not tokens, because burning tokens hurts only budget-limited operators while burning time hurts anyone racing a response team. Misdirect: send the agent to false pivots and decoy high-value targets that are instrumented. Report: lead the agent to touch something it would otherwise leave alone, where the touch is the alert. Elicit: get the attacker to state what it wants, for instance through a decoy helpdesk assistant or a "reason for access" field it has to fill in, which gives first-party evidence of intent.</p>
+<p>Each entry also records the OWASP weakness it exploits (the 2026 list is renumbered from 2025, so entries name the weakness and the list version), the MITRE ATLAS techniques it corresponds to (the mapping uses ATLAS content version 2026.09, released 15 September 2026, and it describes the same weaknesses that attackers use against AI systems, turned the other way), its tactic, how it handles friendly fire, its legal class, a durability rating and the date and result of the last measurement.</p>
+<p>The placement is honey entries and honey data, an extension of honeytokens. A token waits to be used. A honey entry is read first and shapes what the attacker decides next. The best surfaces are the ones enumeration tooling dumps straight into an agent's context: directory attributes, certificate template properties, pipeline definitions, records that feed retrieval systems.</p>
+<h2 id="the-legal-line">The legal line</h2>
+<p>Every induced action happens inside our own environment. An agent that reads a decoy, queries a canary or writes its stated reason to an endpoint we own is in bounds. Instructing actions on the attacker's infrastructure, or exploiting the attacker's harness, is out. A beacon that calls home from the attacker's side is a gray area that needs legal review before anyone builds it.</p>
+<h2 id="surviving-a-cross-check">Surviving a cross-check</h2>
+<p>A capable agent verifies what it reads against the vault, DNS, logon history and the asset database. Faking a whole company to survive that is the old problem with high-interaction deception. I think the answer is that the cross-check is the tripwire. If every check lands on something instrumented, each one costs the attacker time and reveals it. Consistency is needed only where checks are cheap and uninstrumented, which is a much smaller job.</p>
+<p>Decoys at several depths create a dilemma. An obvious decoy either makes the subtle ones look real, or makes the agent suspicious of everything (so it checks more, which is slower and trips more instrumentation), or makes it abandon the target. This works on people. Whether it works on agents, and which reaction they show, is untested.</p>
+<p>The attacker's human is a bottleneck as well. We cannot add gates to someone else's orchestration, but we can make the decisions they already gate harder, with options that look equally good or contradict each other. Volume alone gets ranked away by the agent's triage. Ambiguity is what should force an escalation. How agents decide to escalate is not publicly documented, and it needs a lab test.</p>
+<h2 id="the-hard-problems">The hard problems</h2>
+<p>Friendly fire comes first. Our own agents read the same infrastructure, so a field that misleads an attacker's agent misleads ours unless ours can tell the difference and the attacker's cannot. A list of what to ignore is a skeleton key if stolen. The approach I prefer is a model gateway that all internal agent traffic passes through. Every record carries a keyed tag, an HMAC over its status and ID, verified by a service that holds the key and never lets it into a model's context. The gateway asks that service whether a record is a decoy and strips or annotates it before the model sees it. Stealing the gateway yields a verifier, not a catalog and not the ability to forge tags. Agent-shaped traffic that bypasses the gateway is a signal. Third-party SaaS agents that do not route through it get no protection.</p>
+<p>People are the second half. False facts in systems of record mislead the help desk, the sysadmin at 2 a.m. and auditors. Anything a person can spot, a model spots faster, so the record carries no visible signal. A badge, shown where staff open the record, comes from verifying the tag. If someone touches a decoy anyway, they get a notice over a channel an attacker holding their credentials does not also read. Many organizations do not push to personal devices, so a call from the security desk to a number held in a separate HR or telephony system is the baseline, with notice to a second person or a toast on a managed workstation as additions. Tagging every record everywhere is a large overhaul, so I would tag per surface, all service accounts first, and widen one surface at a time. Where an organization cannot pay for that, dedicated honey infrastructure is the compromise. Our agents never touch it, so anything there is hostile by construction, at the cost of waiting for the attacker to wander in.</p>
+<p>Our own red team and responders will trip the tarpit, and their logs and reports can name the decoys they touched. Those records are a map of the deception surface and need handling to match: restricted access, decoys cited by opaque reference, and no decoy names in tickets, chat or email.</p>
+<p>Vendors and adaptive attackers erode the catalog. Mature attackers and penetration testers will filter retrieved content. The only response is maintenance. The catalog is a living program: new model, harness and agent weaknesses become candidate entries as red team, risk and threat intelligence find them, each entry ships only after beating baseline against several attacker configurations with zero trips from our own benign agents, and every new model release triggers a regression run. This is an arms race with a maintenance budget, not a fix. It also needs an owner. Federated ownership across business units is very hard, so I plan for almost no work from non-security teams: the security team owns the catalog and placement, local knowledge comes from telemetry and the access inventory, and anyone else gets at most a short, passive veto.</p>
+<h2 id="who-this-does-not-work-against">Who this does not work against</h2>
+<p>An operator who reads transcripts and filters retrieved content will see through the weaker entries. A well-funded actor with a human at every step will be slowed less than one that runs agents unattended. The environment can only load the gates that attacker already has.</p>
+<h2 id="validation">Validation</h2>
+<p>The plan is phased in a homelab. Each phase measures time to objective against a no-tarpit baseline, with the same attacker configuration. The first phase has a written protocol, with success and failure criteria fixed before anything runs: two attacker configurations, three arms, twenty trials per cell, and a refutation condition. It compares no tarpit, honey infrastructure only, and seeded real records. The second tests friendly fire with one internal agent behind the gateway and one badge in one tool. The third tests layered decoys and ambiguity. The fourth re-runs the catalog against several attacker models and harnesses, including filter-aware configurations and a held-out set, and compares the decay of instruction-following entries with the rest. That is the test that can falsify the hypothesis. I will publish negative results.</p>
+<h2 id="where-it-connects">Where it connects</h2>
+<p>The argument starts in <a href="https://jhanna2.github.io/writing/future-of-cti/">the essay</a>: if every actor has the same capability, internal sensors are the most reliable collection a program owns, and deception is the version that also acts. Attested agent identity from <a href="https://jhanna2.github.io/writing/agentic-iam/">agentic IAM</a> is a candidate way to make the gateway rule hold: an agent that cannot attest is not ours.</p>
+<p>The methodology and experiment plans are kept in a private research repository. I will publish results, including negative ones, as they exist.</p>
+<h2 id="references">References</h2>
+<ul><li>Anthropic, "Disrupting the first reported AI-orchestrated cyber espionage campaign" (GTG-1002), November 2025.</li><li>Hugging Face, "Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident", 27 July 2026.</li><li>CERT-In, advisory CIAD-2026-0049, 15 October 2026.</li><li>E. Wallace, K. Xiao, R. Leike, L. Weng, J. Heidecke and A. Beutel, "The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions", arXiv:2404.13208, April 2024.</li><li>OWASP GenAI Security Project, Top 10 for LLM Applications, 2026 edition, published 4 August 2026.</li><li>MITRE ATLAS, content version 2026.09, 15 September 2026.</li></ul>
+    </article>
+    <a href="../" class="back-link">← All Writing</a>
   </div>
 
   <footer>

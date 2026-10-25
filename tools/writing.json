@@ -101,15 +101,17 @@
       ]
     },
     "agentic-tarpit": {
-      "title": "Agentic Tarpit",
+      "title": "Tarpitting Agentic Attacks",
       "url": "agentic-tarpit/",
       "type": "Paper",
-      "status": "Coming soon",
-      "summary": "Defensive prompt injection: content that stalls, misdirects or exposes an autonomous attacker, while the defender's own agents stay immune.",
+      "status": "Published",
+      "summary": "Research into deception for agentic attackers. A maintained catalog of agent weaknesses is turned against an attacker inside our own environment, to stall it, misdirect it and make it reveal itself, measured by attacker time to objective. Our own agents and staff must be able to tell real from decoy by construction. Pre-prototype; no experiment has run.",
       "tags": [
         "Deception",
         "Prompt Injection",
-        "Assume Breach"
+        "AI Agents",
+        "Assume Breach",
+        "Active Defense"
       ]
     }
   }
