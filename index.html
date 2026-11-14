@@ -328,6 +328,8 @@
       background: var(--bg3);
     }
     .project-card:hover::before { opacity: 1; }
+    .project-links a:first-child::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+    .project-links a:not(:first-child) { position: relative; z-index: 2; }
     @media (min-width: 600px) {
       .project-card { padding: 2rem 2rem 1.6rem; }
     }
@@ -445,8 +447,6 @@
     .fade-up:nth-child(5) { animation-delay: 0.42s; }
     .fade-up:nth-child(6) { animation-delay: 0.50s; }
 
-    /* ── GOLD CURSOR GLOW ON CARDS ── */
-    .project-card { cursor: default; }
   </style>
 </head>
 <body>

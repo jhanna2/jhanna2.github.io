@@ -26,17 +26,12 @@ def badges(p):
             f'<span class="project-badge type">{e(p["type"])}</span>')
 
 
-def tags(p):
-    return "".join(f'<span class="tag">{e(t)}</span>' for t in p.get("tags", []))
-
-
 def featured_card(p):
     link = f'<div class="project-links"><a href="{e(p["url"])}" class="proj-link">Read →</a></div>' if p["url"] else ""
     return f'''      <div class="project-card featured-card">
         <div class="project-meta">{badges(p)}</div>
         <div class="project-title">{e(p["title"])}</div>
         <p class="project-desc">{e(p["summary"])}</p>
-        <div class="tag-row">{tags(p)}</div>
         {link}
       </div>'''
 
@@ -69,7 +64,7 @@ def main():
     </div>''']
 
     if data["featured"]:
-        out.append('    <div class="ruled-divider fade-up"><span>// featured</span></div>\n    <div class="fade-up">')
+        out.append('    <div class="ruled-divider fade-up"><span>// featured</span></div>\n    <div class="featured-grid fade-up">')
         out += [featured_card(pieces[s]) for s in data["featured"]]
         out.append("    </div>")
 
