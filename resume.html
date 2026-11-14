@@ -302,6 +302,7 @@
       top: 0.08em;
     }
     .job-bullets li strong { color: var(--white); font-weight: 500; }
+    .job-bullets a { color: var(--gold); }
 
     /* ── EDUCATION ── */
     .edu-grid {
@@ -454,7 +455,7 @@
     <div class="fade-up">
       <div class="page-eyebrow">resume</div>
       <h1 class="page-title">Jeff <em>Hanna</em></h1>
-      <p class="page-sub">Senior Security Engineer · Threat Intelligence · Detection &amp; Automation Engineering · Seattle, WA</p>
+      <p class="page-sub">AI &amp; Infrastructure Security · Agent Authorization · Threat Intelligence · Seattle, WA</p>
       <a href="Jeff_Hanna_Resume.pdf" class="download-btn" download>↓ Download PDF</a>
     </div>
 
@@ -462,7 +463,7 @@
     <div class="ruled-divider fade-up"><span>// summary</span></div>
     <div class="fade-up">
       <p class="summary-text">
-        Senior Security Engineer at <strong>GoDaddy</strong>, where three years of hands-on engineering work spans LLM-orchestrated threat intelligence pipelines, credential remediation automation, DNS-scale packet analysis, SOC-style triage systems, and SIEM/EDR integrations — the majority built from the ground up. Driven by curiosity and the persistence to find solutions where none exist: if the tool doesn't do what's needed, build it. Prior foundation in intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including standing up USCYBERCOM's first OSINT program.
+        Security engineer focused on AI and infrastructure security who treats securing agents as an extension of the fundamentals (<strong>identity, authorization, segmentation, and supply chain</strong>) and keeps digging until the weak point is clear, then builds the control, detection, or automation that closes it.
       </p>
     </div>
 
@@ -470,31 +471,33 @@
     <div class="ruled-divider fade-up"><span>// core competencies</span></div>
     <div class="fade-up">
       <div class="competency-grid">
-        <span class="comp-tag">Security Program Engineering</span>
-        <span class="comp-tag">Cyber Threat Intelligence (CTI)</span>
-        <span class="comp-tag">Detection Engineering</span>
-        <span class="comp-tag">LLM Orchestration</span>
-        <span class="comp-tag">Agentic Systems</span>
-        <span class="comp-tag">AI-Augmented Workflows</span>
-        <span class="comp-tag">Automation Engineering</span>
-        <span class="comp-tag">Python</span>
-        <span class="comp-tag">SOAR / API Integration</span>
-        <span class="comp-tag">Splunk / Elastic (SIEM)</span>
-        <span class="comp-tag">SentinelOne / Defender (EDR)</span>
-        <span class="comp-tag">AWS — CDK · IAM · S3 · EC2 · Athena · ECS</span>
-        <span class="comp-tag">Docker</span>
-        <span class="comp-tag">YARA / Sigma / Snort</span>
-        <span class="comp-tag">MITRE ATT&amp;CK</span>
-        <span class="comp-tag">Threat Hunting</span>
-        <span class="comp-tag">Incident Response</span>
-        <span class="comp-tag">OSINT</span>
-        <span class="comp-tag">Packet &amp; Log Analysis</span>
-        <span class="comp-tag">Malware Triage</span>
-        <span class="comp-tag">Vulnerability Research</span>
-        <span class="comp-tag">Metrics &amp; Dashboarding</span>
-        <span class="comp-tag">Technical Mentorship</span>
-        <span class="comp-tag">Program Development</span>
+        <span class="comp-tag">AI &amp; LLM Security (Prompt Injection, Excessive Agency, AI Supply Chain)</span>
+        <span class="comp-tag">Agent Identity &amp; Authorization Design</span>
+        <span class="comp-tag">MCP &amp; Model Gateway Security (LiteLLM, llm-guard, Bedrock)</span>
+        <span class="comp-tag">AI Governance &amp; Enablement</span>
+        <span class="comp-tag">Kubernetes &amp; Container Security (Kyverno, Falco, RBAC)</span>
+        <span class="comp-tag">Policy as Code &amp; IaC (Terraform)</span>
+        <span class="comp-tag">AWS Security</span>
+        <span class="comp-tag">Software Supply Chain Security</span>
+        <span class="comp-tag">Detections as Code (Splunk SPL, KQL, Sigma)</span>
+        <span class="comp-tag">Threat Hunting &amp; Incident Response</span>
+        <span class="comp-tag">CTI Program Design</span>
+        <span class="comp-tag">Python &amp; Go Automation</span>
+        <span class="comp-tag">OWASP LLM Top 10 · MITRE ATLAS &amp; ATT&amp;CK</span>
       </div>
+    </div>
+
+    <!-- ACCOMPLISHMENTS -->
+    <div class="ruled-divider fade-up"><span>// best accomplishments</span></div>
+    <div class="fade-up">
+      <ul class="job-bullets">
+        <li><strong>MCP and model gateway, least privilege tested:</strong> Built a pilot AI gateway for model and MCP tool traffic with separate admin, inference, and tool credentials; every guardrail ships with a test script and every key is verified to reach only what it was issued for.</li>
+        <li><strong>Authorization for AI agents, published:</strong> Wrote <a href="writing/agentic-iam/">Agentic IAM</a>, a design and Python prototype for agent authorization with capability tokens that can only narrow, bounded delegation, and budgeted human approvals.</li>
+        <li><strong>Production LLM gateway secured:</strong> Threat modeled a production LLM gateway, drove new guardrails, integrated its AI detections into the SIEM, and had my security vs. privacy logging recommendation adopted.</li>
+        <li><strong>Supply chain defense in the build path:</strong> Built an hourly system that caught newly compromised packages, scoped exposure across repos, endpoints, and cloud, alerted owners, and blocked bad versions before builds could pull them.</li>
+        <li><strong>AI-assisted detection in production:</strong> Built LLM pipelines that started 2–3 incidents a week, with validation and error capture built into every step.</li>
+        <li><strong>Threat intel programs from zero:</strong> Founding CTI hire twice over: stood up U.S. Cyber Command's first OSINT program and built a commercial CTI program to about 80% in its first weeks.</li>
+      </ul>
     </div>
 
     <!-- EXPERIENCE -->
@@ -503,22 +506,47 @@
 
       <div class="job">
         <div class="job-header">
+          <div class="job-title">Cyber Threat Intelligence Lead (Security Engineering)</div>
+          <div class="job-dates">10/2026 — Present</div>
+        </div>
+        <div class="job-company">Redacted</div>
+        <div class="job-split">AI Gateway &amp; MCP Security · Detections as Code · CTI Program Build · Security Engineering &amp; Automation</div>
+        <ul class="job-bullets">
+          <li>Built a local pilot of an enterprise <strong>AI gateway on LiteLLM</strong> for model and MCP tool traffic, with separate admin, inference, and tool credentials and explicit per-key server and tool grants. Every guardrail ships with a test script, and every new key or permission change is verified to reach only what it was issued for (one MCP service, one model set). Delivered the business case for an org-wide rollout.</li>
+          <li>Advise on the design of the <strong>detections-as-code pipeline</strong> and take part in every discussion on how it is built, tuning the details of how detections move through it.</li>
+          <li><strong>Founding CTI hire.</strong> Designed the program and built about 80% of it in my first weeks: operational threat profile, crown jewel and stakeholder analysis, intelligence requirements, and the collection, analysis, dissemination, and feedback processes.</li>
+          <li>Started a minimum viable <strong>threat intelligence platform in AWS</strong> from my own design, with the program templated as intel as code (version-controlled records checked in CI).</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
           <div class="job-title">Senior Security Engineer</div>
-          <div class="job-dates">03/2022 — Present</div>
+          <div class="job-dates">03/2022 — 10/2026</div>
         </div>
         <div class="job-company">GoDaddy</div>
-        <div class="job-split">Security Program Engineering 70% · Threat Intelligence 15% · Incident Response 10% · Threat Hunting 5%</div>
+        <div class="job-split">AI Security SME &amp; Automation 50% · Detection &amp; Response 20% · Threat Intelligence Program Ownership 30%</div>
         <ul class="job-bullets">
-          <li>Designed and own the <strong>customer credential remediation program</strong> — architected solution end-to-end, coordinated AWS infrastructure with partner engineering, integrated Recorded Future data via SSO validation, and extended to cPanel. Processed 793 inputs in 2025, rotated 16 true exposures, eliminated 302 false positive rotations, and reduced analyst time from <strong>40+ hours/month to near zero</strong>.</li>
-          <li>Built and maintain <strong>TIP → SIEM/EDR integration</strong> (ThreatStream → Splunk + SentinelOne): designed schema, configured IoC correlation and confidence scoring, established service accounts, and performs continuous source quality tuning. Delivered 1,500+ notable events to SOC; contributed to blocking millions of malicious connections (nearly half of all Force Field blocks in 2025); produced 24 true positive incidents requiring remediation.</li>
-          <li>Developed a <strong>Trust &amp; Safety intelligence workflow</strong> that replaced an existing SaaS subscription — cutting infringement notice resolution time by <strong>57%</strong> and generating <strong>$350K in annualized savings</strong> beginning 2026.</li>
-          <li>Built a novel <strong>ThreatStream-based alert triage system</strong> using threat bulletins and custom tagging to create SOC-style workflows — an approach ThreatStream's own customer success team had never seen. Processed 3,315 alerts over 8 months; escalated 109 actionable items. Later engineered automated pre-filtering that cut daily queue volume <strong>73%</strong> (52/day → 14/day).</li>
-          <li>Conducted a multi-quarter <strong>DNS intelligence research initiative</strong> analyzing ~1B packets across ~170GB of PCAPs. Built containerized Python pipeline on AWS (CDK, IAM, S3, EC2, Athena), iterating to r7i.8xlarge for multi-threaded scale. Produced risk-labeled datasets across 31M domains; delivered strategic roadmap adopted for a 2026 DNS security program.</li>
-          <li>Filled <strong>acting senior manager</strong> for one quarter — led midyear reviews, ran leadership/planning syncs, and maintained personal engineering workload (~25–30 hours of meetings/week). Selected over more senior team members.</li>
-          <li>Briefed enterprise threat assessments to <strong>CISO and 100+ InfoSec personnel</strong> at semi-annual all-hands; product used by senior leadership for security strategy decisions organization-wide.</li>
-          <li>Conducted 50+ threat hunts; escalated 15+ confirmed threats to IR; proactively initiated 7 incidents through intelligence discovery (exposed GitHub repos, credential leaks, active exposures). Supported 30+ incidents with intelligence context, root cause analysis, and containment research.</li>
-          <li>Evaluated Anomali Copilot over a 3-month PoC; rigorous feedback led Anomali to offer the SKU at no cost (<strong>$20K/year savings</strong>) and elevated GoDaddy to Anomali VIP status.</li>
-          <li>Mentored principal-level engineers on AWS CDK, IAM policy configuration, and cloud-native development — unblocking multiple projects and saving days-to-weeks of trial and error.</li>
+          <li><strong>AI security SME for a production LLM gateway:</strong> threat modeled it against OWASP LLM Top 10 and MITRE ATLAS, drove a set of new guardrails, stood up out-of-band testing with the owning teams, and integrated its AI detections into the SIEM.</li>
+          <li>Trained most of my org on <strong>building reliable AI workflows</strong>: stripping and compacting input, deterministic code where it works, structured model output that code can check, and alerting on soft errors. Built a Claude skill so about 50 engineers could build the same way.</li>
+          <li>Wrote the <strong>quarterly AI threat report</strong> used in board-level reporting, covering emerging AI platform risk, shadow AI, and agent governance.</li>
+          <li>Built a proactive <strong>supply chain compromise system</strong> that checked news, social media, and threat reporting every hour for newly compromised packages, matched them against code repositories, SBOM and dependency data, and endpoint and SIEM telemetry, and routed each hit to its owner: product security for repos, vulnerability management for assets, and the operations center for active exposure.</li>
+          <li>Ran the year's major <strong>npm, GitHub Actions, and PyPI compromises</strong> through it end to end, hunting malicious downloads across developer machines and cloud assets, blocking malicious versions in the artifact repository before builds could pull them, and requesting emergency upgrades wherever a compromised version was in use.</li>
+          <li>Built <strong>AI-assisted pipelines</strong> that turn raw threat reporting into enriched findings, executive and engineering reports, and detection content, including an agentic enrichment loop that calls threat intel APIs as tools. Filtering plus TOON compaction cut model input by <strong>over 99%</strong>.</li>
+          <li>Supported <strong>30+ incidents</strong> and initiated 7 directly from proactive hunting; advised on penetration tests and purple team exercises and folded the findings into detection.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Intelligence Directorate Branch Supervisor</div>
+          <div class="job-dates">12/2017 — 10/2021</div>
+        </div>
+        <div class="job-company">U.S. Cyber Command (TS/SCI, inactive)</div>
+        <ul class="job-bullets">
+          <li>Built hunt packages for Cyber National Mission Force <strong>Hunt Forward Operations in 28 countries</strong>, mapping nation-state infrastructure and tradecraft.</li>
+          <li>Built the command's <strong>first OSINT program</strong>, including process, tooling, governance, and data quality standards; managed <strong>500+ products</strong> read by the Commander, NSA Director, and the President.</li>
+          <li>Led 6 analysts investigating APTs, malware, and intrusions.</li>
         </ul>
       </div>
 
@@ -528,41 +556,23 @@
           <div class="job-dates">03/2015 — 10/2022</div>
         </div>
         <div class="job-company">Washington Army National Guard</div>
-        <div class="job-split">Program Development 70% · Training &amp; Education 10% · Executive Briefing 10% · Technical Production 10%</div>
         <ul class="job-bullets">
-          <li>Developed core CTI and information security program foundations across multiple partner organizations: PIRs, RFI systems, collection and dissemination frameworks, and data management structures.</li>
-          <li>Led and mentored up to <strong>50 full- and part-time personnel</strong> across six teams, each coordinating with external stakeholders in federated intelligence programs.</li>
-          <li>Rebuilt the security awareness and education program for WAARNG; partnered with DCO to build redundant defensive cyber capabilities and establish policy and training pipelines.</li>
-          <li>Conducted threat research providing senior leaders analysis on most likely and most dangerous courses of action across cyber, physical, personnel, and information security domains.</li>
-        </ul>
-      </div>
-
-      <div class="job">
-        <div class="job-header">
-          <div class="job-title">Intelligence Directorate Branch Supervisor</div>
-          <div class="job-dates">12/2017 — 10/2021</div>
-        </div>
-        <div class="job-company">U.S. Cyber Command</div>
-        <div class="job-split">Program Development 40% · Personnel Management 25% · Technical Analysis 25% · Training Development 10%</div>
-        <ul class="job-bullets">
-          <li>Developed <strong>USCYBERCOM's first OSINT program</strong> — researched national policy, established processes, tooling, governance, and data quality standards. Managed publication of <strong>500+ technical OSINT products</strong> used by the USCYBERCOM Commander, NSA Director, and the President of the United States.</li>
-          <li>Built and managed a team of <strong>5 cyber intelligence analysts</strong>; coordinated APT research using MITRE ATT&amp;CK, Diamond Model, and Kill Chain frameworks; built threat hunt packages supporting Hunt Forward Operations (HFOs).</li>
-          <li>Partnered with commercial and government entities to develop automated OSINT acquisition and enrichment; built large-scale data processing workflows organizing <strong>500K+ data points</strong> into executive-ready products.</li>
-        </ul>
-      </div>
-
-      <div class="job">
-        <div class="job-header">
-          <div class="job-title">Special Security Representative, GS-0086-09</div>
-          <div class="job-dates">07/2016 — 10/2017</div>
-        </div>
-        <div class="job-company">Washington Military Department</div>
-        <ul class="job-bullets">
-          <li>Managed physical and personnel security for a sensitive DIA facility; developed threat registry, maintained ICD 705 compliance, and built data structures delegating security readiness across <strong>10,000+ personnel</strong>.</li>
+          <li>Built CTI and information security programs from scratch and led up to <strong>50 people</strong> across partner organizations.</li>
         </ul>
       </div>
 
     </div><!-- /.fade-up experience -->
+
+    <!-- PROJECTS -->
+    <div class="ruled-divider fade-up"><span>// personal projects</span></div>
+    <div class="fade-up">
+      <ul class="job-bullets">
+        <li><strong>Agentic IAM: Designing Blast Radius for AI Agents</strong> (paper, October 2026): authorization design for AI agents where models propose scopes and deterministic code decides, with capability tokens that can only narrow, drift budgets split across delegation, a key-less decision broker, and budgeted human approvals. Includes a Python prototype with 12 tests and 16 falsifiable hypotheses. <a href="writing/agentic-iam/">Read it</a></li>
+        <li><strong>LLM Safety Platform</strong> (public on GitHub): all model traffic routed through a hardened LiteLLM gateway with a content sanitizer for prompt injection, homoglyphs, and hidden steganographic text, synchronous llm-guard checks, default-deny tools and retrieval, and a nightly out-of-band model review for indirect injection. Unflagged conversations purge after 24 hours; only flagged interactions are kept. <a href="projects/llm-safety/">View</a></li>
+        <li><strong>Kubernetes Security Homelab</strong> (public on GitHub): k3s on bare-metal Proxmox, hardened from a deliberately insecure baseline with per-workload RBAC, restricted Pod Security Standards, default-deny network policies, 7 Kyverno policies, Vault-injected secrets, and digest-pinned images. Falco eBPF runtime detections, each mapped to ATT&amp;CK and validated by simulation, feed an OpenSearch SIEM through a custom Go ingestor. <a href="projects/k8s-homelab/">View</a></li>
+        <li><strong>Published Writing</strong> (October 2026): papers: Agentic IAM; CTI as Code; The Workload Is the Adversary; Tarpitting Agentic Attacks. Essays: After the Heat Map; The Future of CTI. Notes: Most AI Security Is Security; Let Code Decide. <a href="writing/">Read it</a></li>
+      </ul>
+    </div>
 
     <!-- EDUCATION -->
     <div class="ruled-divider fade-up"><span>// education &amp; development</span></div>
@@ -575,27 +585,13 @@
         </div>
 
         <div class="edu-item">
+          <div class="edu-degree">Cloud Security Graduate Certificate</div>
+          <div class="edu-school">SANS Technology Institute · 2026</div>
+        </div>
+
+        <div class="edu-item">
           <div class="edu-degree">Cybersecurity Engineer Graduate Certificate</div>
           <div class="edu-school">SANS Technology Institute · 2024</div>
-        </div>
-
-        <div class="edu-item">
-          <div class="edu-degree">Cloud Security Graduate Certificate</div>
-          <div class="edu-school">SANS Technology Institute · Est. 2026</div>
-        </div>
-
-        <div class="edu-item">
-          <div class="edu-degree">SANS Training</div>
-          <div class="edu-school">Selected coursework</div>
-          <div class="edu-courses" style="margin-top:0.4rem;">
-            <span class="edu-tag">SEC595 · AI/ML for Cybersecurity (Est. 2026)</span>
-            <span class="edu-tag">SEC510 · Cloud Security Engineering (2025)</span>
-            <span class="edu-tag">SEC488 · Cloud Security Essentials (2024)</span>
-            <span class="edu-tag">SEC503 · Network Monitoring &amp; Threat Detection (2024)</span>
-            <span class="edu-tag">SEC504 · Hacker Tools &amp; Incident Handling (2024)</span>
-            <span class="edu-tag">SEC401 · Security Essentials (2023)</span>
-            <span class="edu-tag">FOR578 · Cyber Threat Intelligence (2022)</span>
-          </div>
         </div>
 
       </div>
@@ -605,6 +601,12 @@
     <div class="ruled-divider fade-up"><span>// certifications</span></div>
     <div class="fade-up">
       <div class="cert-grid">
+        <div class="cert-item">
+          <div>
+            <div class="cert-name">GMLE</div>
+            <div class="cert-issuer">GIAC · Machine Learning Engineer</div>
+          </div>
+        </div>
         <div class="cert-item">
           <div>
             <div class="cert-name">CISSP</div>
@@ -651,12 +653,6 @@
           <div>
             <div class="cert-name">GCLD</div>
             <div class="cert-issuer">GIAC · Cloud Security Essentials</div>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <div class="cert-name">CMMC CCP</div>
-            <div class="cert-issuer">Cybersecurity Maturity Model Certification · Certified Professional</div>
           </div>
         </div>
       </div>
