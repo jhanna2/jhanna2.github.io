@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects — Jeff Hanna</title>
+  <title>Development — Jeff Hanna</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -107,27 +107,29 @@
     .proj-link.ext { color: var(--text-dim); }
     .proj-link.ext:hover { color: var(--text); }
   </style>
+  <link rel="stylesheet" href="../assets/site.css" />
 </head>
 <body>
   
-  <nav>
-    <a href="../index.html" class="nav-logo">&gt;_ jeffhanna</a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="index.html" class="active">Projects</a>
-      <a href="../writing/">Writing</a>
-      <a href="../resume.html" >Resume</a>
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <header class="site-header">
+    <a href="../index.html" class="wordmark">Jeff Hanna</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="../projects/index.html" aria-current="page">Development</a>
+      <a href="../writing/index.html">Writing</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+    <div class="site-social">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
-  </nav>
+  </header>
   <div class="page-wrap">
     <div class="fade-up">
-      <div class="page-eyebrow">projects</div>
-      <h1 class="page-title">Projects</h1>
+      <div class="page-eyebrow">built and tested in the lab</div>
+      <h1 class="page-title">Development</h1>
       <p class="page-sub">LLM security, Kubernetes hardening, runtime detection and a self-hosted SIEM, documented from a security-first Kubernetes homelab.</p>
     </div>
-    <div class="ruled-divider fade-up"><span>// public repos</span></div>
+    <div class="ruled-divider fade-up"><span>public repos</span></div>
     <div class="fade-up">
       
       <div class="project-card">
@@ -204,11 +206,12 @@
     </div>
   </div>
   
-  <footer>
-    <span>© Jeff Hanna · Built with intention.</span>
-    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <footer class="site-footer">
+    <span>Jeff Hanna · Seattle, WA</span>
+    <div class="footer-links">
+      <a href="../resume.html">Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 </body>

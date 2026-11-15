@@ -64,14 +64,14 @@ def main():
     </div>''']
 
     if data["featured"]:
-        out.append('    <div class="ruled-divider fade-up"><span>// featured</span></div>\n    <div class="featured-grid fade-up">')
+        out.append('    <div class="ruled-divider fade-up"><span>featured</span></div>\n    <div class="featured-grid fade-up">')
         out += [featured_card(pieces[s]) for s in data["featured"]]
         out.append("    </div>")
 
     for t in data["tracks"]:
         if not (any(ser["pieces"] for ser in t["series"]) or t["standalone"]):
             continue
-        out.append(f'''    <div class="ruled-divider fade-up"><span>// {e(t["name"].lower())}</span></div>
+        out.append(f'''    <div class="ruled-divider fade-up"><span>{e(t["name"].lower())}</span></div>
     <section class="track fade-up">
       <h2 class="track-name">{e(t["name"])}</h2>
       <p class="track-blurb">{e(t["blurb"])}</p>''')

@@ -3,130 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Infrastructure and AI security engineer: hardened Kubernetes, runtime detection, and LLM gateway guardrails on LiteLLM, plus writing on agent access control and threat intelligence." />
-  <title>Home — Jeff Hanna</title>
+  <meta name="description" content="Jeff Hanna, security engineer in Seattle: AI and LLM security, agent authorization, Kubernetes security, detection engineering and threat intelligence." />
+  <title>Jeff Hanna — Security Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0e0c0a;
-      --bg2:       #131109;
-      --bg3:       #18160f;
-      --border:    #2d2820;
-      --text:      #ccc5b5;
-      --text-dim:  #a39883;
-      --text-faint:#857a68;
-      --gold:      #c4993a;
-      --gold-dim:  #a8803c;
-      --gold-glow: rgba(196,153,58,0.10);
-      --white:     #ede8dc;
-      --mono: 'DM Mono', monospace;
-      --serif: 'Playfair Display', Georgia, serif;
-      --sans: 'DM Sans', sans-serif;
-    }
-
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
       color: var(--text);
       font-family: var(--sans);
-      font-weight: 300;
       line-height: 1.7;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
+    body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      padding: 0.9rem 1.25rem;
-      background: rgba(14,12,10,0.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--gold);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-    }
-    .nav-logo:hover { color: var(--white); }
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem 1.5rem;
-      align-items: center;
-    }
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.73rem;
-      font-weight: 400;
-      color: var(--text-dim);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-    @media (min-width: 600px) {
-      nav { padding: 1rem 2.5rem; }
-      .nav-links { gap: 1rem 2rem; }
-    }
-
-    /* ── MAIN LAYOUT ── */
     main {
       position: relative;
       z-index: 1;
-      max-width: 860px;
+      max-width: 880px;
       margin: 0 auto;
       padding: 2.5rem 1.25rem 4rem;
     }
-    @media (min-width: 600px) {
-      main { padding: 4rem 2rem 6rem; }
-    }
+    @media (min-width: 640px) { main { padding: 4rem 2rem 6rem; } }
 
     /* ── HERO ── */
     .hero-grid {
       display: grid;
-      grid-template-columns: 1fr 250px;
+      grid-template-columns: 1fr 240px;
       gap: 3.5rem;
       align-items: start;
     }
-    @media (max-width: 680px) {
+    @media (max-width: 700px) {
       .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .hero-portrait-wrap { order: -1; max-width: 220px; }
-    }
-
-    .hero-portrait-wrap {
-      position: sticky;
-      top: 5rem;
-    }
-    @media (max-width: 680px) {
-      .hero-portrait-wrap { position: static; }
+      .hero-portrait-wrap { order: -1; max-width: 200px; }
     }
     .hero-portrait {
       width: 100%;
@@ -134,514 +46,306 @@
       object-fit: cover;
       object-position: center top;
       display: block;
-      filter: sepia(12%) contrast(1.04) brightness(0.94);
+      filter: sepia(14%) contrast(1.04) brightness(0.94);
       border: 1px solid var(--border);
-      box-shadow:
-        0 0 0 4px var(--bg),
-        0 0 0 5px var(--border),
-        8px 14px 44px rgba(0,0,0,0.6);
-      transition: filter 0.4s;
-    }
-    .hero-portrait:hover {
-      filter: sepia(5%) contrast(1.05) brightness(0.98);
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border), 8px 14px 44px rgba(0,0,0,0.6);
     }
     .portrait-caption {
-      font-family: var(--mono);
-      font-size: 0.64rem;
-      color: var(--text-faint);
-      letter-spacing: 0.06em;
-      margin-top: 0.75rem;
-      text-align: center;
+      font-family: var(--serif);
       font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      margin-top: 0.8rem;
+      text-align: center;
     }
-
     .eyebrow {
       font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 400;
+      font-size: 0.8rem;
+      font-weight: 500;
       color: var(--gold-dim);
-      letter-spacing: 0.08em;
-      margin-bottom: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+      margin-bottom: 1rem;
     }
-    .eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 28px;
-      height: 1px;
-      background: var(--gold-dim);
-    }
-
     h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.8rem, 6vw, 4.4rem);
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
       font-weight: 700;
       color: var(--white);
-      line-height: 1.08;
-      letter-spacing: -0.01em;
-      margin-bottom: 2rem;
-    }
-    h1 em {
-      font-style: italic;
-      font-weight: 600;
-      color: var(--gold);
-    }
-
-    .hero-body {
-      font-size: 1.05rem;
-      line-height: 1.78;
-      color: var(--text);
-      max-width: 680px;
+      line-height: 1.05;
+      letter-spacing: -0.015em;
       margin-bottom: 1.1rem;
     }
-    .hero-body strong {
-      color: var(--white);
-      font-weight: 500;
+    .lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+      line-height: 1.35;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
     }
-    .hero-body:last-of-type { margin-bottom: 0; }
+    .hero-body {
+      font-size: 1.07rem;
+      line-height: 1.78;
+      max-width: 620px;
+      margin-bottom: 1.1rem;
+    }
+    .hero-body strong { color: var(--white); font-weight: 600; }
 
-    /* ── DIVIDER ── */
-    .ruled-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 2.5rem 0;
-    }
-    @media (min-width: 600px) {
-      .ruled-divider { margin: 3.5rem 0; }
-    }
-    .ruled-divider::before, .ruled-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-    .ruled-divider span {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--text-faint);
-      letter-spacing: 0.12em;
-      white-space: nowrap;
-    }
+    /* ── SECTION DIVIDER ── */
+    .ruled-divider { display: flex; align-items: center; gap: 1rem; margin: 3rem 0 1.6rem; }
+    @media (min-width: 640px) { .ruled-divider { margin: 4rem 0 2rem; } }
+    .ruled-divider::before, .ruled-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .ruled-divider span { font-family: var(--mono); font-size: 0.78rem; font-weight: 500; color: var(--text-faint); white-space: nowrap; }
 
-    /* ── TWO-COL DISCIPLINES ── */
-    .two-col {
+    /* ── AT A GLANCE: a spec plate ── */
+    .glance {
+      border: 1px solid var(--border);
+      background: rgba(24,21,15,0.7);
+      padding: 0.4rem 1.25rem;
+    }
+    .glance-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
-      margin-bottom: 3rem;
+      grid-template-columns: 7.5rem 1fr;
+      gap: 0.3rem 1.5rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px dashed var(--border);
     }
-    @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; gap: 1.8rem; } }
-
-    .col-label {
+    .glance-row:last-child { border-bottom: none; }
+    @media (max-width: 520px) { .glance-row { grid-template-columns: 1fr; } }
+    .glance dt {
       font-family: var(--mono);
-      font-size: 0.7rem;
-      font-weight: 500;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       color: var(--gold-dim);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.9rem;
+      padding-top: 0.15rem;
     }
+    .glance dd { font-size: 0.98rem; line-height: 1.6; color: var(--text); }
+    .glance dd strong { color: var(--white); font-weight: 600; }
+    .glance dd .sub { display: block; color: var(--text-dim); font-size: 0.92rem; }
 
-    .plain-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .plain-list li {
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      font-weight: 300;
-      color: var(--text);
-      padding-left: 0.9rem;
-      position: relative;
-    }
-    .plain-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--gold-dim);
-      font-size: 0.7rem;
-    }
-
-    /* ── CTA ROW ── */
-    .cta-row {
-      display: flex;
-      gap: 2rem;
-      margin-top: 3rem;
-      flex-wrap: wrap;
-    }
+    .cta-row { display: flex; gap: 1rem 2rem; margin-top: 1.4rem; flex-wrap: wrap; }
     .cta-link {
       font-family: var(--mono);
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
       color: var(--gold);
       text-decoration: none;
-      letter-spacing: 0.04em;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: gap 0.2s, color 0.2s;
+      border-bottom: 1px solid var(--gold-dim);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .cta-link:hover { color: var(--white); gap: 0.7rem; }
+    .cta-link:hover { color: var(--white); border-color: var(--white); }
 
-    /* ── FEATURED SECTION ── */
-    .featured-section {
-      margin-top: 3.25rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--border);
+    /* ── INDEX LISTS (writing, development) ── */
+    .index { list-style: none; counter-reset: entry; border-top: 1px solid var(--border); }
+    .index li { counter-increment: entry; border-bottom: 1px solid var(--border); }
+    .index .entry {
+      display: grid;
+      grid-template-columns: 2.6rem 1fr;
+      gap: 0 1rem;
+      padding: 1.1rem 0.25rem;
+      color: inherit;
+      text-decoration: none;
+      transition: background 0.2s;
     }
-    .featured-header {
+    .index a.entry:hover { background: rgba(201,160,74,0.05); }
+    .index a.entry:hover .entry-title { color: var(--gold); }
+    .index .entry::before {
+      content: counter(entry, decimal-leading-zero);
       font-family: var(--serif);
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 2rem;
-      letter-spacing: -0.01em;
-    }
-
-    /* ── PROJECT CARDS ── */
-    .project-card {
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 1.4rem 1.25rem 1.2rem;
-      margin-bottom: 1.2rem;
-      background: var(--bg2);
-      position: relative;
-      transition: border-color 0.25s, background 0.25s;
-      overflow: hidden;
-    }
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--gold);
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-    .project-card:hover {
-      border-color: var(--gold-dim);
-      background: var(--bg3);
-    }
-    .project-card:hover::before { opacity: 1; }
-    .project-links a:first-child::after { content: ""; position: absolute; inset: 0; z-index: 1; }
-    .project-links a:not(:first-child) { position: relative; z-index: 2; }
-    @media (min-width: 600px) {
-      .project-card { padding: 2rem 2rem 1.6rem; }
-    }
-
-    .project-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-    .project-badge {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-style: italic;
+      font-size: 1.05rem;
       color: var(--gold-dim);
-      border: 1px solid var(--gold-dim);
-      padding: 0.15rem 0.5rem;
-      border-radius: 1px;
+      padding-top: 0.1rem;
     }
-    .project-badge.personal { color: var(--text-dim); border-color: var(--text-faint); }
-
-    .project-title {
+    .entry-title {
       font-family: var(--serif);
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       font-weight: 600;
       color: var(--white);
-      letter-spacing: -0.01em;
-      margin: 0 0 0.75rem;
-    }
-
-    .project-desc {
-      font-size: 0.9rem;
-      line-height: 1.72;
-      color: var(--text);
-      margin-bottom: 1.1rem;
-      max-width: 700px;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 1.2rem;
-    }
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      font-weight: 400;
-      color: var(--text-dim);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 0.2rem 0.55rem;
-      border-radius: 1px;
-      letter-spacing: 0.03em;
-    }
-
-    .project-links { display: flex; gap: 1.5rem; }
-    .proj-link {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--gold);
-      text-decoration: none;
-      letter-spacing: 0.04em;
+      line-height: 1.3;
       transition: color 0.2s;
     }
-    .proj-link:hover { color: var(--white); }
-    .proj-link.external { color: var(--text-dim); }
-    .proj-link.external:hover { color: var(--text); }
+    .entry-type {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      margin-left: 0.6rem;
+      white-space: nowrap;
+    }
+    .entry-desc { grid-column: 2; font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); margin-top: 0.25rem; }
+    .more { margin-top: 1.2rem; }
+
+    .closing {
+      margin-top: 4rem;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--text);
+      max-width: 620px;
+    }
+    .closing a { color: var(--gold); text-underline-offset: 3px; }
 
     /* ── FOOTER ── */
     footer {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       border-top: 1px solid var(--border);
       padding: 1.5rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
     }
-    @media (min-width: 600px) {
-      footer { padding: 1.75rem 2.5rem; }
-    }
-    footer span {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-faint);
-      letter-spacing: 0.04em;
-    }
-    footer a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    @media (min-width: 640px) { footer { padding: 1.75rem 2.5rem; } }
+    footer span { font-size: 0.8rem; color: var(--text-faint); }
+    footer a { font-size: 0.76rem; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--gold); }
 
-    /* ── FADE IN ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(18px);
-      animation: fadeUp 0.6s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-up:nth-child(1) { animation-delay: 0.05s; }
-    .fade-up:nth-child(2) { animation-delay: 0.15s; }
-    .fade-up:nth-child(3) { animation-delay: 0.25s; }
-    .fade-up:nth-child(4) { animation-delay: 0.35s; }
-    .fade-up:nth-child(5) { animation-delay: 0.42s; }
-    .fade-up:nth-child(6) { animation-delay: 0.50s; }
-
+    .fade-up { opacity: 0; transform: translateY(16px); animation: fadeUp 0.6s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .fade-up:nth-child(2) { animation-delay: 0.1s; }
+    .fade-up:nth-child(3) { animation-delay: 0.18s; }
+    .fade-up:nth-child(4) { animation-delay: 0.26s; }
+    @media (prefers-reduced-motion: reduce) { .fade-up { animation: none; opacity: 1; transform: none; } }
   </style>
+  <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo">&gt;_ jeffhanna</a>
-    <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
-      <a href="projects/">Projects</a>
-      <a href="writing/">Writing</a>
+  <header class="site-header">
+    <a href="index.html" class="wordmark">Jeff Hanna</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="projects/index.html">Development</a>
+      <a href="writing/index.html">Writing</a>
       <a href="resume.html">Resume</a>
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </nav>
+    <div class="site-social">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
-  </nav>
+  </header>
 
   <main>
 
     <div class="hero-grid fade-up">
       <div>
-        <div class="eyebrow">infrastructure &amp; AI security engineer</div>
-        <h1>Jeff <em>Hanna</em></h1>
+        <div class="eyebrow">Security Engineer · Seattle, WA</div>
+        <h1>Jeff Hanna</h1>
+        <p class="lede">I pick at a problem until it tells me why.</p>
         <p class="hero-body">
-          I build security for infrastructure and AI systems: a hardened Kubernetes cluster, runtime detection you can prove in-cluster, and an LLM gateway on <strong>LiteLLM</strong> where every model call passes sanitization and policy guards that default closed.
+          I got my start diagnosing electrical and drivability problems in an automotive shop, and security turned out to be the same work on different machines: form a theory, test it, and keep asking why until you understand it.
         </p>
         <p class="hero-body">
-          As a Senior Security Engineer at <strong>GoDaddy</strong>, I spent three years building threat intelligence programs, pipelines and automation that didn't exist before I got there, including LLM-orchestrated intel systems and credential remediation pipelines. Before that: intelligence program development at <strong>U.S. Cyber Command</strong> and the <strong>Washington Army National Guard</strong>, including USCYBERCOM's first OSINT program.
+          I spent four years at <strong>U.S. Cyber Command</strong>, where I supervised a branch in the Intelligence Directorate and built the command's first OSINT program. At <strong>GoDaddy</strong> I spent four and a half years as a Senior Security Engineer, building threat intelligence programs, LLM-orchestrated intel pipelines and credential remediation automation that didn't exist before I got there. Now I'm the founding threat intelligence hire on a security engineering team, building the CTI program from zero and securing the AI gateway that model and MCP tool traffic runs through.
         </p>
         <p class="hero-body">
-          The projects below run in my own lab. I also write about how to give AI agents access without handing them the keys, and what security programs look like when attackers run agents.
+          At home I keep a lab where I tinker with whatever has my interest: a SIEM and the log pipelines that feed it, network and packet capture analysis, Linux administration, a GitLab instance for practicing CI security, and AI systems I test and try to break, including my own LLM proxy. I also build the tools I want to use, like custom agent harnesses, a terminal UI and a multiplexer. I'm curious by default. The problems I like most are the ones I haven't figured out yet, and I stay with them until I have. I'm also always open to learning from people, because every one of them knows something I don't.
         </p>
       </div>
       <div class="hero-portrait-wrap">
-        <img class="hero-portrait" src="portrait.png" alt="Jeff Hanna" />
+        <img class="hero-portrait" src="portrait.png" alt="Portrait of Jeff Hanna" />
         <div class="portrait-caption">always something on the bench</div>
       </div>
     </div>
 
-    <div class="ruled-divider fade-up"><span>disciplines &amp; tools</span></div>
-
-    <div class="two-col fade-up">
-      <div>
-        <div class="col-label">// core disciplines</div>
-        <ul class="plain-list">
-          <li>AI &amp; LLM Security</li>
-          <li>Kubernetes &amp; Infrastructure Security</li>
-          <li>Detection Engineering</li>
-          <li>Cloud Security (AWS)</li>
-          <li>LLM Orchestration &amp; Agentic Systems</li>
-          <li>Automation &amp; Integration Engineering</li>
-          <li>Security Program Engineering</li>
-          <li>Threat Intelligence (CTI)</li>
-          <li>Threat Hunting &amp; Incident Response</li>
-          <li>OSINT</li>
-          <li>Packet &amp; Log Analysis</li>
-        </ul>
+    <section class="fade-up" aria-labelledby="glance-label">
+      <div class="ruled-divider"><span id="glance-label">At a glance</span></div>
+      <dl class="glance">
+        <div class="glance-row">
+          <dt>Now</dt>
+          <dd><strong>Cyber Threat Intelligence Lead</strong> (Security Engineering)<span class="sub">AI gateway and MCP security, detections as code, building the CTI program from zero</span></dd>
+        </div>
+        <div class="glance-row">
+          <dt>Before</dt>
+          <dd><strong>Senior Security Engineer</strong>, GoDaddy<span class="sub">Intelligence Directorate Branch Supervisor, U.S. Cyber Command · Intelligence &amp; Cyber Programs Manager, Washington Army National Guard</span></dd>
+        </div>
+        <div class="glance-row">
+          <dt>Focus</dt>
+          <dd>AI &amp; LLM security · agent identity and authorization · Kubernetes security · detection engineering · threat intelligence</dd>
+        </div>
+        <div class="glance-row">
+          <dt>Clearance</dt>
+          <dd>TS/SCI (inactive)</dd>
+        </div>
+      </dl>
+      <div class="cta-row">
+        <a href="resume.html" class="cta-link">Full resume</a>
+        <a href="Jeff_Hanna_Resume.pdf" class="cta-link" download>Download PDF</a>
       </div>
-      <div>
-        <div class="col-label">// tools / ecosystems</div>
-        <ul class="plain-list">
-          <li>LiteLLM / llm-guard</li>
-          <li>Kubernetes (k3s) / Helm / Kyverno</li>
-          <li>Falco</li>
-          <li>Terraform / Proxmox</li>
-          <li>Python / Go</li>
-          <li>AWS: CDK, IAM, S3, EC2, Athena, ECS</li>
-          <li>OpenSearch / Splunk / Elastic</li>
-          <li>SentinelOne / Defender (EDR)</li>
-          <li>Docker</li>
-          <li>YARA / Sigma / Snort</li>
-          <li>MITRE ATT&amp;CK</li>
-          <li>Anomali ThreatStream / Recorded Future</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="cta-row fade-up">
-      <a href="projects/" class="cta-link">View all projects →</a>
-      <a href="writing/" class="cta-link">Read the writing →</a>
-      <a href="resume.html" class="cta-link">View resume →</a>
-    </div>
-
-    <section class="featured-section fade-up" aria-labelledby="featured-heading">
-      <h2 id="featured-heading" class="featured-header">Featured Work</h2>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">LLM Safety Platform</h3>
-        <p class="project-desc">A multi-layer LLM safety system enforcing that all model traffic passes through a hardened gateway. Inline: content sanitization, token compaction, and synchronous policy guards. Out-of-band: nightly model-based behavioral analysis catching indirect injection and context manipulation that pattern matching misses.</p>
-        <div class="tag-row"><span class="tag">LiteLLM</span><span class="tag">llm-guard</span><span class="tag">Python</span><span class="tag">Go</span><span class="tag">Prompt Injection</span><span class="tag">AI Safety</span><span class="tag">OpenSearch</span><span class="tag">Kubernetes</span></div>
-        <div class="project-links">
-          <a href="projects/llm-safety/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">Kubernetes Security Homelab</h3>
-        <p class="project-desc">A security-first k3s cluster built from scratch on bare-metal Proxmox, starting from a deliberately misconfigured baseline and hardened systematically. Documents the full attack surface before fixing it: RBAC, network policies, pod security standards, and Kyverno admission control.</p>
-        <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">k3s</span><span class="tag">Kyverno</span><span class="tag">Falco</span><span class="tag">Proxmox</span><span class="tag">Terraform</span><span class="tag">Go</span><span class="tag">RBAC</span><span class="tag">MITRE ATT&CK</span></div>
-        <div class="project-links">
-          <a href="projects/k8s-homelab/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">CTI as Code</h3>
-        <p class="project-desc">The threat intelligence program itself, held as version-controlled records whose claims about each other are enforced in CI. Every intelligence question resolves to a collection source or names a gap, or the build fails. Agents declare a contract before they may run, and an agent that reads adversary-written text may not run unattended.</p>
-        <div class="tag-row"><span class="tag">CTI</span><span class="tag">Intel as Code</span><span class="tag">Python</span><span class="tag">CI</span><span class="tag">YAML</span><span class="tag">Agents</span></div>
-        <div class="project-links">
-          <a href="projects/cti-as-code/" class="proj-link">Details →</a>
-          <a href="writing/cti-as-code/" class="proj-link">Paper →</a>
-          <a href="https://github.com/jhanna2/cti-as-code" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">Content Sanitizer &amp; TOON Normalizer</h3>
-        <p class="project-desc">A Python library for cleaning and compacting external content before it reaches an LLM. The sanitizer removes HTML attack surface, invisible text, Unicode tricks, and embedded prompt injection. The TOON normalizer compacts the result to semantic core, around 95% token reduction on typical web content while preserving structured data like IOCs.</p>
-        <div class="tag-row"><span class="tag">Python</span><span class="tag">Security</span><span class="tag">LLM</span><span class="tag">Prompt Injection</span><span class="tag">Token Optimization</span><span class="tag">NLP</span></div>
-        <div class="project-links">
-          <a href="projects/toon-sanitizer/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">Falco Detection Engineering</h3>
-        <p class="project-desc">Custom Falco runtime detection rules for a live Kubernetes cluster targeting realistic attack scenarios: shell spawns, credential harvesting, C2 beaconing, privilege escalation, service account token theft, and multi-step recon-to-exfil sequences. Every rule is ATT&CK-mapped and validated with a simulation script that proves the alert reaches OpenSearch.</p>
-        <div class="tag-row"><span class="tag">Falco</span><span class="tag">Detection Engineering</span><span class="tag">MITRE ATT&CK</span><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Go</span><span class="tag">Kubernetes</span></div>
-        <div class="project-links">
-          <a href="projects/falco-detection/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">OpenSearch SIEM</h3>
-        <p class="project-desc">A self-hosted OpenSearch deployment serving as the central data platform for a homelab security stack. Ingests Falco runtime alerts, Kubernetes audit logs, CTI pipeline output, and LLM interaction flags. Maintains a live cluster asset CMDB. Ephemeral LLM conversation store with 24-hour ISM auto-purge.</p>
-        <div class="tag-row"><span class="tag">OpenSearch</span><span class="tag">SIEM</span><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Go</span><span class="tag">Detection Engineering</span></div>
-        <div class="project-links">
-          <a href="projects/opensearch-siem/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Public</span></div>
-        <h3 class="project-title">CTI Agent</h3>
-        <p class="project-desc">A Go-based cyber threat intelligence pipeline that pulls external threat bulletins, enriches IOCs in parallel against free feeds, triages findings against a live cluster asset inventory in OpenSearch, and uses a locally-hosted LLM for context-aware analysis. Generates OpenSearch detection rules written back to the SIEM.</p>
-        <div class="tag-row"><span class="tag">Go</span><span class="tag">CTI</span><span class="tag">OpenSearch</span><span class="tag">Ollama</span><span class="tag">LLM</span><span class="tag">KEDA</span><span class="tag">Kubernetes</span><span class="tag">MITRE ATT&CK</span></div>
-        <div class="project-links">
-          <a href="projects/cti-agent/" class="proj-link">Details →</a>
-          <a href="https://github.com/jhanna2/k8s-security-homelab" class="proj-link external" target="_blank" rel="noopener">Source ↗</a>
-        </div>
-      </article>
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge personal">Private</span></div>
-        <h3 class="project-title">vira</h3>
-        <p class="project-desc">Modal terminal code editor with multi-agent orchestration at its core. Role-based agent pools (implement, review, document, test) that run blind, collaborative, or adversarial, with a dedicated security-review agent auditing every action outside the primary context window. Per-agent token gauges with user-set ceilings and automatic model fallback, plus Headroom-style context compression to keep long sessions cheap. Built on a kernel-enforced sandbox foundation for agent shell isolation. Provider-agnostic: Ollama, Claude, Codex.</p>
-        <div class="tag-row"><span class="tag">Multi-Agent Orchestration</span><span class="tag">Agent Pooling</span><span class="tag">Token Management</span><span class="tag">Context Compression</span><span class="tag">Rust</span><span class="tag">MCP</span></div>
-      </article>
-
-      <h2 class="featured-header" style="margin-top:3rem">Writing</h2>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Paper</span></div>
-        <h3 class="project-title">Agentic IAM: Designing Blast Radius for AI Agents</h3>
-        <p class="project-desc">Access control for AI agents across issuance, delegation, execution and monitoring: just-in-time credentials, model-proposed scopes bounded by a human-authored ceiling, capability tokens with provably attenuated delegation, and attested agent identity.</p>
-        <div class="tag-row"><span class="tag">IAM</span><span class="tag">AI Agents</span><span class="tag">Capability Tokens</span><span class="tag">JIT Access</span><span class="tag">Attestation</span></div>
-        <div class="project-links">
-          <a href="writing/agentic-iam/" class="proj-link">Read →</a>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="project-meta"><span class="project-badge">Essay</span></div>
-        <h3 class="project-title">The Future of CTI: A Forecast</h3>
-        <p class="project-desc">When capability stops varying between attackers, an attacker's means track the target's exposure, and predicting techniques from actor history loses most of its value for prevention. An intelligence estimate on what that does to threat intelligence.</p>
-        <div class="tag-row"><span class="tag">Threat Intelligence</span><span class="tag">AI Agents</span><span class="tag">Intelligence Estimate</span></div>
-        <div class="project-links">
-          <a href="writing/future-of-cti/" class="proj-link">Read →</a>
-          <a href="writing/" class="proj-link external">All writing</a>
-        </div>
-      </article>
     </section>
+
+    <section class="fade-up" aria-labelledby="writing-label">
+      <div class="ruled-divider"><span id="writing-label">Recent writing</span></div>
+      <ol class="index">
+        <li><a class="entry" href="writing/the-workload-is-the-adversary/">
+          <span class="entry-title">The Workload Is the Adversary <span class="entry-type">Paper</span></span>
+          <span class="entry-desc">AI puts a possible adversary inside the security boundary. Nine falsifiable hypotheses and a layer-by-layer reference architecture, from a coding agent in CI to a training cluster.</span>
+        </a></li>
+        <li><a class="entry" href="writing/agentic-iam/">
+          <span class="entry-title">Agentic IAM: Designing Blast Radius for AI Agents <span class="entry-type">Paper</span></span>
+          <span class="entry-desc">Access control for AI agents: just-in-time credentials, capability tokens that can only narrow, and attested agent identity.</span>
+        </a></li>
+        <li><a class="entry" href="writing/cti-as-code/">
+          <span class="entry-title">CTI as Code <span class="entry-type">Paper</span></span>
+          <span class="entry-desc">A threat intelligence program held as version-controlled records. Every intelligence question resolves to a collection source or names a gap, or the build fails.</span>
+        </a></li>
+      </ol>
+      <div class="more"><a href="writing/index.html" class="cta-link">All writing</a></div>
+    </section>
+
+    <section class="fade-up" aria-labelledby="dev-label">
+      <div class="ruled-divider"><span id="dev-label">Development</span></div>
+      <ol class="index">
+        <li><a class="entry" href="projects/llm-safety/">
+          <span class="entry-title">LLM Safety Platform</span>
+          <span class="entry-desc">Every model call passes through a hardened LiteLLM gateway: inline sanitization and policy guards, plus nightly behavioral analysis for injection that pattern matching misses.</span>
+        </a></li>
+        <li><a class="entry" href="projects/k8s-homelab/">
+          <span class="entry-title">Kubernetes Security Homelab</span>
+          <span class="entry-desc">A k3s cluster on bare-metal Proxmox, built deliberately misconfigured, then hardened one documented control at a time.</span>
+        </a></li>
+        <li><a class="entry" href="projects/cti-as-code/">
+          <span class="entry-title">CTI as Code</span>
+          <span class="entry-desc">The intelligence program as records checked in CI. Agents declare a contract before they may run.</span>
+        </a></li>
+        <li><a class="entry" href="projects/falco-detection/">
+          <span class="entry-title">Falco Detection Engineering</span>
+          <span class="entry-desc">ATT&amp;CK-mapped runtime detections for a live cluster, each proven by a simulation that lands the alert in OpenSearch.</span>
+        </a></li>
+        <li><a class="entry" href="projects/toon-sanitizer/">
+          <span class="entry-title">Content Sanitizer &amp; TOON Normalizer</span>
+          <span class="entry-desc">Strips HTML attack surface, hidden text and embedded prompt injection before content reaches an LLM, then compacts it by about 95%.</span>
+        </a></li>
+        <li><a class="entry" href="projects/opensearch-siem/">
+          <span class="entry-title">OpenSearch SIEM</span>
+          <span class="entry-desc">The lab's central data platform: runtime alerts, audit logs, CTI output and a live asset inventory.</span>
+        </a></li>
+        <li><a class="entry" href="projects/cti-agent/">
+          <span class="entry-title">CTI Agent</span>
+          <span class="entry-desc">A Go pipeline that enriches IOCs, triages them against the live asset inventory with a local LLM, and writes detection rules back to the SIEM.</span>
+        </a></li>
+        <li><div class="entry">
+          <span class="entry-title">vira <span class="entry-type">Private</span></span>
+          <span class="entry-desc">A modal terminal editor built around multi-agent orchestration, with a security-review agent auditing every action.</span>
+        </div></li>
+      </ol>
+      <div class="more"><a href="projects/index.html" class="cta-link">All development</a></div>
+    </section>
+
+    <p class="closing fade-up">
+      Have a problem nobody's figured out yet? I'd like to hear about it. The best way to reach me is <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>.
+    </p>
 
   </main>
 
-  <footer>
-    <span>© Jeff Hanna · Built with intention.</span>
-    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <footer class="site-footer">
+    <span>Jeff Hanna · Seattle, WA</span>
+    <div class="footer-links">
+      <a href="resume.html">Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 

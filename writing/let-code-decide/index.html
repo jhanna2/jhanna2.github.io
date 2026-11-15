@@ -7,7 +7,7 @@
   <meta name="description" content="If the output has a grammar, or the decision has a rule, code should produce it. A model belongs where the input really is unstructured, and even there, code should check what the model says." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -136,20 +136,22 @@
   .back-link { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 3rem; transition: color 0.2s; }
   .back-link:hover { color: var(--gold); }
 </style>
+  <link rel="stylesheet" href="../../assets/site.css" />
 </head>
 <body>
 
-  <nav>
-    <a href="../../index.html" class="nav-logo">&gt;_ jeffhanna</a>
-    <div class="nav-links">
-      <a href="../../index.html">Home</a>
-      <a href="../../projects/index.html">Projects</a>
-      <a href="../index.html" class="active">Writing</a>
-      <a href="../../resume.html" >Resume</a>
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <header class="site-header">
+    <a href="../../index.html" class="wordmark">Jeff Hanna</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="../../projects/index.html">Development</a>
+      <a href="../../writing/index.html" aria-current="page">Writing</a>
+      <a href="../../resume.html">Resume</a>
+    </nav>
+    <div class="site-social">
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
-  </nav>
+  </header>
   <div class="page-wrap">
     <header class="fade-up">
       <div class="proj-eyebrow">Note</div>
@@ -199,12 +201,14 @@
     <a href="../" class="back-link">← All Writing</a>
   </div>
 
-  <footer>
-    <span>© Jeff Hanna · Built with intention.</span>
-    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <footer class="site-footer">
+    <span>Jeff Hanna · Seattle, WA</span>
+    <div class="footer-links">
+      <a href="../../resume.html">Resume</a>
+      <a href="https://github.com/jhanna2" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jeff-hanna-a06a48217/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
+  <script src="../../assets/toc.js" defer></script>
 </body>
 </html>
